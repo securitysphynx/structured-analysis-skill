@@ -23,11 +23,62 @@ Collect in order. Each tier adds breadth.
 > - **Background sub-agents** (`run_in_background: true`): MCP tools are **not available**. This is a Claude Code architectural constraint.
 > - **Foreground sub-agents**: MCP tools **are** inherited from the parent conversation and will work, but they block the main conversation while running.
 
-Collect OSINT via a three-step pipeline that keeps raw web content out of the main context window. All raw article text is written to disk by subagents; only compact summaries flow back.
+Collect OSINT via a four-step pipeline that keeps raw web content out of the main context window. All raw article text is written to disk by subagents; only compact summaries flow back.
+
+#### Theme Scaling
+
+The number of search themes adapts to analysis complexity. Three core themes always run. Adaptive themes are generated based on the problem domain, selected techniques, and stakeholder perspectives not covered by core themes.
+
+| Mode | Core Themes | Adaptive Themes | Total |
+|------|-------------|-----------------|-------|
+| Lean (`--lean`) | 3 | 3 | 6 |
+| Default | 3 | 5 | 8 |
+| Comprehensive (`--comprehensive`) | 3 | 7 | 10 |
+
+#### Step 3.0 — Theme Planning
+
+Before raw collection, generate the full theme list.
+
+**Core themes (always included):**
+
+| Theme # | `{{THEME_NAME}}` | `{{THEME_SLUG}}` | `{{SEARCH_INSTRUCTIONS}}` | `{{SOURCE_COUNT}}` |
+|---------|-------------------|-------------------|---------------------------|---------------------|
+| 1 | Background & Context | background | Authoritative sources, data, and expert analysis on | 3-5 |
+| 2 | Contrarian & Critical | contrarian | Counterarguments, failures, risks, critics' views, and alternative explanations for | 2-3 |
+| 3 | Recent Developments | recent | Developments from the last 6 months — new data, policy changes, market shifts, emerging trends, breaking news about | 2-3 |
+
+**Adaptive theme generation:**
+
+Generate additional themes by analyzing three inputs:
+
+1. **Problem domain** — What sectors, disciplines, or knowledge areas does the problem span? Each distinct domain that the core themes won't adequately cover becomes a candidate theme.
+   - Examples: "regulatory/legal landscape", "technical architecture", "economic/market dynamics", "geopolitical context"
+
+2. **Selected techniques' analytical needs** — What evidence do the selected techniques specifically require that generic background searches won't surface?
+   - ACH/Inconsistencies → theme targeting evidence that discriminates between hypotheses
+   - Cross-Impact → theme targeting data on variable interactions and feedback loops
+   - Contrasting Narratives → theme targeting each competing narrative's proponents
+   - What-If/Premortem → theme targeting historical precedents and analogous scenarios
+   - Bowtie → theme targeting barrier effectiveness data and failure modes
+   - Red Hat/Deception → theme targeting adversary doctrine, capabilities, and strategic communications
+
+3. **Stakeholder perspectives** — Who are the key actors, and which perspectives are absent from the core themes? Each unrepresented stakeholder with decision-making power or unique information access becomes a candidate theme.
+   - Examples: "industry insider reporting", "allied/international perspective", "adversary strategic calculus", "insurance/financial risk assessment", "technical operator viewpoint"
+
+**Theme construction rules:**
+- Each adaptive theme needs: `{{THEME_NAME}}`, `{{THEME_SLUG}}`, `{{SEARCH_INSTRUCTIONS}}`, and `{{SOURCE_COUNT}}` (2-3 sources per adaptive theme)
+- Adaptive themes are numbered sequentially after the core themes (4, 5, 6, ...)
+- `{{SEARCH_INSTRUCTIONS}}` should be specific enough to produce differentiated results — avoid themes that would return the same sources as core themes
+- Prioritize themes that address the most impactful blind spots first (in case collection is interrupted)
+- Do NOT generate themes that duplicate core theme coverage — if a candidate theme overlaps significantly with Background, Contrarian, or Recent, drop it
+
+Log the full theme list (core + adaptive) to `meta.md` under Evidence Collection before starting raw collection.
 
 #### Step 3a — Raw Collection (Foreground Task Subagents)
 
-Spawn **3 foreground Task subagents sequentially** (one per search theme). Each subagent inherits MCP tools from the parent and can use Firecrawl or WebSearch/WebFetch.
+Spawn foreground Task subagents sequentially (one per search theme). Each subagent inherits MCP tools from the parent and can use Firecrawl or WebSearch/WebFetch.
+
+**Dispatch order**: Core themes first (1-3), then adaptive themes in priority order (4+). If time or tool constraints force early termination, the highest-priority themes will already be collected.
 
 For each theme, invoke the Task tool with `subagent_type: "general-purpose"` and the following prompt template (substitute `{{THEME_NAME}}`, `{{THEME_NUMBER}}`, `{{SEARCH_INSTRUCTIONS}}`, and `{{PROBLEM_SUMMARY}}`):
 
@@ -67,17 +118,9 @@ Use this file format:
    Errors: [any errors or "none"]
 ```
 
-**Theme prompts** (substitute into `{{SEARCH_INSTRUCTIONS}}` and `{{SOURCE_COUNT}}`):
-
-| Theme | `{{THEME_NAME}}` | `{{THEME_SLUG}}` | `{{SEARCH_INSTRUCTIONS}}` | `{{SOURCE_COUNT}}` |
-|-------|-------------------|-------------------|---------------------------|---------------------|
-| 1 | Background & Context | background | Authoritative sources, data, and expert analysis on | 3-5 |
-| 2 | Contrarian & Critical | contrarian | Counterarguments, failures, risks, critics' views, and alternative explanations for | 2-3 |
-| 3 | Recent Developments | recent | Developments from the last 6 months — new data, policy changes, market shifts, emerging trends, breaking news about | 2-3 |
-
 #### Step 3b — Evidence Extraction (Background Subagents)
 
-After all 3 raw files are on disk, spawn **3 background Task subagents in parallel** (`run_in_background: true`). Each reads its raw file (no MCP tools needed) and extracts structured evidence.
+After all raw files are on disk, spawn background Task subagents in parallel (`run_in_background: true`) — one per theme. Each reads its raw file (no MCP tools needed) and extracts structured evidence.
 
 For each theme, invoke the Task tool with `subagent_type: "general-purpose"`, `run_in_background: true`, and this prompt template:
 
@@ -123,7 +166,7 @@ Use this file format:
 
 After all background subagents complete:
 
-1. Read the 3 processed evidence files from `working/osint-processed/`
+1. Read all processed evidence files from `working/osint-processed/`
 2. Merge with Tier 1 (conversation) and Tier 2 (local files) evidence
 3. Assign sequential E-IDs (E01, E02, ...) across all tiers
 4. Record which collection method was used (Firecrawl or WebSearch/WebFetch)
@@ -174,7 +217,7 @@ After collecting evidence across all tiers, evaluate before proceeding to techni
 
 | Check | Threshold | Action on Failure |
 |-------|-----------|-------------------|
-| **Minimum count** | ≥5 items total (≥8 if adaptive mode with 4+ techniques) | Loop back: retry OSINT with broader search terms, try alternative tools, or surface to analyst with specific gap description |
+| **Minimum count** | ≥8 items total (≥15 if adaptive mode with 4+ techniques; ≥20 if comprehensive) | Loop back: retry OSINT with broader search terms, try alternative tools, or surface to analyst with specific gap description |
 | **Quality floor** | <50% of items rated Low reliability | Halt and surface to analyst: "Evidence base is unreliable — {{N}} of {{TOTAL}} items are Low reliability. Recommend gathering higher-quality sources before proceeding." |
 
 ### Soft Checks (WARN and proceed with flag)
@@ -210,6 +253,7 @@ After the gate, report to the orchestrator:
 - **Quality floor**: {{HIGH_COUNT}} High / {{MED_COUNT}} Medium / {{LOW_COUNT}} Low (Hard check: {{PASS/FAIL}})
 - **Source diversity**: {{TYPE_COUNT}} source types (Soft check: {{PASS/WARN}})
 - **Tier coverage**: Tier 1: {{T1}} / Tier 2: {{T2}} / Tier 3: {{T3}} (Soft check: {{PASS/WARN}})
+- **Theme coverage**: {{THEMES_WITH_RESULTS}}/{{TOTAL_THEMES}} themes produced evidence (Core: {{CORE_COUNT}}/3, Adaptive: {{ADAPTIVE_COUNT}}/{{ADAPTIVE_TOTAL}})
 - **Diagnostic power**: {{HIGH_DIAG_COUNT}} High-diagnostic items (Soft check: {{PASS/WARN}})
 - **Temporal recency**: Most recent item from {{DATE}} (Soft check: {{PASS/WARN}})
 - **Gate result**: {{PROCEED / RETRY / HALT}}

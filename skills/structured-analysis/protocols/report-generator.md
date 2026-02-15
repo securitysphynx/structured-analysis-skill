@@ -118,19 +118,7 @@ Incorporate user feedback into the final report. If no feedback, proceed.
 ## Step 5: Write Final Artifacts
 
 ### Report (`report.md`)
-Use `templates/report-template.md`. Fill every section in template order (disposition first, detail last):
-1. Header with analysis metadata
-2. Executive Summary (2-3 paragraphs: key findings, confidence levels, primary recommendation)
-3. Key Judgments table (using `sections/judgment-table.md` format)
-4. Analytical Framework (technique weights from Step 2b — Role, Weight, Direction, Key Contribution)
-5. Synthesis (cross-technique agreement/disagreement, integrated assessment)
-6. Risks & Blind Spots (all Layer 2 self-critique results)
-7. Monitoring Plan summary with link to full plan
-8. Problem Framing (how defined, restatements considered, final framing)
-9. Evidence Base (summary with source breakdown, quality assessment, link to registry)
-10. Revision History (iteration 2+ only — remove for first-run analyses)
-11. Technique Detail — one section per technique applied (purpose, process, findings with citations, confidence, link to working artifact)
-12. Complete Sources bibliography
+Read `templates/report-template.md` and fill every section in document order (disposition first, detail last). The template is the authoritative section ordering — follow it exactly.
 
 ### Monitoring Plan (`monitoring-plan.md`)
 Use `templates/monitoring-plan-template.md`. For each key judgment:

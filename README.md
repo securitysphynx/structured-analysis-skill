@@ -2,7 +2,7 @@
 
 AI-augmented [Structured Analytic Techniques](https://www.cia.gov/resources/csi/static/Tradecraft-Primer-apr09.pdf) (SATs) from US Intelligence Community doctrine — implemented as an interactive Claude Code skill.
 
-14 techniques across 5 analytical phases, with automated evidence gathering, three-layer self-correction, and mandatory citation enforcement.
+18 techniques across 6 analytical phases, with automated evidence gathering, three-layer self-correction, and mandatory citation enforcement.
 
 ## What is Structured Analysis?
 
@@ -175,6 +175,7 @@ All tiers combine into a unified evidence registry. Use `--no-osint` to skip web
 | Flag | Effect |
 |------|--------|
 | `--lean` | Use only Problem Restatement + KAC Quick + Inconsistencies Finder |
+| `--comprehensive` | Full 14-question rubric, no technique cap, unlocks adversarial + deception checks |
 | `--no-osint` | Disable web research — use only conversation context and local files |
 | `--iterate <id>` | Re-run with artifact versioning and evidence delta tracking |
 
@@ -198,6 +199,10 @@ Flags combine: `/analyze --guided --no-osint` runs all phases without web resear
 | `narratives` | Contrasting Narratives | Foresight |
 | `bowtie` | Bowtie Analysis | Decision Support |
 | `opportunities` | Opportunities Incubator | Decision Support |
+| `devils-advocacy` | Devil's Advocacy | Challenge |
+| `red-hat` | Red Hat Analysis | Challenge |
+| `alt-futures` | Alternative Futures | Foresight |
+| `deception` | Deception Detection | Diagnostic |
 
 ### Example Output
 
@@ -282,6 +287,7 @@ First-run analyses are unaffected. Iteration tracking activates only on `--itera
 | ACH | Confirmation bias, anchoring | Hours-days |
 | Inconsistencies Finder | Confirmation bias (lean ACH) | 15-30 min |
 | Cross-Impact Matrix | Linear thinking, missed interactions | Hours |
+| Deception Detection | Mirror-imaging, trust bias | Hours |
 
 **Challenge** — Stress-test your conclusions.
 
@@ -289,6 +295,8 @@ First-run analyses are unaffected. Iteration tracking activates only on `--itera
 |-----------|---------------|--------|
 | What If? Analysis | Status quo bias, failure of imagination | Hours-days |
 | Premortem + Self-Critique | Overconfidence, blind spots | 30 min-2 hr |
+| Devil's Advocacy | Groupthink, conformity pressure | Hours |
+| Red Hat Analysis | Mirror-imaging, ethnocentrism | Hours |
 
 **Foresight** — Model alternative futures.
 
@@ -296,6 +304,7 @@ First-run analyses are unaffected. Iteration tracking activates only on `--itera
 |-----------|---------------|--------|
 | Counterfactual Reasoning | Rationality attribution, historical inevitability | Hours |
 | Contrasting Narratives | Narrative bias, emotional reasoning | Hours |
+| Alternative Futures | Single-outcome fixation, failure of imagination | Hours-days |
 
 **Decision Support** — Evaluate options and risks.
 
@@ -340,11 +349,11 @@ Question → Orchestrator → Evidence Collector → Technique Dispatch → Self
                 └─── Iterate (--iterate) ← artifact versioning + evidence delta ───┘
 ```
 
-**Orchestrator** — The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 12-question rubric to match problem characteristics to appropriate techniques.
+**Orchestrator** — The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 14-question rubric to match problem characteristics to appropriate techniques.
 
 **Technique Dispatch** — When 2+ techniques are selected, the orchestrator dispatches them to background subagents in dependency-aware tiers. Tier 1 techniques (brainstorm, kac) run first; tier 2 (ach, cross-impact, inconsistencies) wait for tier 1 outputs; tier 3 and 4 cascade similarly. Within each tier, techniques run in parallel. Each subagent reads its protocol and template, executes the full technique workflow, writes the artifact to disk, and returns only a compact findings summary. The main context window accumulates summaries and file paths — not full technique work — preserving budget for synthesis, follow-ups, and iteration. Single-technique runs (Direct mode) execute in-context to avoid subagent overhead.
 
-**Evidence Collector** — The [evidence collector](skills/structured-analysis/protocols/evidence-collector.md) gathers evidence across three tiers (conversation, local files, OSINT). OSINT uses a three-phase pipeline: foreground subagents scrape raw content to disk, background subagents extract structured evidence, then the main context integrates everything into the registry. This keeps raw web content out of the context window. MCP tools are only available in the main conversation and foreground subagents, not background subagents — the pipeline is designed around this constraint.
+**Evidence Collector** — The [evidence collector](skills/structured-analysis/protocols/evidence-collector.md) gathers evidence across three tiers (conversation, local files, OSINT). OSINT uses a four-step pipeline: theme planning generates adaptive search themes based on problem domain, technique needs, and stakeholder perspectives (3 core + 3/5/7 adaptive themes scaling by mode); foreground subagents scrape raw content to disk; background subagents extract structured evidence; then the main context integrates everything into the registry. This keeps raw web content out of the context window. MCP tools are only available in the main conversation and foreground subagents, not background subagents — the pipeline is designed around this constraint.
 
 **Evidence Sufficiency Gate** — After collection, hard checks (minimum count, quality floor) can halt the analysis; soft checks (source diversity, diagnostic coverage, temporal recency) log warnings that surface in the report.
 
@@ -380,14 +389,14 @@ structured-analysis-skill/
 │   │   ├── evidence-collector.md     # Evidence gathering and OSINT
 │   │   ├── report-generator.md       # Report synthesis
 │   │   ├── iteration-handler.md      # Artifact versioning and iteration logic
-│   │   └── techniques/              # 14 technique execution protocols
+│   │   └── techniques/              # 18 technique execution protocols
 │   └── templates/
 │       ├── report-template.md        # Final report structure
 │       ├── evidence-registry-template.md
 │       ├── monitoring-plan-template.md
 │       ├── meta-template.md
 │       ├── iteration-meta-template.md # Per-iteration metadata
-│       ├── techniques/              # 14 technique artifact templates
+│       ├── techniques/              # 18 technique artifact templates
 │       └── sections/                # Reusable report components
 ├── docs/
 │   ├── library/                     # Reference knowledge base (10 files)

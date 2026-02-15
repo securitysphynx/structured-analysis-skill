@@ -35,26 +35,26 @@ Flags combine with modes: `--guided --no-osint` is valid.
 
 ## Technique Routing Table
 
-| Invocation Name | Protocol File | Template File | Phase |
-|---|---|---|---|
-| `customer-checklist` | `protocols/techniques/customer-checklist.md` | `templates/techniques/customer-checklist.md` | Launch |
-| `issue-redefinition` | `protocols/techniques/issue-redefinition.md` | `templates/techniques/issue-redefinition.md` | Launch |
-| `restatement` | `protocols/techniques/problem-restatement.md` | `templates/techniques/problem-restatement.md` | Launch |
-| `brainstorm` | `protocols/techniques/structured-brainstorming.md` | `templates/techniques/brainstorm.md` | Exploration |
-| `kac` | `protocols/techniques/key-assumptions-check.md` | `templates/techniques/assumptions.md` | Diagnostic |
-| `ach` | `protocols/techniques/ach.md` | `templates/techniques/ach-matrix.md` | Diagnostic |
-| `inconsistencies` | `protocols/techniques/inconsistencies-finder.md` | `templates/techniques/inconsistencies.md` | Diagnostic |
-| `cross-impact` | `protocols/techniques/cross-impact-matrix.md` | `templates/techniques/cross-impact.md` | Diagnostic |
-| `what-if` | `protocols/techniques/what-if.md` | `templates/techniques/what-if.md` | Challenge |
-| `premortem` | `protocols/techniques/premortem.md` | `templates/techniques/premortem.md` | Challenge |
-| `counterfactual` | `protocols/techniques/counterfactual-reasoning.md` | `templates/techniques/counterfactual.md` | Foresight |
-| `narratives` | `protocols/techniques/contrasting-narratives.md` | `templates/techniques/contrasting-narratives.md` | Foresight |
-| `devils-advocacy` | `protocols/techniques/devils-advocacy.md` | `templates/techniques/devils-advocacy.md` | Challenge |
-| `red-hat` | `protocols/techniques/red-hat-analysis.md` | `templates/techniques/red-hat-analysis.md` | Challenge |
-| `bowtie` | `protocols/techniques/bowtie-analysis.md` | `templates/techniques/bowtie.md` | Decision Support |
-| `opportunities` | `protocols/techniques/opportunities-incubator.md` | `templates/techniques/opportunities.md` | Decision Support |
-| `alt-futures` | `protocols/techniques/alternative-futures.md` | `templates/techniques/alternative-futures.md` | Foresight |
-| `deception` | `protocols/techniques/deception-detection.md` | `templates/techniques/deception-detection.md` | Diagnostic |
+| Invocation Name | Protocol File | Template File | Artifact | Phase |
+|---|---|---|---|---|
+| `customer-checklist` | `protocols/techniques/customer-checklist.md` | `templates/techniques/customer-checklist.md` | `customer-checklist.md` | Launch |
+| `issue-redefinition` | `protocols/techniques/issue-redefinition.md` | `templates/techniques/issue-redefinition.md` | `issue-redefinition.md` | Launch |
+| `restatement` | `protocols/techniques/problem-restatement.md` | `templates/techniques/problem-restatement.md` | `problem-restatement.md` | Launch |
+| `brainstorm` | `protocols/techniques/structured-brainstorming.md` | `templates/techniques/brainstorm.md` | `brainstorm.md` | Exploration |
+| `kac` | `protocols/techniques/key-assumptions-check.md` | `templates/techniques/assumptions.md` | `assumptions.md` | Diagnostic |
+| `ach` | `protocols/techniques/ach.md` | `templates/techniques/ach-matrix.md` | `ach-matrix.md` | Diagnostic |
+| `inconsistencies` | `protocols/techniques/inconsistencies-finder.md` | `templates/techniques/inconsistencies.md` | `inconsistencies.md` | Diagnostic |
+| `cross-impact` | `protocols/techniques/cross-impact-matrix.md` | `templates/techniques/cross-impact.md` | `cross-impact.md` | Diagnostic |
+| `what-if` | `protocols/techniques/what-if.md` | `templates/techniques/what-if.md` | `what-if.md` | Challenge |
+| `premortem` | `protocols/techniques/premortem.md` | `templates/techniques/premortem.md` | `premortem.md` | Challenge |
+| `counterfactual` | `protocols/techniques/counterfactual-reasoning.md` | `templates/techniques/counterfactual.md` | `counterfactual.md` | Foresight |
+| `narratives` | `protocols/techniques/contrasting-narratives.md` | `templates/techniques/contrasting-narratives.md` | `contrasting-narratives.md` | Foresight |
+| `devils-advocacy` | `protocols/techniques/devils-advocacy.md` | `templates/techniques/devils-advocacy.md` | `devils-advocacy.md` | Challenge |
+| `red-hat` | `protocols/techniques/red-hat-analysis.md` | `templates/techniques/red-hat-analysis.md` | `red-hat-analysis.md` | Challenge |
+| `bowtie` | `protocols/techniques/bowtie-analysis.md` | `templates/techniques/bowtie.md` | `bowtie.md` | Decision Support |
+| `opportunities` | `protocols/techniques/opportunities-incubator.md` | `templates/techniques/opportunities.md` | `opportunities.md` | Decision Support |
+| `alt-futures` | `protocols/techniques/alternative-futures.md` | `templates/techniques/alternative-futures.md` | `alternative-futures.md` | Foresight |
+| `deception` | `protocols/techniques/deception-detection.md` | `templates/techniques/deception-detection.md` | `deception-detection.md` | Diagnostic |
 
 All paths are relative to the skill directory (`skills/structured-analysis/`).
 
@@ -296,6 +296,7 @@ Within each tier, techniques run in parallel (no intra-tier dependencies). The o
    c. Launch all tier subagents as background Task agents in parallel
    d. Wait for all tier subagents to complete
    e. Collect and validate each subagent's return summary
+   e2. **Artifact validation**: For each completed subagent, verify the artifact file exists on disk and contains no unfilled `{{PLACEHOLDER}}` tokens. If validation fails, log as `PARTIAL` and add a Layer 1 flag.
    f. If any subagent returns `FAILED`: log the error, skip that technique, add a Layer 1 flag
    g. If any subagent returns `PARTIAL`: log warnings, accept partial results, add a Layer 1 flag
    h. Update `meta.md` with each technique's status and dispatch tier

@@ -10,7 +10,7 @@
 |-------|-------|
 | **Created** | {{CREATED_TIMESTAMP}} |
 | **Last Updated** | {{UPDATED_TIMESTAMP}} |
-| **Mode** | {{ADAPTIVE/DIRECT/GUIDED/LEAN/COMPREHENSIVE}} |
+| **Mode** | {{MODE — e.g., Adaptive, Direct, Guided, Guided + Lean, Adaptive + Comprehensive}} |
 | **Status** | {{IN_PROGRESS/COMPLETE}} |
 | **Iteration** | {{1}} |
 
@@ -40,6 +40,13 @@
 | **Firecrawl Available** | {{YES/NO}} |
 | **Sources Checked** | {{COUNT}} |
 | **Evidence Items** | {{COUNT}} |
+| **Themes (Core/Adaptive)** | {{CORE_COUNT}} + {{ADAPTIVE_COUNT}} = {{TOTAL_THEMES}} |
+
+### Search Themes
+
+| # | Theme | Type | Sources Found |
+|---|-------|------|---------------|
+| {{NUM}} | {{THEME_NAME}} | {{Core/Adaptive}} | {{COUNT}} |
 
 ---
 
@@ -73,6 +80,21 @@ Gate: {{PASS (>4.0) | ADVISORY (3.0-4.0) | FAIL (<3.0)}}
 | Iter | Date | Trigger | Scope | New Evidence | Key Changes |
 |------|------|---------|-------|--------------|-------------|
 <!-- Populated on iteration 2+ -->
+
+---
+
+## Execution Timing
+
+| Technique | Dispatch | Start | End | Duration |
+|-----------|----------|-------|-----|----------|
+| {{TECHNIQUE_NAME}} | {{in-context/tier-N}} | {{HH:MM}} | {{HH:MM}} | {{Xm Ys}} |
+
+| Metric | Value |
+|--------|-------|
+| **Total Analysis Duration** | {{DURATION}} |
+| **Evidence Collection** | {{DURATION}} |
+| **Technique Execution** | {{DURATION}} |
+| **Report Generation** | {{DURATION}} |
 
 ---
 
