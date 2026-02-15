@@ -67,18 +67,25 @@ If no conversation context exists and no arguments were provided, proceed direct
 1. Read `protocols/orchestrator.md` (relative to this skill's directory)
 2. Parse explicit arguments → determine mode and flags (merge with Step 0 inferences, explicit args win)
 3. Follow the orchestrator's instructions for the detected mode
-4. For each technique selected:
-   - Read the technique's protocol file (SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF)
-   - Read the technique's template file for artifact structure
-   - Execute the protocol, writing artifacts to `analyses/<id>/working/`
+4. For technique execution, follow the orchestrator's Technique Execution Contract:
+   - **1 technique** (Direct mode): Execute in-context — read protocol, read template, execute SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF, write artifact to `analyses/<id>/working/`
+   - **2+ techniques**: Dispatch to background subagents in dependency-aware tiers — each subagent reads protocol/template, executes the technique, writes the artifact, and returns only a compact findings summary. Main context accumulates summaries and file paths, not full technique work.
 5. For evidence gathering: read and execute `protocols/evidence-collector.md`
 6. For report synthesis: read and execute `protocols/report-generator.md`
 
 ## Self-Correction (3 Layers)
 
 - **Layer 1** (after each technique, silent): Protocol compliance check — all steps completed? All template sections filled? No unfilled `{{PLACEHOLDER}}` tokens?
-- **Layer 2** (before report, silent): Analytical self-critique — assumption audit, evidence balance, confidence calibration, alternative check, missing voices
-- **Layer 3** (before finalization): Human review gate — present summary, incorporate feedback
+- **Layer 2** (before report, silent): Analytical self-critique — 8 checks:
+  - 3a. Assumption audit
+  - 3b. Evidence balance
+  - 3c. Confidence calibration
+  - 3d. Alternative check
+  - 3e. Missing voices
+  - 3f. Internal consistency audit (cross-artifact validation)
+  - 3g. Analytical bias scan (sycophancy, anchoring, vividness, completion, authority)
+  - 3h. Quality score (quantitative 1-5 with pass/fail threshold)
+- **Layer 3** (before finalization): Human review gate — present summary (including quality score), incorporate feedback
 - **Critique-to-Iteration Bridge** (after results): Actionable flags from Layer 1 and Layer 2 are automatically mapped to specific technique re-runs and evidence collection focuses, presented as ready-to-run `/analyze --iterate` commands. Only fires when actionable flags exist.
 
 ## Citation Requirement

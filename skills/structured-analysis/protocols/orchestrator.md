@@ -173,7 +173,7 @@ Execute in order, each phase building on the previous:
 2. **Assumptions**: Key Assumptions Check
 3. **Evidence**: Read and execute `protocols/evidence-collector.md`
 4. **Evidence Gate**: Execute the Evidence Sufficiency Gate (defined in `protocols/evidence-collector.md`). If hard checks fail, retry or halt. If soft checks fail, log flags and proceed.
-5. **Core Analysis**: Use selection logic (Steps 2-3 above) to pick technique(s)
+5. **Core Analysis**: Use selection logic (Steps 2-3 above) to pick technique(s), then execute via the Technique Execution Contract (in-context for 1 technique, subagent dispatch for 2+)
 6. **Stress Test**: Premortem + What If?
 7. **Report**: Read and execute `protocols/report-generator.md`
 
@@ -185,11 +185,9 @@ Execute in order, each phase building on the previous:
 2. Create analysis directory
 3. If OSINT not disabled, run evidence collector first
 4. Execute Evidence Sufficiency Gate; if hard checks fail, retry or surface to analyst before proceeding
-5. Read the technique's protocol file
-6. Read the technique's template file
-7. Execute the protocol, writing the artifact using the template
-8. Present findings in conversation
-9. Offer: "Would you like me to continue with a full analysis, or is this technique sufficient?"
+5. Execute the technique via the Technique Execution Contract (Direct mode always uses in-context execution since it's a single technique)
+6. Present findings in conversation
+7. Offer: "Would you like me to continue with a full analysis, or is this technique sufficient?"
 
 ---
 
@@ -216,7 +214,7 @@ Execute the complete iteration workflow:
 2. **Collect new evidence** — re-run OSINT via `protocols/evidence-collector.md` (unless `--no-osint`), iteration-handler Step 3
 3. **Evidence Gate** — evaluate only the evidence delta (newly collected items), not the full accumulated registry. Techniques execute against the combined evidence base (prior + new).
 4. **Archive ALL working artifacts** — iteration-handler Step 2
-5. **Re-run all techniques** — use the same technique set from `meta.md`, iteration-handler Step 4
+5. **Re-run all techniques** — use the same technique set from `meta.md`, iteration-handler Step 4, dispatched via the Technique Execution Contract (subagent dispatch for 2+ techniques)
 6. **Cross-iteration synthesis** — iteration-handler Step 5, comparing new vs. prior findings
 7. **Regenerate report** — include "Revision History" section from `templates/report-template.md`
 8. **Update monitoring plan** — refresh indicators based on new findings
@@ -232,7 +230,7 @@ Execute a targeted re-run of specific technique(s):
 2. **Optionally collect targeted evidence** — if the iteration trigger specifies a collection focus (e.g., "counter-evidence for pessimistic bias"), run evidence collection with that focus. Otherwise, skip.
 3. **Evidence Gate** — evaluate only the evidence delta if new evidence was collected
 4. **Archive only the specified technique's artifact(s)** — iteration-handler Step 2 (scoped)
-5. **Re-run the specified technique(s)** — iteration-handler Step 4
+5. **Re-run the specified technique(s)** — iteration-handler Step 4, dispatched via the Technique Execution Contract
 6. **Cross-iteration synthesis** — compare new vs. prior findings for the re-run technique(s) only
 7. **Write iteration findings summary** — in iteration metadata, NOT a full report regeneration (unless explicitly requested by the analyst)
 8. **Update meta.md** — iteration-handler Step 7
@@ -256,7 +254,11 @@ Techniques execute against the combined evidence base (prior + new).
 
 ## Technique Execution Contract
 
-For every technique, follow this sequence:
+### Dispatch Decision
+
+**Threshold rule**: If only 1 technique is selected (Direct mode), execute in-context to avoid subagent overhead. If 2+ techniques are selected, use subagent dispatch.
+
+### In-Context Execution (1 technique)
 
 1. **Read** the protocol file from the routing table
 2. **Read** the template file from the routing table
@@ -264,4 +266,99 @@ For every technique, follow this sequence:
 4. **Write** the artifact to `analyses/{{ANALYSIS_ID}}/working/{{ARTIFACT_NAME}}.md`
 5. **Layer 1 Check** (silent): Did the protocol complete all required steps? Are all template sections filled? Any {{PLACEHOLDER}} tokens remaining unfilled?
 6. If Layer 1 fails: re-execute the missed steps before proceeding
-7. **Update** `meta.md` with technique completion status
+7. **Update** `meta.md` with technique completion status and `Dispatch: in-context`
+
+### Subagent Dispatch (2+ techniques)
+
+#### Dependency Tier Assignment
+
+Assign each selected technique to a tier based on its input dependencies. Only include tiers that contain at least one selected technique.
+
+| Tier | Techniques | Dependencies | Dispatch |
+|------|-----------|-------------|----------|
+| 0 (Launch) | customer-checklist, issue-redefinition, restatement | Conversation context only | **In-context** (interactive, produce `requirements.md`) |
+| — | Evidence Collection | requirements.md | Existing subagent pipeline (unchanged) |
+| 1 | brainstorm, kac | requirements.md, evidence-registry.md | Background, parallel |
+| 2 | ach, cross-impact, inconsistencies | + assumptions.md, brainstorm.md | Background, parallel |
+| 3 | what-if, counterfactual, narratives, bowtie, opportunities, deception | + prior technique outputs | Background, parallel |
+| 4 | premortem, devils-advocacy, red-hat, alt-futures | ALL prior working/ artifacts | Background, parallel |
+
+Within each tier, techniques run in parallel (no intra-tier dependencies). The orchestrator waits for all subagents in tier N to complete before dispatching tier N+1.
+
+#### Dispatch Sequence
+
+1. **Assign tiers**: Map each selected technique to its tier from the table above
+2. **Tier 0**: Execute Launch techniques in-context (if selected) — these are interactive and produce `requirements.md`
+3. **Evidence Collection**: Run existing evidence subagent pipeline (unchanged)
+4. **For each tier (1 → 4)**, if that tier has selected techniques:
+   a. Build the file manifest: list all files currently in `analyses/{{ANALYSIS_ID}}/working/`
+   b. Construct one subagent prompt per technique using the template below
+   c. Launch all tier subagents as background Task agents in parallel
+   d. Wait for all tier subagents to complete
+   e. Collect and validate each subagent's return summary
+   f. If any subagent returns `FAILED`: log the error, skip that technique, add a Layer 1 flag
+   g. If any subagent returns `PARTIAL`: log warnings, accept partial results, add a Layer 1 flag
+   h. Update `meta.md` with each technique's status and dispatch tier
+5. **Accumulate findings**: After all tiers complete, the main context holds only the compact summaries — not full technique work
+
+#### Subagent Prompt Template
+
+Each technique subagent receives this prompt (fill in the `{{VARIABLES}}`):
+
+```
+You are a structured analysis technique executor. Execute a single analytic technique and write the artifact to disk.
+
+## Technique
+- **Name**: {{TECHNIQUE_NAME}}
+- **Protocol file**: {{PROTOCOL_PATH}} (relative to skill directory)
+- **Template file**: {{TEMPLATE_PATH}} (relative to skill directory)
+- **Artifact output**: analyses/{{ANALYSIS_ID}}/working/{{ARTIFACT_NAME}}.md
+
+## Analysis Context
+- **Analysis ID**: {{ANALYSIS_ID}}
+- **Problem statement**: {{PROBLEM_STATEMENT_SUMMARY}}
+- **Evidence sufficiency flags**: {{FLAGS_OR_NONE}}
+
+## Available Working Files
+{{FILE_MANIFEST — list of paths currently in working/}}
+
+## Instructions
+
+1. Read the protocol file and template file
+2. Read working files as needed per the protocol's SETUP step
+3. Execute ALL protocol steps: SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF
+4. For PRIME step: note the analytical posture internally (do not attempt user interaction)
+5. Write the completed artifact to the output path above
+6. Perform Layer 1 compliance check:
+   - All protocol steps completed?
+   - All template sections filled?
+   - Any unfilled {{PLACEHOLDER}} tokens?
+   - If Layer 1 fails: fix and re-write the artifact
+7. Return ONLY this summary (nothing else):
+
+Technique: {{TECHNIQUE_NAME}}
+Artifact: analyses/{{ANALYSIS_ID}}/working/{{ARTIFACT_NAME}}.md
+Status: COMPLETED | FAILED | PARTIAL
+Layer1: PASS | FAIL (details)
+Findings:
+- [finding] [Confidence: High|Moderate|Low]
+- [finding] [Confidence: High|Moderate|Low]
+- [finding] [Confidence: High|Moderate|Low]
+Handoff: [key outputs for downstream techniques, 1-2 sentences]
+Errors: [any errors or "none"]
+
+IMPORTANT:
+- Do NOT return full artifact content — only the summary above
+- Every claim in the artifact must cite evidence from the registry or prior artifacts
+- All paths are relative to the repository root
+```
+
+#### Return Contract
+
+The orchestrator collects summaries from each subagent. Main context accumulates ONLY:
+- Technique name + status + Layer 1 result
+- 3-5 line findings summary with confidence levels
+- Handoff notes (1-2 sentences)
+- Artifact file path
+
+This replaces full protocol execution in the main window. The report generator reads full artifacts from disk.

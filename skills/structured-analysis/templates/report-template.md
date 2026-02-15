@@ -15,6 +15,71 @@
 
 ---
 
+## Key Judgments
+
+| # | Judgment | Confidence | Supporting Techniques | Critical Assumptions | Indicators to Watch |
+|---|---------|------------|----------------------|---------------------|-------------------|
+| J{{NUM}} | {{JUDGMENT}} | {{LEVEL}} | {{TECHNIQUES}} | {{ASSUMPTIONS}} | {{INDICATORS}} |
+
+---
+
+## Analytical Framework
+
+How each technique contributed to the assessment. Weights reflect relative influence on the key judgments — not precision scores.
+
+| Technique | Role | Weight | Direction | Key Contribution |
+|-----------|------|--------|-----------|-----------------|
+| {{TECHNIQUE_NAME}} | {{DIAGNOSTIC/CHALLENGE/FORESIGHT/DECISION_SUPPORT}} | {{PRIMARY/SUPPORTING/QUALIFYING}} | {{CONFIRMING/CHALLENGING/MIXED}} | {{1-SENTENCE_CONTRIBUTION}} |
+
+**Reading the table:**
+- **Role**: The analytical function this technique served (Diagnostic = test assumptions/hypotheses; Challenge = stress-test conclusions; Foresight = model alternatives; Decision Support = evaluate options)
+- **Weight**: How much this technique influenced the final judgments (Primary = directly shaped key judgments; Supporting = reinforced or refined primary findings; Qualifying = introduced caveats or conditions that adjusted confidence)
+- **Direction**: Whether the technique's findings confirmed, challenged, or produced mixed signals relative to the emerging consensus
+
+---
+
+## Synthesis
+
+{{CROSS_TECHNIQUE_SYNTHESIS}}
+<!-- Where techniques agreed/disagreed; integrated assessment with overall confidence -->
+
+---
+
+## Risks & Blind Spots
+
+<!-- From Layer 2 self-critique -->
+
+### Assumption Audit
+{{UNSTATED_PREMISES}}
+
+### Evidence Balance
+{{EVIDENCE_BALANCE_ASSESSMENT}}
+
+### Confidence Calibration
+{{BIPOLAR_BIAS_CHECK}}
+
+### Strongest Counter-Argument
+{{COUNTER_ARGUMENT}}
+
+### Missing Perspectives
+{{MISSING_VOICES}}
+
+### Internal Consistency
+{{CONSISTENCY_ISSUES_OR_NONE}}
+
+### Analytical Bias Check
+{{BIAS_FLAGS_OR_NONE}}
+
+---
+
+## Monitoring Plan
+
+{{MONITORING_SUMMARY}}
+
+> Full monitoring plan: [Monitoring Plan](monitoring-plan.md)
+
+---
+
 ## Problem Framing
 
 {{PROBLEM_FRAMING}}
@@ -28,32 +93,6 @@
 <!-- Summary of evidence collected; source breakdown; quality assessment -->
 
 > Full evidence details: [Evidence Registry](evidence-registry.md)
-
----
-
-## Analysis
-
-<!-- One section per technique applied -->
-
-### {{TECHNIQUE_1_NAME}}
-
-**Purpose**: {{WHY_SELECTED}}
-**Process**: {{ABBREVIATED_PROCESS}}
-
-#### Findings
-
-{{FINDINGS_WITH_CITATIONS}}
-
-**Confidence**: {{CONFIDENCE_LEVEL}} — {{CONFIDENCE_JUSTIFICATION}}
-
-> Full working artifact: [{{ARTIFACT_NAME}}](working/{{ARTIFACT_FILE}})
-
----
-
-## Synthesis
-
-{{CROSS_TECHNIQUE_SYNTHESIS}}
-<!-- Where techniques agreed/disagreed; integrated assessment with overall confidence -->
 
 ---
 
@@ -80,40 +119,22 @@
 
 ---
 
-## Key Judgments
+## Technique Detail
 
-| # | Judgment | Confidence | Supporting Techniques | Critical Assumptions | Indicators to Watch |
-|---|---------|------------|----------------------|---------------------|-------------------|
-| J{{NUM}} | {{JUDGMENT}} | {{LEVEL}} | {{TECHNIQUES}} | {{ASSUMPTIONS}} | {{INDICATORS}} |
+<!-- One section per technique applied. Full analytical work supporting the judgments above. -->
 
----
+### {{TECHNIQUE_1_NAME}}
 
-## Risks & Blind Spots
+**Purpose**: {{WHY_SELECTED}}
+**Process**: {{ABBREVIATED_PROCESS}}
 
-<!-- From Layer 2 self-critique -->
+#### Findings
 
-### Assumption Audit
-{{UNSTATED_PREMISES}}
+{{FINDINGS_WITH_CITATIONS}}
 
-### Evidence Balance
-{{EVIDENCE_BALANCE_ASSESSMENT}}
+**Confidence**: {{CONFIDENCE_LEVEL}} — {{CONFIDENCE_JUSTIFICATION}}
 
-### Confidence Calibration
-{{BIPOLAR_BIAS_CHECK}}
-
-### Strongest Counter-Argument
-{{COUNTER_ARGUMENT}}
-
-### Missing Perspectives
-{{MISSING_VOICES}}
-
----
-
-## Monitoring Plan
-
-{{MONITORING_SUMMARY}}
-
-> Full monitoring plan: [Monitoring Plan](monitoring-plan.md)
+> Full working artifact: [{{ARTIFACT_NAME}}](working/{{ARTIFACT_FILE}})
 
 ---
 

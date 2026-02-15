@@ -332,12 +332,17 @@ Everything below is for contributors and people who want to understand or modify
 ### Architecture
 
 ```
-Question → Orchestrator → Evidence Collector → Technique(s) → Self-Correction → Report
-                ↑                                                                  │
+Question → Orchestrator → Evidence Collector → Technique Dispatch → Self-Correction → Report
+                ↑                                  ├─ Tier 1 (parallel subagents)
+                │                                  ├─ Tier 2 (parallel subagents)
+                │                                  ├─ Tier 3 (parallel subagents)
+                │                                  └─ Tier 4 (parallel subagents)
                 └─── Iterate (--iterate) ← artifact versioning + evidence delta ───┘
 ```
 
 **Orchestrator** — The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 12-question rubric to match problem characteristics to appropriate techniques.
+
+**Technique Dispatch** — When 2+ techniques are selected, the orchestrator dispatches them to background subagents in dependency-aware tiers. Tier 1 techniques (brainstorm, kac) run first; tier 2 (ach, cross-impact, inconsistencies) wait for tier 1 outputs; tier 3 and 4 cascade similarly. Within each tier, techniques run in parallel. Each subagent reads its protocol and template, executes the full technique workflow, writes the artifact to disk, and returns only a compact findings summary. The main context window accumulates summaries and file paths — not full technique work — preserving budget for synthesis, follow-ups, and iteration. Single-technique runs (Direct mode) execute in-context to avoid subagent overhead.
 
 **Evidence Collector** — The [evidence collector](skills/structured-analysis/protocols/evidence-collector.md) gathers evidence across three tiers (conversation, local files, OSINT). OSINT uses a three-phase pipeline: foreground subagents scrape raw content to disk, background subagents extract structured evidence, then the main context integrates everything into the registry. This keeps raw web content out of the context window. MCP tools are only available in the main conversation and foreground subagents, not background subagents — the pipeline is designed around this constraint.
 

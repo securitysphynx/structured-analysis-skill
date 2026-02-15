@@ -26,9 +26,9 @@
 
 ## Techniques Executed
 
-| Order | Technique | Status | Artifact | Iter |
-|-------|-----------|--------|----------|------|
-| {{NUM}} | {{TECHNIQUE_NAME}} | {{COMPLETED/SKIPPED/PENDING}} | {{ARTIFACT_PATH}} | {{ITER}} |
+| Order | Technique | Status | Artifact | Iter | Dispatch |
+|-------|-----------|--------|----------|------|----------|
+| {{NUM}} | {{TECHNIQUE_NAME}} | {{COMPLETED/SKIPPED/PENDING}} | {{ARTIFACT_PATH}} | {{ITER}} | {{in-context/tier-1/tier-2/tier-3/tier-4}} |
 
 ---
 
@@ -50,6 +50,18 @@
 
 ### Layer 2 Flags (Analytical Self-Critique)
 {{LAYER2_FLAGS}}
+
+### Quality Score (Layer 2 - 3h)
+| Criterion | Score | Weight | Weighted |
+|-----------|-------|--------|----------|
+| Evidence discrimination | X/5 | 0.30 | X.XX |
+| Hypothesis separation | X/5 | 0.25 | X.XX |
+| Assumption coverage | X/5 | 0.20 | X.XX |
+| Cross-technique convergence | X/5 | 0.15 | X.XX |
+| Deception resilience | X/5 | 0.10 | X.XX |
+| **Weighted Total** | | | **X.XX/5.0** |
+
+Gate: {{PASS (>4.0) | ADVISORY (3.0-4.0) | FAIL (<3.0)}}
 
 ### Human Feedback
 {{HUMAN_FEEDBACK}}
