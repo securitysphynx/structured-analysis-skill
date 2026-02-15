@@ -12,6 +12,7 @@
 | **Last Updated** | {{UPDATED_TIMESTAMP}} |
 | **Mode** | {{ADAPTIVE/DIRECT/GUIDED/LEAN}} |
 | **Status** | {{IN_PROGRESS/COMPLETE}} |
+| **Iteration** | {{1}} |
 
 ---
 
@@ -25,9 +26,9 @@
 
 ## Techniques Executed
 
-| Order | Technique | Status | Artifact |
-|-------|-----------|--------|----------|
-| {{NUM}} | {{TECHNIQUE_NAME}} | {{COMPLETED/SKIPPED/PENDING}} | {{ARTIFACT_PATH}} |
+| Order | Technique | Status | Artifact | Iter |
+|-------|-----------|--------|----------|------|
+| {{NUM}} | {{TECHNIQUE_NAME}} | {{COMPLETED/SKIPPED/PENDING}} | {{ARTIFACT_PATH}} | {{ITER}} |
 
 ---
 
@@ -52,6 +53,14 @@
 
 ### Human Feedback
 {{HUMAN_FEEDBACK}}
+
+---
+
+## Iteration History
+
+| Iter | Date | Trigger | Scope | New Evidence | Key Changes |
+|------|------|---------|-------|--------------|-------------|
+<!-- Populated on iteration 2+ -->
 
 ---
 

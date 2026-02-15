@@ -18,9 +18,12 @@
 
 ## Evidence Inventory
 
-| ID | Source | Type | Summary | Reliability | Diagnostic Value | Citation |
-|----|--------|------|---------|-------------|-----------------|----------|
-| E{{NUM}} | {{SOURCE}} | {{OSINT/FILE/USER}} | {{SUMMARY}} | {{HIGH/MED/LOW}} | {{HIGH/MED/LOW/ZERO}} | [{{REF}}] |
+| ID | Source | Type | Summary | Reliability | Diagnostic Value | Iter | Citation |
+|----|--------|------|---------|-------------|-----------------|------|----------|
+| E{{NUM}} | {{SOURCE}} | {{OSINT/FILE/USER}} | {{SUMMARY}} | {{HIGH/MED/LOW}} | {{HIGH/MED/LOW/ZERO}} | {{ITER}} | [{{REF}}] |
+
+**Iter Key:** Iteration number when this evidence item was first collected.
+Items from iteration 1 represent the original evidence base.
 
 **Diagnostic Value Key:**
 - **High**: Contradicts or strongly supports specific hypotheses

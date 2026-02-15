@@ -57,6 +57,29 @@
 
 ---
 
+## Revision History
+
+<!-- Only present if iteration > 1. Remove this section for first-run analyses. -->
+
+### Judgment Revisions
+
+| Judgment | Prior (v{{N-1}}) | Current (v{{N}}) | Driver of Change |
+|----------|-----------------|------------------|------------------|
+
+### Evidence Delta
+
+| Iteration | New Items | ID Range | Collection Focus |
+|-----------|-----------|----------|-----------------|
+
+### Findings Comparison
+
+{{CROSS_ITERATION_DELTA_NARRATIVE}}
+<!-- What changed, what remained stable, what drove changes -->
+
+> Prior iteration artifacts: [Iteration {{N-1}}](iterations/iteration-{{N-1}}-meta.md)
+
+---
+
 ## Key Judgments
 
 | # | Judgment | Confidence | Supporting Techniques | Critical Assumptions | Indicators to Watch |

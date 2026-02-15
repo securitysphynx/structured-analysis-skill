@@ -17,40 +17,68 @@ This skill brings SATs to Claude Code as an interactive `/analyze` command. Ask 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and configured
 - (Optional) [Firecrawl](https://firecrawl.dev) MCP server for enhanced OSINT web scraping
 
-### Installation
+### Install via Plugin (Recommended)
 
-1. Clone the repository:
+```bash
+# Add the marketplace
+/plugin marketplace add blevene/structured-analysis-skill
+
+# Install the plugin
+/plugin install structured-analysis@blevene
+```
+
+That's it. Run `/analyze` to start your first analysis.
+
+### Install via Git Clone
+
+If you prefer to work from source (or want to contribute):
 
 ```bash
 git clone https://github.com/blevene/structured-analysis-skill.git
 cd structured-analysis-skill
 ```
 
-2. Add the skill to your Claude Code project. In your project's `.claude/settings.local.json`, add the skill path:
+Then open Claude Code in the cloned directory — the skill is discovered automatically from the `skills/` directory.
 
-```json
-{
-  "permissions": {
-    "allow": []
-  }
-}
-```
+### Manual Install (Non-Claude Code)
 
-Then symlink or copy the `skills/structured-analysis/` directory into your project's skill directory, or reference it directly in your Claude Code configuration.
+The skill files are plain Markdown — they work with any AI assistant that supports structured prompting. To use them manually:
 
-3. (Optional) Set up Firecrawl for OSINT evidence gathering:
+1. Clone the repository (see above)
+2. Open `skills/structured-analysis/analyze.md` — this is the skill entry point with all instructions
+3. Feed the contents of `analyze.md` and `protocols/orchestrator.md` into your AI assistant as system context
+4. For each technique, provide the relevant protocol file from `protocols/techniques/` and template from `templates/techniques/`
+5. The `docs/library/` directory contains the full reference knowledge base if your assistant needs theoretical grounding
+
+The key files to provide as context:
+- `skills/structured-analysis/analyze.md` — orchestration instructions
+- `skills/structured-analysis/protocols/orchestrator.md` — mode routing and technique selection
+- `skills/structured-analysis/protocols/evidence-collector.md` — evidence gathering process
+- `skills/structured-analysis/templates/report-template.md` — output structure
+- `docs/library/00-prime.md` — master reference for all techniques
+
+### Optional: OSINT Setup
+
+For automated web research during evidence gathering, set up [Firecrawl](https://firecrawl.dev):
 
 ```bash
 claude mcp add firecrawl -e FIRECRAWL_API_KEY=your-api-key -- npx -y firecrawl-mcp
 ```
 
-Get an API key at [firecrawl.dev](https://firecrawl.dev). The skill falls back to WebSearch/WebFetch if Firecrawl is unavailable.
+Then whitelist the tools in `.claude/settings.local.json`:
 
-4. Verify the skill is available:
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__firecrawl__firecrawl_search",
+      "mcp__firecrawl__firecrawl_scrape"
+    ]
+  }
+}
+```
 
-```
-/analyze
-```
+Without Firecrawl, the skill falls back to WebSearch/WebFetch (whitelist `"WebSearch"` and `"WebFetch"` instead). Without any web tools, the skill still works — it just uses conversation context and local files only.
 
 ### First Analysis
 
@@ -58,43 +86,77 @@ Get an API key at [firecrawl.dev](https://firecrawl.dev). The skill falls back t
 /analyze What are the strategic implications of quantum computing for national cybersecurity?
 ```
 
-The skill will automatically:
-- Assess the problem characteristics
-- Select appropriate techniques (e.g., Key Assumptions Check + ACH + What If?)
-- Gather evidence from conversation context, local files, and web sources
-- Execute each technique with structured protocols
-- Self-correct through three validation layers
-- Present findings with a human review gate before finalization
+The skill will:
+1. Assess the problem and select appropriate techniques
+2. Gather evidence from conversation context, local files, and web sources
+3. Execute each technique with structured protocols
+4. Self-correct through three validation layers
+5. Present findings with a human review gate before finalization
+
+Output is a structured report with cited key judgments, confidence levels, a monitoring plan, and full evidence registry.
+
+## Using Local Evidence
+
+The skill collects evidence from three tiers: conversation context, local files, and OSINT. To feed your own documents into the analysis:
+
+**Mention files in your prompt:**
+
+```
+/analyze Should we migrate to Kubernetes?
+
+Context:
+- Architecture doc: docs/architecture.md
+- Incident reports: reports/2025-Q4-incidents.csv
+- Vendor proposal: proposals/cloud-native-migration.pdf
+```
+
+**Paste data directly** (becomes Tier 1 evidence, cited as `[User-provided, session context]`):
+
+```
+/analyze Is our Q4 revenue forecast realistic?
+
+Key data points:
+- Q3 revenue: $4.2M (up 12% QoQ)
+- Pipeline coverage: 2.8x for Q4
+- Two enterprise deals ($500K+) in final negotiation
+- Competitor launched a price-cut campaign in October
+```
+
+**Place files in the working directory.** The evidence collector discovers relevant files in your project via Glob.
+
+All tiers combine into a unified evidence registry. Use `--no-osint` to skip web research and rely solely on local evidence.
 
 ## Usage
 
 ### Modes
 
-| Command | Mode | Description |
-|---------|------|-------------|
-| `/analyze` | **Adaptive** | Auto-selects techniques based on problem characteristics |
-| `/analyze ach` | **Direct** | Run a single named technique |
-| `/analyze --guided` | **Guided** | Walk through all analytical phases step by step |
-| `/analyze --resume <id>` | **Resume** | Continue or update a previous analysis |
+| Command | Description |
+|---------|-------------|
+| `/analyze` | Auto-select techniques based on problem characteristics |
+| `/analyze ach` | Run a single named technique directly |
+| `/analyze --guided` | Walk through all analytical phases step by step |
+| `/analyze --lean` | Abbreviated technique set (fast, ~15 min) |
+| `/analyze --resume <id>` | Continue or update a previous analysis |
+| `/analyze --iterate <id>` | Re-run full analysis with new evidence |
+| `/analyze --iterate <id> ach` | Re-run specific technique(s) only |
 
 ### Flags
 
 | Flag | Effect |
 |------|--------|
-| `--lean` | Abbreviated technique set (Problem Restatement + KAC Quick + Inconsistencies Finder) |
+| `--lean` | Use only Problem Restatement + KAC Quick + Inconsistencies Finder |
 | `--no-osint` | Disable web research — use only conversation context and local files |
+| `--iterate <id>` | Re-run with artifact versioning and evidence delta tracking |
 
 Flags combine: `/analyze --guided --no-osint` runs all phases without web research.
 
-### Technique Names
-
-Use these with direct mode (`/analyze <name>`):
+### Techniques
 
 | Name | Technique | Phase |
 |------|-----------|-------|
 | `customer-checklist` | Customer Checklist | Launch |
 | `issue-redefinition` | Issue Redefinition | Launch |
-| `restatement` | Problem Restatement (Lean) | Launch |
+| `restatement` | Problem Restatement | Launch |
 | `brainstorm` | Structured Brainstorming | Exploration |
 | `kac` | Key Assumptions Check | Diagnostic |
 | `ach` | Analysis of Competing Hypotheses | Diagnostic |
@@ -107,15 +169,11 @@ Use these with direct mode (`/analyze <name>`):
 | `bowtie` | Bowtie Analysis | Decision Support |
 | `opportunities` | Opportunities Incubator | Decision Support |
 
-### Example: Direct ACH Analysis
+### Example Output
 
-```
-/analyze ach
-```
+Running `/analyze ach` on a ransomware attribution problem produces:
 
-Produces an Analysis of Competing Hypotheses matrix like:
-
-```
+```markdown
 # Analysis of Competing Hypotheses: Ransomware Attribution
 
 ## Hypotheses
@@ -140,22 +198,25 @@ Produces an Analysis of Competing Hypotheses matrix like:
 - Key sensitivity: If "no exfiltration" evidence changes, H1 becomes viable
 ```
 
-Every claim traces back to a cited source. Every judgment traces to technique output.
+Every claim traces to a cited source. Every judgment traces to technique output.
 
-### Example: Lean Analysis
+### Iteration
+
+When self-critique identifies weaknesses (missing hypotheses, evidence bias, untested assumptions), iterate without losing the reasoning trail:
 
 ```
-/analyze --lean
+/analyze --iterate 2026-02-15-cybersecurity-assessment ach
 ```
 
-Runs in under 15 minutes:
-1. **Problem Restatement** — rewrite the question 3 ways to break anchoring
-2. **KAC Quick** — list and bin the top 5 assumptions
-3. **Inconsistencies Finder** — search for evidence contradicting the lead hypothesis
+The iteration protocol:
+- **Archives prior artifacts** as `working/ach-matrix.v1.md` — canonical names always point to latest
+- **Accumulates evidence** — new items append with an `Iter` column tracking provenance
+- **Compares findings** — cross-iteration synthesis tracks judgment revisions and confidence shifts
+- **Records metadata** — each iteration logs its trigger, scope, and changes
 
-## Techniques
+First-run analyses are unaffected. Iteration tracking activates only on `--iterate`.
 
-### By Analytical Phase
+## Techniques by Phase
 
 **Launch** — Define the problem correctly before solving it.
 
@@ -198,135 +259,105 @@ Runs in under 15 minutes:
 
 ## Reference Library
 
-The `docs/library/` directory contains a comprehensive knowledge base synthesizing 60+ years of SAT doctrine. This is the theoretical foundation backing every technique protocol.
+The `docs/library/` directory contains a comprehensive knowledge base synthesizing 60+ years of SAT doctrine.
 
-### Entry Point
+Start with **[00-prime.md](docs/library/00-prime.md)** — the master index covering axioms, taxonomy, selection logic, and modern practice.
 
-Start with **[00-prime.md](docs/library/00-prime.md)** — the master index that synthesizes all source materials into a single navigable reference covering axioms, taxonomy, selection logic, and modern practice.
+| File | Content |
+|------|---------|
+| [00-prime.md](docs/library/00-prime.md) | Master synthesis and navigation guide |
+| [01-tradecraft-primer-2009.md](docs/library/01-tradecraft-primer-2009.md) | Original CIA 2009 doctrine |
+| [02-tradecraft-primer-analysis.md](docs/library/02-tradecraft-primer-analysis.md) | Expert analysis, ICD 203 mapping |
+| [03-practical-guides.md](docs/library/03-practical-guides.md) | Reusable prompts, checklists |
+| [04-agile-rigor-update.md](docs/library/04-agile-rigor-update.md) | 2020-2026 evolution, Lean SATs, HMT |
+| [05-66-techniques-taxonomy.md](docs/library/05-66-techniques-taxonomy.md) | All 66 techniques by family |
+| [06-decision-matrix.md](docs/library/06-decision-matrix.md) | Selection framework and rubrics |
+| [07-axioms-and-laws.md](docs/library/07-axioms-and-laws.md) | Foundational principles |
+| [08-updates-and-optimizations.md](docs/library/08-updates-and-optimizations.md) | Post-2009 doctrine changes |
+| [09-core-techniques.md](docs/library/09-core-techniques.md) | The essential 8 techniques |
 
-### Library Index
+---
 
-| File | Content | Use When |
-|------|---------|----------|
-| [00-prime.md](docs/library/00-prime.md) | Master synthesis and navigation guide | Starting point for everything |
-| [01-tradecraft-primer-2009.md](docs/library/01-tradecraft-primer-2009.md) | Original CIA 2009 doctrine | Need foundational technique details or history |
-| [02-tradecraft-primer-analysis.md](docs/library/02-tradecraft-primer-analysis.md) | Expert analysis, ICD 203 mapping | Need compliance mapping or expert guides |
-| [03-practical-guides.md](docs/library/03-practical-guides.md) | Reusable prompts, checklists | Need quick-reference or the analysis prompt template |
-| [04-agile-rigor-update.md](docs/library/04-agile-rigor-update.md) | 2020-2026 evolution, Lean SATs, HMT | Need modern methodology or AI integration |
-| [05-66-techniques-taxonomy.md](docs/library/05-66-techniques-taxonomy.md) | All 66 techniques by family | Need to look up any technique |
-| [06-decision-matrix.md](docs/library/06-decision-matrix.md) | Selection framework and rubrics | Need to choose which technique to use |
-| [07-axioms-and-laws.md](docs/library/07-axioms-and-laws.md) | Foundational principles | Need theoretical grounding |
-| [08-updates-and-optimizations.md](docs/library/08-updates-and-optimizations.md) | Post-2009 doctrine changes, cyber | Need chronological evolution |
-| [09-core-techniques.md](docs/library/09-core-techniques.md) | The essential 8 techniques | Need the minimum viable technique set |
+## Developer Guide
 
-### Background Materials
+Everything below is for contributors and people who want to understand or modify the internals.
 
-The `docs/background/` directory contains the primary source document ([CIA Tradecraft Primer, 2009](docs/background/Tradecraft-Primer-apr09.pdf)) and secondary analyses that informed the library.
-
-## Architecture
-
-### System Flow
+### Architecture
 
 ```
 Question → Orchestrator → Evidence Collector → Technique(s) → Self-Correction → Report
+                ↑                                                                  │
+                └─── Iterate (--iterate) ← artifact versioning + evidence delta ───┘
 ```
 
-### Orchestrator
+**Orchestrator** — The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 12-question rubric to match problem characteristics to appropriate techniques.
 
-The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 12-question rubric to match problem characteristics to appropriate techniques, then confirms the recommendation with the user before proceeding.
+**Evidence Collector** — The [evidence collector](skills/structured-analysis/protocols/evidence-collector.md) gathers evidence across three tiers (conversation, local files, OSINT). OSINT uses a three-phase pipeline: foreground subagents scrape raw content to disk, background subagents extract structured evidence, then the main context integrates everything into the registry. This keeps raw web content out of the context window. MCP tools are only available in the main conversation and foreground subagents, not background subagents — the pipeline is designed around this constraint.
 
-### Evidence Collector
+**Evidence Sufficiency Gate** — After collection, hard checks (minimum count, quality floor) can halt the analysis; soft checks (source diversity, diagnostic coverage, temporal recency) log warnings that surface in the report.
 
-The [evidence collector](skills/structured-analysis/protocols/evidence-collector.md) gathers evidence across three tiers:
+**Self-Correction** — Three layers: (1) protocol compliance after each technique, (2) analytical self-critique before report synthesis, (3) human review gate before finalization.
 
-| Tier | Source | Citation Format |
-|------|--------|----------------|
-| **1** | Conversation context | `[User-provided, session context]` |
-| **2** | Local files | `[filename:line_range]` |
-| **3** | OSINT (web research) | `[Source](URL) — Retrieved: YYYY-MM-DD` |
+**Iteration Handler** — The [iteration handler](skills/structured-analysis/protocols/iteration-handler.md) manages artifact versioning, evidence delta tracking, and cross-iteration synthesis when re-running techniques.
 
-OSINT uses three parallel search agents (background/context, contrarian/critical, recent developments) to reduce confirmation bias in evidence gathering. Firecrawl MCP is the primary scraping tool with WebSearch/WebFetch as fallback.
+**Report Generator** — The [report generator](skills/structured-analysis/protocols/report-generator.md) synthesizes technique outputs into a final assessment with confidence ratings, monitoring plan, and citation registry.
 
-### Self-Correction (3 Layers)
+### Citation Methods
 
-| Layer | When | What |
-|-------|------|------|
-| **1** | After each technique (silent) | Protocol compliance — all steps completed? All template sections filled? |
-| **2** | Before report (silent) | Analytical self-critique — assumption audit, evidence balance, confidence calibration |
-| **3** | Before finalization | Human review gate — presents summary, incorporates feedback |
+Every claim must be cited. Five methods:
 
-### Report Generator
+| Method | Format |
+|--------|--------|
+| OSINT | `[Source](URL) — Retrieved: YYYY-MM-DD` |
+| FILE | `[filename:line_range]` |
+| USER | `[User-provided, session context]` |
+| ANALYSIS | `[Derived via technique_name]` |
+| PRIOR-ITERATION | `[PRIOR-v{N}: technique_name]` |
 
-The [report generator](skills/structured-analysis/protocols/report-generator.md) synthesizes technique outputs into a final assessment with confidence ratings, a monitoring plan with leading indicators, and a complete citation registry.
-
-### Citation Enforcement
-
-Every claim in every artifact must be cited. No exceptions. OSINT is never presented as fact — always "according to [source]". Four citation methods:
-
-- **OSINT**: `[Source](URL) — Retrieved: YYYY-MM-DD`
-- **FILE**: `[filename:line_range]`
-- **USER**: `[User-provided, session context]`
-- **ANALYSIS**: `[Derived via technique_name]`
-
-## Project Structure
+### Project Structure
 
 ```
 structured-analysis-skill/
+├── .claude-plugin/
+│   ├── plugin.json                   # Plugin manifest
+│   └── marketplace.json              # Marketplace discovery
 ├── skills/structured-analysis/
 │   ├── analyze.md                    # Skill entry point
 │   ├── protocols/
 │   │   ├── orchestrator.md           # Mode routing and selection logic
 │   │   ├── evidence-collector.md     # Evidence gathering and OSINT
 │   │   ├── report-generator.md       # Report synthesis
+│   │   ├── iteration-handler.md      # Artifact versioning and iteration logic
 │   │   └── techniques/              # 14 technique execution protocols
-│   │       ├── ach.md
-│   │       ├── bowtie-analysis.md
-│   │       ├── contrasting-narratives.md
-│   │       └── ... (11 more)
 │   └── templates/
 │       ├── report-template.md        # Final report structure
 │       ├── evidence-registry-template.md
 │       ├── monitoring-plan-template.md
 │       ├── meta-template.md
+│       ├── iteration-meta-template.md # Per-iteration metadata
 │       ├── techniques/              # 14 technique artifact templates
-│       │   ├── ach-matrix.md
-│       │   ├── bowtie.md
-│       │   └── ... (12 more)
 │       └── sections/                # Reusable report components
-│           ├── header.md
-│           ├── confidence-scale.md
-│           ├── citation-block.md
-│           └── judgment-table.md
 ├── docs/
 │   ├── library/                     # Reference knowledge base (10 files)
 │   ├── background/                  # Source materials (CIA Primer + analyses)
 │   └── plans/                       # Design and implementation documents
 ├── helper_scripts/
-│   └── extract_docx_text.py         # Utility to extract text from DOCX files
+│   └── extract_docx_text.py         # DOCX text extraction utility
 └── LICENSE                          # Apache 2.0
 ```
 
-## Contributing
+### Contributing
 
-### Adding a New Technique
+**Adding a technique:**
 
-1. **Create the protocol** at `skills/structured-analysis/protocols/techniques/<name>.md` following the SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF structure used by existing protocols.
+1. Create protocol at `protocols/techniques/<name>.md` (SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF)
+2. Create template at `templates/techniques/<name>.md` with `{{PLACEHOLDER}}` tokens
+3. Add to routing table in `protocols/orchestrator.md`
+4. Add library references linking to `docs/library/` files
 
-2. **Create the template** at `skills/structured-analysis/templates/techniques/<name>.md` defining the artifact structure with `{{PLACEHOLDER}}` tokens.
+**Extending the reference library:**
 
-3. **Add to the routing table** in `skills/structured-analysis/protocols/orchestrator.md` with the invocation name, protocol path, template path, and phase.
-
-4. **Add library references** to the protocol header linking to relevant `docs/library/` files.
-
-### Extending the Reference Library
-
-Library files in `docs/library/` follow a numbered sequence. The master index at `00-prime.md` should be updated to reference any new material. All claims in library files should cite their source (primary document, edition, or research paper).
-
-### Helper Scripts
-
-The `helper_scripts/` directory contains utilities for working with source materials:
-
-- `extract_docx_text.py` — Extracts text from DOCX files in `docs/background/gemini-analysis/`. Run with `uv run helper_scripts/extract_docx_text.py`.
+Library files follow a numbered sequence. Update `00-prime.md` to reference new material. All claims must cite their source.
 
 ## License
 

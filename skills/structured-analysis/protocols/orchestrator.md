@@ -14,6 +14,8 @@ Parse the skill invocation arguments:
 | Technique name (e.g., `ach`, `kac`) | **Direct** — run single technique |
 | `--guided` | **Guided** — walk through all phases |
 | `--resume <id>` | **Resume** — continue or update existing analysis |
+| `--iterate <id>` | **Iterate** — re-run with artifact versioning and evidence delta |
+| `--iterate <id> <technique>` | **Iterate (scoped)** — re-run specific technique(s) only |
 | `--lean` | **Lean** — abbreviated technique set |
 | `--no-osint` | Flag — disable web research |
 
@@ -144,6 +146,45 @@ Execute in order, each phase building on the previous:
 
 ---
 
+## Iterate Mode
+
+When `--iterate <id>` is detected (with or without a technique specifier):
+
+1. Read the existing analysis at `analyses/<id>/`
+2. Read `protocols/iteration-handler.md` and follow its steps in order
+
+### Full Iteration (`--iterate <id>`)
+
+Execute the complete iteration workflow:
+
+1. **Detect iteration number** — iteration-handler Step 1
+2. **Collect new evidence** — re-run OSINT via `protocols/evidence-collector.md` (unless `--no-osint`), iteration-handler Step 3
+3. **Evidence Gate** — evaluate only the evidence delta (newly collected items), not the full accumulated registry. Techniques execute against the combined evidence base (prior + new).
+4. **Archive ALL working artifacts** — iteration-handler Step 2
+5. **Re-run all techniques** — use the same technique set from `meta.md`, iteration-handler Step 4
+6. **Cross-iteration synthesis** — iteration-handler Step 5, comparing new vs. prior findings
+7. **Regenerate report** — include "Revision History" section from `templates/report-template.md`
+8. **Update monitoring plan** — refresh indicators based on new findings
+9. **Write iteration metadata** — iteration-handler Step 6
+10. **Update meta.md** — iteration-handler Step 7
+11. **Present delta summary** — show the analyst what changed, what remained stable, and what drove revisions
+
+### Scoped Iteration (`--iterate <id> <technique>`)
+
+Execute a targeted re-run of specific technique(s):
+
+1. **Detect iteration number** — iteration-handler Step 1
+2. **Optionally collect targeted evidence** — if the iteration trigger specifies a collection focus (e.g., "counter-evidence for pessimistic bias"), run evidence collection with that focus. Otherwise, skip.
+3. **Evidence Gate** — evaluate only the evidence delta if new evidence was collected
+4. **Archive only the specified technique's artifact(s)** — iteration-handler Step 2 (scoped)
+5. **Re-run the specified technique(s)** — iteration-handler Step 4
+6. **Cross-iteration synthesis** — compare new vs. prior findings for the re-run technique(s) only
+7. **Write iteration findings summary** — in iteration metadata, NOT a full report regeneration (unless explicitly requested by the analyst)
+8. **Update meta.md** — iteration-handler Step 7
+9. **Present delta summary** — show what changed for the re-run technique(s)
+
+---
+
 ## Evidence Gate (All Modes)
 
 After evidence collection and before any technique execution, run the **Evidence Sufficiency Gate** defined in `protocols/evidence-collector.md`. This applies to Adaptive, Guided, and Direct modes.
@@ -151,6 +192,10 @@ After evidence collection and before any technique execution, run the **Evidence
 - If hard checks fail: retry evidence collection or surface to analyst
 - If soft checks fail: log flags in `meta.md` under Self-Correction > Layer 1 Flags, then proceed
 - The Evidence Sufficiency Report should be included in the orchestrator's handoff to each technique
+
+**Iteration Note**: In iterate mode, the sufficiency gate evaluates only the
+evidence delta (newly collected items), not the full accumulated registry.
+Techniques execute against the combined evidence base (prior + new).
 
 ---
 

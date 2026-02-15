@@ -14,6 +14,8 @@ Apply CIA/IC Structured Analytic Techniques to produce defensible, evidence-base
 /analyze <technique>              → Direct mode (run one technique)
 /analyze --guided                 → Guided mode (walk through all phases)
 /analyze --resume <analysis-id>   → Resume or update existing analysis
+/analyze --iterate <analysis-id>                → Re-run full analysis with new evidence
+/analyze --iterate <analysis-id> <technique>    → Re-run specific technique(s)
 /analyze --lean                   → Lean mode (abbreviated technique set)
 /analyze --no-osint               → Disable web research
 ```
@@ -49,6 +51,7 @@ Every claim in every artifact must be cited. No exceptions. Citation methods:
 - **FILE**: `[filename:line_range]`
 - **USER**: `[User-provided, session context]`
 - **ANALYSIS**: `[Derived via technique_name]`
+- **PRIOR-ITERATION**: `[PRIOR-v{N}: technique_name]`
 
 OSINT is never presented as fact — always "according to [source]".
 
