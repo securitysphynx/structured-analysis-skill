@@ -30,8 +30,41 @@ Flags combine: `/analyze --guided --no-osint` is valid.
 
 **You MUST read the orchestrator protocol before proceeding.** It contains mode routing, technique selection logic, and the technique routing table.
 
+### Step 0 — Context Inference
+
+Before parsing explicit arguments, scan the conversation history for implicit inputs. Users often invoke `/analyze` mid-conversation after discussing a problem, providing data, or sharing links.
+
+Extract from conversation context:
+- **Problem statement**: What is the user trying to analyze? Look for questions, concerns, scenarios, or decisions under discussion.
+- **Implicit technique hints**: Did the user mention assumptions, hypotheses, competing explanations, risks, or scenarios? Map these to techniques (e.g., "I'm not sure which explanation is right" → ACH, "what could go wrong" → Premortem).
+- **Implicit flags**: Did the user indicate they want something quick (→ `--lean`), don't want web research (→ `--no-osint`), or want to walk through everything (→ `--guided`)?
+- **Prior analysis**: Are there existing analyses in `analyses/` for the same topic? (→ suggest `--resume` or `--iterate`)
+- **Evidence already provided**: Files shared, URLs pasted, data discussed — these become Tier 1/2 evidence.
+
+### Step 0.1 — Validate Assumptions
+
+If context inference produced any results, present them to the user for confirmation before proceeding:
+
+```
+Based on our conversation, here's what I'm picking up:
+
+**Problem**: [inferred problem statement]
+**Mode**: [inferred mode + rationale]
+**Techniques**: [inferred techniques, if any]
+**Flags**: [inferred flags, if any]
+**Prior context**: [files, data, or evidence already in conversation]
+
+Does this look right? Adjust anything before I proceed.
+```
+
+If the user provided explicit arguments, those always take precedence — but still surface any useful context (e.g., "You asked for ACH. I also noticed you shared [file] earlier — I'll include that as evidence.").
+
+If no conversation context exists and no arguments were provided, proceed directly to Adaptive mode (the orchestrator will prompt for a problem statement).
+
+### Steps 1–6 — Main Execution
+
 1. Read `protocols/orchestrator.md` (relative to this skill's directory)
-2. Parse arguments → determine mode and flags
+2. Parse explicit arguments → determine mode and flags (merge with Step 0 inferences, explicit args win)
 3. Follow the orchestrator's instructions for the detected mode
 4. For each technique selected:
    - Read the technique's protocol file (SETUP → PRIME → EXECUTE → ARTIFACT → FINDINGS → HANDOFF)

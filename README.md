@@ -95,6 +95,32 @@ The skill will:
 
 Output is a structured report with cited key judgments, confidence levels, a monitoring plan, and full evidence registry. See [`example_analysis/`](example_analysis/) for a complete sample output.
 
+### Context-Aware Invocation
+
+The skill reads conversation history before starting. If you've been discussing a problem, sharing files, or pasting data, just run `/analyze` — the skill infers your intent from context:
+
+```
+User: I'm worried about our API latency. Here's the trace data: [pastes traces]
+User: Could be the new caching layer, or maybe the DB connection pool is saturated.
+User: /analyze
+```
+
+The skill picks up the problem, the evidence, and the competing explanations, then confirms before proceeding:
+
+```
+Based on our conversation, here's what I'm picking up:
+
+Problem: Root cause of API latency degradation
+Mode: Adaptive (auto-select techniques)
+Techniques: ACH (competing explanations identified), Cross-Impact (variable interactions)
+Flags: none
+Prior context: Trace data pasted above (Tier 1 evidence)
+
+Does this look right? Adjust anything before I proceed.
+```
+
+Explicit arguments always take precedence. If you run `/analyze premortem`, the skill uses your technique choice but still surfaces useful context ("I noticed you shared trace data — I'll include that as evidence.").
+
 ## Using Local Evidence
 
 The skill collects evidence from three tiers: conversation context, local files, and OSINT. To feed your own documents into the analysis:
