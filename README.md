@@ -45,13 +45,13 @@ Then open Claude Code in the cloned directory — the skill is discovered automa
 The skill files are plain Markdown — they work with any AI assistant that supports structured prompting. To use them manually:
 
 1. Clone the repository (see above)
-2. Open `skills/structured-analysis/analyze.md` — this is the skill entry point with all instructions
-3. Feed the contents of `analyze.md` and `protocols/orchestrator.md` into your AI assistant as system context
+2. Open `skills/structured-analysis/SKILL.md` — this is the skill entry point with all instructions
+3. Feed the contents of `SKILL.md` and `protocols/orchestrator.md` into your AI assistant as system context
 4. For each technique, provide the relevant protocol file from `protocols/techniques/` and template from `templates/techniques/`
 5. The `docs/library/` directory contains the full reference knowledge base if your assistant needs theoretical grounding
 
 The key files to provide as context:
-- `skills/structured-analysis/analyze.md` — orchestration instructions
+- `skills/structured-analysis/SKILL.md` — orchestration instructions
 - `skills/structured-analysis/protocols/orchestrator.md` — mode routing and technique selection
 - `skills/structured-analysis/protocols/evidence-collector.md` — evidence gathering process
 - `skills/structured-analysis/templates/report-template.md` — output structure
@@ -322,7 +322,7 @@ structured-analysis-skill/
 │   ├── plugin.json                   # Plugin manifest
 │   └── marketplace.json              # Marketplace discovery
 ├── skills/structured-analysis/
-│   ├── analyze.md                    # Skill entry point
+│   ├── SKILL.md                      # Skill entry point
 │   ├── protocols/
 │   │   ├── orchestrator.md           # Mode routing and selection logic
 │   │   ├── evidence-collector.md     # Evidence gathering and OSINT

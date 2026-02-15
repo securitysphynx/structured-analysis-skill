@@ -1,6 +1,8 @@
 ---
 name: analyze
-description: Use when conducting structured analysis on any problem — assessing competing hypotheses, challenging assumptions, stress-testing judgments, or producing defensible analytical assessments with evidence and citations
+description: Conduct structured analysis on any problem using CIA/IC analytic techniques — assess competing hypotheses, challenge assumptions, stress-test judgments, and produce defensible evidence-based assessments with full citations. Supports 14 techniques including ACH, Key Assumptions Check, What-If, Premortem, Cross-Impact Matrix, and Contrasting Narratives.
+argument-hint: "[technique or flags, e.g. ach, --guided, --no-osint]"
+allowed-tools: Task, Read, Write, Glob, Grep, Bash, WebSearch, WebFetch, mcp__firecrawl__firecrawl_search, mcp__firecrawl__firecrawl_scrape
 ---
 
 # Structured Analysis Skill
