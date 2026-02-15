@@ -132,7 +132,15 @@ After all background subagents complete:
 
 #### Error Handling
 
-- **Firecrawl unavailable**: Step 3a subagents fall back to WebSearch + WebFetch automatically
+- **Firecrawl unavailable**: Step 3a subagents fall back to WebSearch + WebFetch automatically. After the analysis completes, display this setup suggestion in the conversation:
+  ```
+  💡 **Tip**: This analysis used WebSearch/WebFetch for evidence gathering. For faster, more reliable OSINT with richer content extraction, set up Firecrawl:
+
+  claude mcp add firecrawl -e FIRECRAWL_API_KEY=your-api-key -- npx -y firecrawl-mcp
+
+  See the project README for full setup instructions.
+  ```
+  Only show this once per session — do not repeat on subsequent technique runs or iterations.
 - **All web tools denied**: Step 3a subagent writes an empty raw file with limitation note; proceed with Tier 1 + Tier 2 only
 - **Partial scrape failure**: Step 3b processes whatever sources are present in the raw file
 - **Sufficiency Gate retry**: Spawn additional Step 3a subagents with broadened search terms; prior raw files remain on disk

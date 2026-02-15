@@ -59,7 +59,7 @@ The key files to provide as context:
 
 ### Optional: OSINT Setup
 
-For automated web research during evidence gathering, set up [Firecrawl](https://firecrawl.dev):
+The skill gathers web evidence automatically. Without any setup, it uses Claude Code's built-in `WebSearch` and `WebFetch` tools. For faster, more reliable OSINT with richer content extraction, set up [Firecrawl](https://firecrawl.dev):
 
 ```bash
 claude mcp add firecrawl -e FIRECRAWL_API_KEY=your-api-key -- npx -y firecrawl-mcp
@@ -72,13 +72,17 @@ Then whitelist the tools in `.claude/settings.local.json`:
   "permissions": {
     "allow": [
       "mcp__firecrawl__firecrawl_search",
-      "mcp__firecrawl__firecrawl_scrape"
+      "mcp__firecrawl__firecrawl_scrape",
+      "WebSearch",
+      "WebFetch"
     ]
   }
 }
 ```
 
-Without Firecrawl, the skill falls back to WebSearch/WebFetch (whitelist `"WebSearch"` and `"WebFetch"` instead). Without any web tools, the skill still works — it just uses conversation context and local files only.
+This whitelists both Firecrawl (primary) and WebSearch/WebFetch (fallback) so evidence collection runs without permission prompts. If Firecrawl isn't configured, the skill falls back to WebSearch/WebFetch automatically and suggests Firecrawl setup after the analysis.
+
+Without any web tools, the skill still works — it just uses conversation context and local files only. Use `--no-osint` to skip web research explicitly.
 
 ### First Analysis
 
