@@ -2,6 +2,7 @@
 
 > **Phase**: Launch | **Effort**: Minutes | **Bias Mitigated**: Type III Error (solving wrong problem)
 > **Output Artifact**: `working/requirements.md`
+> **Library**: 00-prime §4 (Essential 8), 01-tradecraft-primer §ICD 203, 09-core-techniques
 
 ---
 

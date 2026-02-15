@@ -2,6 +2,7 @@
 
 > **Phase**: Decision Support | **Effort**: 30-60 minutes | **Bias Mitigated**: Linear thinking, failure to see second-order effects
 > **Output Artifact**: `working/bowtie.md`
+> **Library**: 00-prime §4 (Extended: Frontier), 00-prime §5 (Selection Metrics: Complexity), 04-agile-rigor-update
 
 ---
 

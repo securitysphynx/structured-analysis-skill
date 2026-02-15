@@ -77,6 +77,18 @@ SATs are the operational means for satisfying the 9 mandatory Analytic Standards
 | Accurate judgments | Red Team Analysis; Peer Review | Competitive/adversarial validation |
 | Effective visuals | Link Charts; Matrices; Event Trees | Complex relationship comprehension |
 
+### Evidence Quality Framework *(2009 Primer, "Quality of Information Check")*
+
+Every evidence item should be rated on three dimensions:
+
+| Dimension | High | Medium | Low | Zero |
+|---|---|---|---|---|
+| **Source Reliability** | Established, verified track record | Known but independently unverified | Unknown source, potential bias | — |
+| **Information Credibility** | Corroborated by independent sources | Plausible, partially confirmed | Uncorroborated, contradictory | — |
+| **Diagnostic Value** | Contradicts specific hypotheses | Supports some, neutral for others | Consistent with most hypotheses | Consistent with ALL hypotheses (per Law of Diagnostic Dominance) |
+
+> Evidence with zero diagnostic value must be explicitly flagged — it feels informative but discriminates nothing.
+
 > *Detailed history, bias taxonomy, and case studies* → [01-tradecraft-primer-2009.md](01-tradecraft-primer-2009.md)
 > *Full ICD 203 compliance mapping and expert practitioner guides* → [02-tradecraft-primer-analysis.md](02-tradecraft-primer-analysis.md)
 
@@ -183,7 +195,37 @@ These address the most common cognitive biases across virtually all analytic pro
 
 **Mastery priority**: These 8 should be learned first. The remaining 58 are specialized tools that build on this foundation.
 
+### Extended Techniques: Lean SATs + Frontier
+
+Beyond the Essential 8, six additional techniques complete the skill's 14-technique launch roster:
+
+**Lean SATs** *(2020 3rd Edition, Agile Rigor paradigm — see Section 7)*
+
+| Phase | Technique | Primary Bias Mitigated | Effort |
+|---|---|---|---|
+| **Launch** | Problem Restatement | Anchoring (rapid reframing) | 5 min |
+| **Diagnose** | Inconsistencies Finder | Confirmation bias | 15–30 min |
+
+- **Problem Restatement**: Rewrite the question 3 different ways, shifting perspective (actor→system, threat→vulnerability, why→how). The fastest anchoring-breaker in the toolkit. Lean alternative to Issue Redefinition.
+- **Inconsistencies Finder**: Focus exclusively on the lead hypothesis — search for contradicting evidence. Bypasses ACH's noise amplification problem (Denzler 2024) by avoiding large matrix construction. Streamlined ACH for time-pressured situations.
+
+**Frontier Techniques** *(2020 3rd Edition, expanded families)*
+
+| Phase | Technique | Primary Bias Mitigated | Effort |
+|---|---|---|---|
+| **Foresight** | Counterfactual Reasoning | Rationality attribution, historical inevitability | Hours |
+| **Foresight** | Contrasting Narratives | Narrative bias, emotional reasoning | Hours |
+| **Decision Support** | Bowtie Analysis | Linear risk thinking, single-point failure focus | Hours |
+| **Decision Support** | Opportunities Incubator | Threat fixation | Hours |
+
+- **Counterfactual Reasoning**: Identify a pivotal past event, posit the smallest possible change, and rigorously trace how subsequent events would differ. Reveals hidden causal dynamics and deconstructs "historical inevitability" narratives. Particularly effective in disinformation analysis.
+- **Contrasting Narratives**: Decompose competing narratives into structural elements (protagonist, antagonist, crisis, resolution), then stress-test each element against evidence. Identifies vulnerabilities where emotional resonance is high but factual support is low. Enables pre-bunking strategies. Optimized for "post-truth" information environments.
+- **Bowtie Analysis**: Map both sides of a catastrophic risk — causes and preventative barriers on the left, consequences and reactive mitigations on the right. Identifies escalation factors that weaken barriers. In cyber applications, visualizes how new vulnerabilities degrade specific defensive layers.
+- **Opportunities Incubator**: Scan for emerging trends across domains (technology, economic, social, political), identify convergences where 2+ trends create windows of opportunity, and define opening/closing indicators for each window. Counteracts intelligence analysis's systemic bias toward threats over opportunities.
+
 > *Detailed core technique profiles and selection guide* → [09-core-techniques.md](09-core-techniques.md)
+> *Lean SAT rationale and empirical basis* → [04-agile-rigor-update.md](04-agile-rigor-update.md)
+> *Frontier technique origins in expanded families* → [05-66-techniques-taxonomy.md](05-66-techniques-taxonomy.md)
 
 ---
 
@@ -220,8 +262,9 @@ These address the most common cognitive biases across virtually all analytic pro
 | Fear of "unthinkable" surprise | What If? Analysis |
 | Need to model adversary reaction | Red Hat Analysis, Role Playing |
 | Groupthink or dominant mindset risk | Devil's Advocacy, Self-Critique |
-| Goal is to find opportunities, not just threats | Opportunities Incubator™ |
+| Goal is to find opportunities, not just threats | Opportunities Incubator |
 | Risk of intentional deception | Deception Detection |
+| Competing narratives or information warfare | Contrasting Narratives |
 | Need to track over time | Indicators |
 | Decision between competing options | Decision Matrix, SWOT |
 
@@ -322,7 +365,7 @@ Over-reliance on generative AI → "cognitive offloading" → reduced baseline c
 
 **1. Lean SATs** — Maximum rigor-to-time ratio
 - Problem Restatement (5 min): Rewrite question 3 ways → breaks anchoring
-- Inconsistencies Finder™ (new in 2020 3rd Ed., streamlined ACH): Focus only on lead hypothesis → search for contradicting evidence → bypasses noise amplification
+- Inconsistencies Finder (new in 2020 3rd Ed., streamlined ACH): Focus only on lead hypothesis → search for contradicting evidence → bypasses noise amplification
 - KAC Quick (15 min): List and bin top 5 assumptions
 
 **2. Empirical Selection** — Choose technique based on measured problem characteristics (see Selection Metrics in Section 5)
@@ -404,7 +447,7 @@ Cross-cutting reference: which biases are mitigated by which techniques.
 
 | Bias | Description | Mitigating Technique(s) |
 |---|---|---|
-| **Confirmation bias** | Seeking evidence that supports existing beliefs | ACH, Inconsistencies Finder™, Devil's Advocacy |
+| **Confirmation bias** | Seeking evidence that supports existing beliefs | ACH, Inconsistencies Finder, Devil's Advocacy |
 | **Anchoring** | Over-relying on first piece of information | Issue Redefinition, Problem Restatement |
 | **Satisficing** | Stopping at "good enough" | Structured Brainstorming, Multiple Hypothesis Generation |
 | **Groupthink** | Conforming to group consensus | Devil's Advocacy, Team A/Team B, Structured Debate |
@@ -424,7 +467,7 @@ Cross-cutting reference: which biases are mitigated by which techniques.
 | Available Time | Recommended Approach | Techniques |
 |---|---|---|
 | **5–15 minutes** | Lean rigor check | Problem Restatement, KAC Quick (top 5 assumptions) |
-| **30–60 minutes** | Focused diagnostic | Full KAC, Structured Brainstorming, Inconsistencies Finder™ |
+| **30–60 minutes** | Focused diagnostic | Full KAC, Structured Brainstorming, Inconsistencies Finder |
 | **2–4 hours** | Matrix-based analysis | ACH, Cross-Impact Matrix, What If? Analysis |
 | **1–2 days** | Collaborative deep-dive | Red Teaming, Alternative Futures Analysis, Scenario Generation |
 | **3+ days** | Full strategic exercise | Delphi Method, Multi-team exercises, Full futures workshop |

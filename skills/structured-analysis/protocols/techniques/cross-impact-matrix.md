@@ -2,6 +2,7 @@
 
 > **Phase**: Diagnostic | **Effort**: Hours | **Bias Mitigated**: Linear thinking, failure to see second-order effects
 > **Output Artifact**: `working/cross-impact.md`
+> **Library**: 00-prime §4 (Essential 8), 09-core-techniques
 
 ---
 

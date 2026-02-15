@@ -2,6 +2,7 @@
 
 > **Phase**: Diagnostic | **Effort**: Hours to days | **Bias Mitigated**: Confirmation bias, premature closure, anchoring
 > **Output Artifact**: `working/ach-matrix.md`
+> **Library**: 00-prime §4 (Essential 8), 00-prime §6 (ACH Protocol), 00-prime §2 (Diagnostic Dominance), 01-tradecraft-primer, 02-tradecraft-primer-analysis
 
 ---
 

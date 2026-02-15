@@ -2,6 +2,7 @@
 
 > **Phase**: Challenge & Foresight | **Effort**: Hours | **Bias Mitigated**: Narrative bias, Confirmation bias, Manipulation susceptibility
 > **Output Artifact**: `working/narratives.md`
+> **Library**: 00-prime §4 (Extended: Frontier), 04-agile-rigor-update
 
 ---
 

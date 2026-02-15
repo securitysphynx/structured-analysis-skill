@@ -2,6 +2,7 @@
 
 > **Phase**: Diagnostic | **Effort**: Minutes to 1 hour | **Bias Mitigated**: Confirmation bias, satisficing
 > **Output Artifact**: `working/inconsistencies.md`
+> **Library**: 00-prime §4 (Extended: Lean SATs), 00-prime §7 (Agile Rigor), 04-agile-rigor-update
 
 ---
 

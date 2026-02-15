@@ -2,6 +2,7 @@
 
 > **Phase**: Challenge & Foresight | **Effort**: Hours | **Bias Mitigated**: Confirmation bias, Historical inevitability narratives
 > **Output Artifact**: `working/counterfactual.md`
+> **Library**: 00-prime §4 (Extended: Frontier), 04-agile-rigor-update
 
 ---
 

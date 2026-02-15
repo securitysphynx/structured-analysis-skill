@@ -2,6 +2,7 @@
 
 > **Phase**: Launch (Lean) | **Effort**: 5 minutes | **Bias Mitigated**: Anchoring
 > **Output Artifact**: Appended to `working/problem-framing.md`
+> **Library**: 00-prime §4 (Extended: Lean SATs), 00-prime §7 (Agile Rigor), 04-agile-rigor-update
 
 ---
 

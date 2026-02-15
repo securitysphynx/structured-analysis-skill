@@ -2,6 +2,7 @@
 
 > **Phase**: Launch | **Effort**: Minutes | **Bias Mitigated**: Anchoring
 > **Output Artifact**: `working/problem-framing.md`
+> **Library**: 00-prime §4 (Essential 8), 01-tradecraft-primer, 09-core-techniques
 
 ---
 

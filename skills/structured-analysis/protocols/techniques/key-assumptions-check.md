@@ -2,6 +2,7 @@
 
 > **Phase**: Diagnostic | **Effort**: 15 minutes to 2 hours | **Bias Mitigated**: Status quo bias, institutional inertia
 > **Output Artifact**: `working/assumptions.md`
+> **Library**: 00-prime §4 (Essential 8), 00-prime §6 (KAC Protocol), 01-tradecraft-primer, 02-tradecraft-primer-analysis
 
 ---
 
