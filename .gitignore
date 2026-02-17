@@ -208,3 +208,6 @@ __marimo__/
 
 # Structured Analysis Skill — live analysis outputs
 analyses/
+
+# Git worktrees
+.worktrees/
