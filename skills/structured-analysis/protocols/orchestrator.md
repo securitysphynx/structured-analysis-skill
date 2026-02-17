@@ -452,7 +452,12 @@ After Phase A returns and before Phase B (human review), the orchestrator checks
       - Writes iteration-context.md (Step 5a)
       - Regenerates report via Phase A with iteration context (producing iteration 2)
       - Updates meta.md with iteration history (Step 7)
-   g. Phase B now presents the iteration-2 report (post-remediation)
+   g. **Update next-steps.md**: Read `analyses/{{ANALYSIS_ID}}/next-steps.md`. For each HIGH flag that was remediated in step 3e-3f:
+      - Update the Status column from `OPEN` to `REMEDIATED` in the Iteration Items table
+      - Update the detail section: change `[OPEN]` to `[REMEDIATED]` and append a remediation note: `"Auto-remediated in cycle 1. See working/{{TECHNIQUE}}.remediation-prior.md"`
+      - Update the Summary line counts (increment REMEDIATED, decrement OPEN)
+      - Update the Suggested Command to exclude remediated techniques
+   h. Phase B now presents the iteration-2 report (post-remediation)
 
 ### Caps and Guards
 

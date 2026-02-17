@@ -60,6 +60,7 @@ After the Phase A subagent returns:
    - After revision subagent returns, re-read review-summary.md if quality score changed
 4. If no feedback: proceed
 5. Execute Step 6 (Present Results) — use summary data for the conversation output
+   - Reference `next-steps.md` path when presenting iteration suggestions
 6. Execute Step 7 (Iteration Suggestions) — use the suggestions from review-summary.md
 
 ---
