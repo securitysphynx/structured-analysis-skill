@@ -4,7 +4,64 @@ Synthesize all technique outputs into the final report and monitoring plan. Exec
 
 ---
 
-## Step 1: Gather Inputs
+## Execution Architecture
+
+The report generator runs in two phases to keep full artifact content out of the main context:
+
+**Phase A — Synthesis Subagent** (foreground Task subagent):
+- Executes Steps 1–3 and Step 5 (gather inputs, synthesize, self-critique, write artifacts)
+- Reads all working artifacts from disk (fresh context window — no main context pollution)
+- Writes: `report.md`, `monitoring-plan.md`, `working/review-summary.md`
+- Returns ONLY: "Report written. Quality score: X/5.0 (STATUS)"
+
+**Phase B — Human Review & Finalization** (main context):
+- Executes Steps 4, 6, and 7 (human review gate, present results, iteration suggestions)
+- Reads ONLY `working/review-summary.md` (~500 tokens)
+- If user provides feedback: dispatches a revision subagent to apply edits to report.md
+
+### Phase A Subagent Prompt
+
+The orchestrator dispatches Phase A using the Task tool with `subagent_type: "general-purpose"` and this prompt:
+
+```
+You are a structured analysis report synthesizer. Your task:
+
+1. Read all working artifacts from analyses/{{ANALYSIS_ID}}/working/
+2. Read analyses/{{ANALYSIS_ID}}/evidence-registry.md
+3. Read analyses/{{ANALYSIS_ID}}/meta.md
+4. Read the report-generator protocol at {{SKILL_DIR}}/protocols/report-generator.md — execute Steps 1-3 and Step 5
+5. Read and fill {{SKILL_DIR}}/templates/report-template.md (disposition first, detail last)
+6. Read {{SKILL_DIR}}/templates/monitoring-plan-template.md and generate the monitoring plan
+7. Read {{SKILL_DIR}}/templates/review-summary-template.md and fill it with summary data
+8. Write three files:
+   - analyses/{{ANALYSIS_ID}}/report.md
+   - analyses/{{ANALYSIS_ID}}/monitoring-plan.md
+   - analyses/{{ANALYSIS_ID}}/working/review-summary.md
+9. Update analyses/{{ANALYSIS_ID}}/meta.md with completion status and quality score
+
+{{ITERATION_CONTEXT}}
+
+Return ONLY: "Report written. Quality score: X/5.0 (STATUS)"
+```
+
+Where `{{ITERATION_CONTEXT}}` is empty for first-run analyses, or contains iteration-specific instructions (see iteration-handler protocol).
+
+### Phase B Flow
+
+After the Phase A subagent returns:
+
+1. Read `analyses/{{ANALYSIS_ID}}/working/review-summary.md`
+2. Execute Step 4 (Human Review Gate) using the summary data
+3. If user provides feedback:
+   - Dispatch a revision subagent with: the feedback text, path to report.md, and instruction to apply edits and rewrite
+   - After revision subagent returns, re-read review-summary.md if quality score changed
+4. If no feedback: proceed
+5. Execute Step 6 (Present Results) — use summary data for the conversation output
+6. Execute Step 7 (Iteration Suggestions) — use the suggestions from review-summary.md
+
+---
+
+## Step 1: Gather Inputs *(Phase A — runs in subagent)*
 
 Read from the analysis directory (`analyses/{{ANALYSIS_ID}}/`):
 - All working artifacts in `working/`
@@ -13,7 +70,7 @@ Read from the analysis directory (`analyses/{{ANALYSIS_ID}}/`):
 
 ---
 
-## Step 2: Cross-Technique Synthesis
+## Step 2: Cross-Technique Synthesis *(Phase A — runs in subagent)*
 
 For every technique that produced findings:
 1. Extract key findings with confidence levels
@@ -41,7 +98,7 @@ After synthesis, assign each technique a weight reflecting its influence on the 
 
 ---
 
-## Step 3: Layer 2 Self-Critique
+## Step 3: Layer 2 Self-Critique *(Phase A — runs in subagent)*
 
 Execute ALL eight checks before writing the report. Results from 3a–3g go into the "Risks & Blind Spots" section. Results from 3h are logged to `meta.md`.
 
@@ -96,28 +153,28 @@ Score each criterion 1–5, compute weighted total (using renormalized weights).
 
 ---
 
-## Step 4: Human Review Gate
+## Step 4: Human Review Gate *(Phase B — runs in main context)*
 
-Present a consolidated summary in conversation BEFORE finalizing:
+Read `analyses/{{ANALYSIS_ID}}/working/review-summary.md` and present its contents in conversation:
 
 ```
 ## Analysis Summary for Review
 
-**Problem**: {{REFRAMED_PROBLEM}}
-**Evidence**: {{EVIDENCE_COUNT}} items ({{TIER_BREAKDOWN}})
-**Evidence Gaps**: {{GAPS_IDENTIFIED}}
-**Key Finding**: {{TOP_FINDING}} (Confidence: {{LEVEL}})
-**Quality Score**: {{SCORE}}/5.0 ({{PASS/ADVISORY/FAIL}})
-**Self-Critique Flags**: {{LAYER_2_FLAGS}}
+[Present the review summary contents directly — problem, evidence stats, key finding, quality score, Layer 2 flags]
 
 What would you adjust before I finalize?
 ```
 
-Incorporate user feedback into the final report. If no feedback, proceed.
+If user provides feedback, dispatch a revision subagent:
+- Input: user feedback text + `analyses/{{ANALYSIS_ID}}/report.md`
+- Instruction: Apply the specified edits to the report. Rewrite the file.
+- Return: "Revisions applied."
+
+If no feedback, proceed to Step 6.
 
 ---
 
-## Step 5: Write Final Artifacts
+## Step 5: Write Final Artifacts *(Phase A — runs in subagent)*
 
 ### Report (`report.md`)
 Read `templates/report-template.md` and fill every section in document order (disposition first, detail last). The template is the authoritative section ordering — follow it exactly.
@@ -143,19 +200,23 @@ Update with completion status, final technique list, and file manifest.
 
 ---
 
-## Step 6: Present Results
+## Step 6: Present Results *(Phase B — runs in main context)*
 
-In conversation, provide:
-- One-paragraph summary of the key finding with confidence
+Read `analyses/{{ANALYSIS_ID}}/working/review-summary.md`. In conversation, provide:
+- One-paragraph summary of the key finding with confidence (from the summary)
 - File paths to all generated artifacts
 - Monitoring plan highlights (top 2-3 indicators to watch)
 - Invitation: "Would you like me to deep-dive into any section or adjust the analysis?"
 
 ---
 
-## Step 7: Iteration Suggestions
+## Step 7: Iteration Suggestions *(Phase B — runs in main context)*
 
-**Guard**: Only execute this step if Layer 1 (Sufficiency Gate) or Layer 2 (self-critique) produced at least one actionable flag. If no flags exist, skip this step entirely — do not print "no suggestions."
+**Guard**: Check the review-summary.md for iteration suggestions. If the summary says "No actionable iteration suggestions," skip this step.
+
+Present the iteration suggestions from the review summary in conversation.
+
+**Note**: Steps 7a-7c are executed by the Phase A subagent and their output is written to review-summary.md. Phase B simply presents the pre-computed suggestions. The subsections below document how the Phase A subagent computes suggestions.
 
 ### 7a. Collect Flags
 
