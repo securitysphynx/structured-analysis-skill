@@ -95,7 +95,8 @@ The skill will:
 2. Gather evidence from conversation context, local files, and web sources
 3. Execute each technique with structured protocols
 4. Self-correct through three validation layers
-5. Present findings with a human review gate before finalization
+5. Auto-remediate any HIGH-severity analytical weaknesses (if found)
+6. Present findings with a human review gate before finalization
 
 Output is a structured report with cited key judgments, confidence levels, a monitoring plan, and full evidence registry. See [`example_analysis/`](example_analysis/) for a complete sample output.
 
@@ -235,24 +236,38 @@ Running `/analyze ach` on a ransomware attribution problem produces:
 
 Every claim traces to a cited source. Every judgment traces to technique output.
 
-### Iteration
+### Auto-Remediation
 
-When self-critique identifies weaknesses (missing hypotheses, evidence bias, untested assumptions), the skill automatically maps flags to specific iteration suggestions with ready-to-run commands:
+When self-critique identifies HIGH-severity analytical weaknesses — evidence imbalance >2:1, unstated critical premises, strong counter-arguments, or quality score failures — the skill automatically remediates them before presenting the report. No manual intervention needed:
+
+```
+Layer 2 identified 2 HIGH-severity flag(s). Auto-remediating before presenting report...
+```
+
+The auto-remediation gate collects targeted evidence, re-runs the flagged techniques (max 3), and regenerates the report as iteration 2 — all transparently. The final report shows what was addressed:
 
 ```
 ## Iteration Suggestions
 
-Self-critique identified 2 actionable items:
+### Auto-Remediated (HIGH severity)
+The following 2 flags were automatically addressed before report finalization:
 
-1. **Unstated premises found**: Three assumptions identified in ACH matrix lack evidence
-   → Re-run: kac | Evidence focus: Collect evidence testing the flagged assumptions
+1. **Evidence imbalance >2:1** [AUTO-REMEDIATED]: H4 evidence ratio was 8:1
+   → Re-ran: ach | Evidence focus: Seek sources for the underrepresented side
 
-2. **Missing perspectives**: No technical operator viewpoint represented
+2. **Unstated premises impacting key judgment** [AUTO-REMEDIATED]: Three critical assumptions lacked evidence
+   → Re-ran: kac | Evidence focus: Collect evidence testing the flagged assumptions
+
+### Suggested for Manual Iteration (MEDIUM/LOW severity)
+Self-critique identified 1 additional item:
+
+1. **Missing perspectives** [MEDIUM]: No technical operator viewpoint represented
    → Re-run: narratives | Evidence focus: Collect evidence from the missing viewpoint
 
-Suggested command:
-/analyze --iterate 2026-02-15-cybersecurity-assessment kac narratives
+Suggested command: /analyze --iterate 2026-02-15-cybersecurity-assessment narratives
 ```
+
+### Manual Iteration
 
 Run the suggested command (or modify it) to iterate without losing the reasoning trail:
 
@@ -346,7 +361,11 @@ Question → Orchestrator → Evidence Collector → Technique Dispatch → Self
                 │                                  ├─ Tier 2 (parallel subagents)
                 │                                  ├─ Tier 3 (parallel subagents)
                 │                                  └─ Tier 4 (parallel subagents)
-                └─── Iterate (--iterate) ← artifact versioning + evidence delta ───┘
+                │
+                ├─── Auto-Remediation Gate ← HIGH-severity Layer 2 flags ──────────┘
+                │    (automatic: re-collect evidence, re-run techniques, regen report)
+                │
+                └─── Manual Iterate (--iterate) ← artifact versioning + evidence delta
 ```
 
 **Orchestrator** — The [orchestrator protocol](skills/structured-analysis/protocols/orchestrator.md) handles mode detection, technique selection, and workflow management. In adaptive mode, it uses a 14-question rubric to match problem characteristics to appropriate techniques.
@@ -357,7 +376,7 @@ Question → Orchestrator → Evidence Collector → Technique Dispatch → Self
 
 **Evidence Sufficiency Gate** — After collection, hard checks (minimum count, quality floor) can halt the analysis; soft checks (source diversity, diagnostic coverage, temporal recency) log warnings that surface in the report.
 
-**Self-Correction** — Three layers: (1) protocol compliance after each technique, (2) analytical self-critique before report synthesis, (3) human review gate before finalization.
+**Self-Correction** — Three layers plus an auto-remediation gate: (1) protocol compliance after each technique, (2) analytical self-critique before report synthesis with severity-classified flags, (3) human review gate before finalization. Between layers 2 and 3, the **Auto-Remediation Gate** checks for HIGH-severity flags (evidence imbalance, unstated critical premises, strong counter-arguments, analytical bias, quality failures). If any exist, it automatically invokes the iteration handler to collect targeted evidence, re-run flagged techniques (max 3, max 1 cycle), and regenerate the report — all before the user sees output. MEDIUM/LOW flags are presented as manual iteration suggestions.
 
 **Iteration Handler** — The [iteration handler](skills/structured-analysis/protocols/iteration-handler.md) manages artifact versioning, evidence delta tracking, and cross-iteration synthesis when re-running techniques.
 
@@ -394,6 +413,7 @@ structured-analysis-skill/
 │       ├── report-template.md        # Final report structure
 │       ├── evidence-registry-template.md
 │       ├── monitoring-plan-template.md
+│       ├── review-summary-template.md  # Phase A → Phase B handoff summary
 │       ├── meta-template.md
 │       ├── iteration-meta-template.md # Per-iteration metadata
 │       ├── techniques/              # 18 technique artifact templates
