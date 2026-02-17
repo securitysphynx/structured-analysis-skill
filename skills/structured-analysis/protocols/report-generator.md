@@ -12,7 +12,7 @@ The report generator runs in two phases to keep full artifact content out of the
 - Executes Steps 1–3 and Step 5 (gather inputs, synthesize, self-critique, write artifacts)
 - Reads all working artifacts from disk (fresh context window — no main context pollution)
 - Writes: `report.md`, `monitoring-plan.md`, `working/review-summary.md`
-- Returns ONLY: "Report written. Quality score: X/5.0 (STATUS)"
+- Returns ONLY: "Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."
 
 **Phase B — Human Review & Finalization** (main context):
 - Executes Steps 4, 6, and 7 (human review gate, present results, iteration suggestions)
@@ -38,10 +38,11 @@ You are a structured analysis report synthesizer. Your task:
    - analyses/{{ANALYSIS_ID}}/monitoring-plan.md
    - analyses/{{ANALYSIS_ID}}/working/review-summary.md
 9. Update analyses/{{ANALYSIS_ID}}/meta.md with completion status and quality score
+10. Count the number of HIGH-severity flags identified in Step 7b's mapping table. Include this count as the HIGH flags value in the return string.
 
 {{ITERATION_CONTEXT}}
 
-Return ONLY: "Report written. Quality score: X/5.0 (STATUS)"
+Return ONLY: "Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."
 ```
 
 Where `{{ITERATION_CONTEXT}}` is empty for first-run analyses, or contains iteration-specific instructions (see iteration-handler protocol).
@@ -228,19 +229,29 @@ Read flags from:
 
 Use this mapping table to convert each actionable flag into a concrete iteration suggestion:
 
-| Flag Source | Flag Type | Suggested Technique(s) | Evidence Focus |
-|---|---|---|---|
-| Sufficiency Gate | LOW SOURCE DIVERSITY | *(evidence collection only)* | Broaden source types |
-| Sufficiency Gate | LOW DIAGNOSTIC POWER | `ach`, `inconsistencies` | Seek evidence that discriminates between hypotheses |
-| Sufficiency Gate | STALE EVIDENCE | *(evidence collection only)* | Focus on last 6 months |
-| Layer 2 - 3a | Unstated premises found | `kac` | Collect evidence testing the flagged assumptions |
-| Layer 2 - 3b | Evidence imbalance >2:1 | `ach` | Seek sources for the underrepresented side |
-| Layer 2 - 3c | Bipolar bias detected | *(confidence recalibration — no re-run)* | N/A |
-| Layer 2 - 3d | Strong counter-argument | `what-if`, `premortem` | Collect evidence on the counter-argument scenario |
-| Layer 2 - 3e | Missing perspectives | `narratives` | Collect evidence from the missing viewpoint |
-| Layer 2 - 3f | Internal inconsistency found | *(in-report fix — no technique re-run)* | Correct the inconsistency in the report |
-| Layer 2 - 3g | Analytical bias detected | `devils-advocacy` or `red-hat` | Seek evidence that counters the biased direction |
-| Layer 2 - 3h | Quality score < 3.0 | Technique(s) driving lowest-scoring criterion | Collect discriminating evidence |
+| Flag Source | Flag Type | Default Severity | Suggested Technique(s) | Evidence Focus |
+|---|---|---|---|---|
+| Sufficiency Gate | LOW SOURCE DIVERSITY | MEDIUM | *(evidence collection only)* | Broaden source types |
+| Sufficiency Gate | LOW DIAGNOSTIC POWER | MEDIUM | `ach`, `inconsistencies` | Seek evidence that discriminates between hypotheses |
+| Sufficiency Gate | STALE EVIDENCE | LOW | *(evidence collection only)* | Focus on last 6 months |
+| Layer 2 - 3a | Unstated premises impacting key judgment | HIGH | `kac` | Collect evidence testing the flagged assumptions |
+| Layer 2 - 3a | Unstated premises (non-critical) | MEDIUM | `kac` | Collect evidence testing the flagged assumptions |
+| Layer 2 - 3b | Evidence imbalance >2:1 | HIGH | `ach` | Seek sources for the underrepresented side |
+| Layer 2 - 3c | Bipolar bias detected | — | *(confidence recalibration — no re-run)* | N/A |
+| Layer 2 - 3d | Strong counter-argument | HIGH | `what-if`, `premortem` | Collect evidence on the counter-argument scenario |
+| Layer 2 - 3e | Missing perspectives | MEDIUM | `narratives` | Collect evidence from the missing viewpoint |
+| Layer 2 - 3f | Internal inconsistency found | — | *(in-report fix — no technique re-run)* | Correct the inconsistency in the report |
+| Layer 2 - 3g | Analytical bias — sycophancy/anchoring | HIGH | `devils-advocacy` or `red-hat` | Seek evidence that counters the biased direction |
+| Layer 2 - 3g | Analytical bias — mild flags | MEDIUM | `devils-advocacy` or `red-hat` | Seek evidence that counters the biased direction |
+| Layer 2 - 3h | Quality score < 3.0 | HIGH (mandatory) | Technique(s) driving lowest-scoring criterion | Collect discriminating evidence |
+
+**Severity classification guidance:**
+- **HIGH**: Undermines analytical foundation, biases hypothesis ranking, or distorts conclusions. Triggers auto-remediation gate in the orchestrator.
+- **MEDIUM**: Identifies blind spots or minor biases worth noting. Presented as manual iteration suggestions.
+- **LOW**: Minor issues or stale data. Advisory only.
+- **—**: Not actionable as iteration (in-report adjustments only). Not assigned a severity.
+
+**Override guidance**: The Phase A subagent may upgrade MEDIUM → HIGH when a flag directly undermines a key judgment (e.g., missing perspective that contradicts the top finding), or downgrade HIGH → MEDIUM when the flag is technically triggered but has minimal impact on findings (e.g., 2.1:1 evidence imbalance where the underrepresented hypothesis was independently disconfirmed).
 
 **Rules**:
 - Bipolar bias (3c) is noted in the report but NOT mapped to an iteration — it's an in-report confidence adjustment, not a re-run trigger.
@@ -256,18 +267,37 @@ Append to the conversation output (after Step 6) using this format:
 ```
 ## Iteration Suggestions
 
-Self-critique identified {{N}} actionable items:
+{{#IF HAS_HIGH_FLAGS}}
+### Auto-Remediated (HIGH severity)
+The following {{HIGH_COUNT}} flags were automatically addressed before report finalization:
 
-1. **{{FLAG_TYPE}}**: {{FLAG_DESCRIPTION}}
-   → Re-run: {{TECHNIQUE(S)}} | Evidence focus: {{FOCUS}}
+{{#EACH HIGH_FLAG}}
+{{INDEX}}. **{{FLAG_TYPE}}** [AUTO-REMEDIATED]: {{FLAG_DESCRIPTION}}
+   → Re-ran: {{TECHNIQUES}} | Evidence focus: {{FOCUS}}
+{{/EACH}}
+{{/IF}}
 
-2. ...
+{{#IF HAS_REMAINING_FLAGS}}
+### Suggested for Manual Iteration (MEDIUM/LOW severity)
+Self-critique identified {{REMAINING_COUNT}} additional items:
 
-Suggested command:
-/analyze --iterate {{ANALYSIS_ID}} {{TECHNIQUE_LIST}}
+{{#EACH REMAINING_FLAG}}
+{{INDEX}}. **{{FLAG_TYPE}}** [{{SEVERITY}}]: {{FLAG_DESCRIPTION}}
+   → Re-run: {{TECHNIQUES}} | Evidence focus: {{FOCUS}}
+{{/EACH}}
+
+Suggested command: `/analyze --iterate {{ANALYSIS_ID}} {{TECHNIQUE_LIST}}`
+{{/IF}}
+
+{{#IF NO_FLAGS}}
+No actionable iteration suggestions. All self-critique checks passed or produced only in-report adjustments.
+{{/IF}}
 ```
 
-- `{{N}}` = count of actionable flags (excluding 3c bipolar bias)
-- `{{TECHNIQUE_LIST}}` = deduplicated, space-separated list of all suggested techniques
+- `{{HIGH_COUNT}}` = count of HIGH-severity flags that were auto-remediated
+- `{{REMAINING_COUNT}}` = count of MEDIUM/LOW actionable flags (excluding 3c bipolar bias and 3f in-report fixes)
+- `{{INDEX}}` = sequential numbering within each section (1, 2, 3...)
+- `{{TECHNIQUE_LIST}}` = deduplicated, space-separated list of all MEDIUM/LOW suggested techniques (HIGH flags are already handled)
 - If only evidence-collection flags exist (no technique re-runs), omit the technique list from the command and note that re-running evidence collection is the primary action
-- Each numbered item corresponds to one flag with its mapped technique(s) and evidence focus
+- Each numbered item corresponds to one flag with its mapped technique(s), severity, and evidence focus
+- HIGH-severity flags appear under "Auto-Remediated" only if the orchestrator's auto-remediation gate ran. If auto-remediation was not triggered (e.g., first analysis run before this feature existed), all flags appear under "Suggested for Manual Iteration."

@@ -181,7 +181,7 @@ Execute in order, each phase building on the previous:
 4. **Evidence Gate**: Execute the Evidence Sufficiency Gate (defined in `protocols/evidence-collector.md`). If hard checks fail, retry or halt. If soft checks fail, log flags and proceed.
 5. **Core Analysis**: Use selection logic (Steps 2-3 above) to pick technique(s), then execute via the Technique Execution Contract (in-context for 1 technique, subagent dispatch for 2+)
 6. **Stress Test**: Premortem + What If?
-7. **Report**: Dispatch report synthesis subagent per `protocols/report-generator.md` Phase A. Then execute Phase B (human review gate) in main context.
+7. **Report**: Dispatch report synthesis subagent per `protocols/report-generator.md` Phase A. Then execute Auto-Remediation Gate (see section below). Then execute Phase B (human review gate) in main context.
 
 ---
 
@@ -233,7 +233,7 @@ Execute the complete iteration workflow:
    - Reference prior findings using [PRIOR-v{{N}}: technique_name] citation format
    - Read the prior report at report.v{{PRIOR}}.md for comparison
    ```
-   Then execute Phase B (human review gate) in main context.
+   Then execute Auto-Remediation Gate (see section below). Then execute Phase B (human review gate) in main context.
 8. **Update monitoring plan** — refresh indicators based on new findings
 9. **Write iteration metadata** — iteration-handler Step 6
 10. **Update meta.md** — iteration-handler Step 7
@@ -423,3 +423,54 @@ After collecting all subagent summaries for tier N and before dispatching tier N
 | Tier | Check | Signal | Action Taken |
 |------|-------|--------|-------------|
 | {{TIER_N}} | {{CHECK_NAME}} | {{SIGNAL_PHRASE}} | {{ACTION_DESCRIPTION}} |
+
+---
+
+## Auto-Remediation Gate
+
+After Phase A returns and before Phase B (human review), the orchestrator checks whether Layer 2 self-critique identified HIGH-severity flags that warrant automatic remediation. This gate reuses the existing iteration handler — no new artifacts or protocols.
+
+### Gate Logic
+
+1. **Parse Phase A return string**: Extract the HIGH flag count from `"Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."` **Fallback**: If the HIGH flag count cannot be parsed from the return string (malformed output, missing field), read `analyses/{{ANALYSIS_ID}}/working/review-summary.md` directly and count entries under the "HIGH Severity (Auto-Remediation Candidates)" section.
+2. **Fast path**: If `N = 0`, skip this gate entirely and proceed to Phase B. Zero overhead.
+3. **If `N > 0`**:
+   a. Read `analyses/{{ANALYSIS_ID}}/working/review-summary.md` (if not already read during fallback parsing)
+   b. Parse the "HIGH Severity (Auto-Remediation Candidates)" section
+   c. Collect the flagged techniques and evidence focus descriptions
+   d. Notify the user: `"Layer 2 identified {{N}} HIGH-severity flag(s). Auto-remediating before presenting report (~5-15 minutes depending on technique count and evidence collection)..."`
+   e. Invoke the iteration handler (`protocols/iteration-handler.md`) with:
+      - **Trigger type**: `auto-remediation (Layer 2)`
+      - **Scope**: scoped to the flagged techniques (deduplicated)
+      - **Evidence focus**: combined evidence focus descriptions from the HIGH flags
+      - **Full report regeneration**: yes (the user has not seen any report yet)
+   f. The iteration handler executes its standard workflow:
+      - Archives current artifacts (Step 2)
+      - Collects targeted evidence using the combined evidence focus (Step 3)
+      - Re-runs flagged techniques with iteration context (Step 4)
+      - Produces cross-iteration synthesis (Step 5)
+      - Writes iteration-context.md (Step 5a)
+      - Regenerates report via Phase A with iteration context (producing iteration 2)
+      - Updates meta.md with iteration history (Step 7)
+   g. Phase B now presents the iteration-2 report (post-remediation)
+
+### Caps and Guards
+
+- **Max technique re-runs**: 3 per remediation cycle. If >3 techniques are flagged HIGH, remediate the first 3 using this priority order: (1) 3h quality score failure, (2) 3b evidence imbalance, (3) 3g sycophancy/anchoring bias, (4) 3a unstated critical premises, (5) 3d strong counter-argument. Remaining HIGH flags are demoted to "Suggested for Manual Iteration."
+- **Max cycles**: 1 auto-remediation cycle. The iteration-2 Phase A may produce new HIGH flags — these are NOT auto-remediated again. They appear as manual iteration suggestions.
+- **Quality score < 3.0 (3h)**: This is a mandatory remediation trigger — it always consumes one of the 3 technique slots and targets the lowest-scoring quality criterion's technique.
+- **No recursive remediation**: After the remediation cycle's Phase A completes, proceed directly to Phase B regardless of new HIGH flags.
+
+### Meta.md Logging
+
+Auto-remediation appears in meta.md as a standard iteration entry:
+
+```
+| 2 | {{DATE}} | Auto-remediation (Layer 2) | Scoped: {{TECHNIQUE_LIST}} | {{NEW_EVIDENCE_COUNT}} items | Addressed {{N}} HIGH-severity flags: {{FLAG_SUMMARY}} |
+```
+
+### Interaction with Iterate Mode
+
+- If the user later runs `/analyze --iterate`, it builds on top of the auto-remediation iteration (iteration 3+)
+- Auto-remediation and user-initiated iteration share the same versioning scheme (`.vN.md` archives)
+- The iteration handler treats auto-remediation identically to user-invoked iteration — no special-casing needed beyond the trigger type label

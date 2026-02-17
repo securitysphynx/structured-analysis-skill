@@ -6,7 +6,15 @@ Manage artifact versioning, evidence delta tracking, and cross-iteration synthes
 
 ## When This Protocol Is Invoked
 
-The orchestrator calls this protocol when `--iterate` is detected. It runs **before** any technique execution and **after** technique execution for cross-iteration synthesis.
+The orchestrator calls this protocol in two scenarios:
+
+1. **User-invoked iteration**: When `--iterate` is detected. Runs before any technique execution and after technique execution for cross-iteration synthesis.
+2. **Auto-remediation**: When the orchestrator's Auto-Remediation Gate detects HIGH-severity Layer 2 flags after Phase A. The orchestrator invokes this handler with trigger type `auto-remediation (Layer 2)`, scoped to the flagged techniques.
+
+Both trigger types follow the same Steps 1–7 workflow. The only differences for auto-remediation:
+- **Step 3c**: Evidence collection uses the combined evidence focus from the review-summary.md HIGH flags (e.g., "Seek sources for the underrepresented side" + "Collect evidence on the counter-argument scenario")
+- **Step 4**: Iteration trigger detail is set to `"Auto-remediation: Layer 2 flagged {{FLAG_DESCRIPTIONS}}"`
+- **Report regeneration**: Always full (not scoped-only), since the user has not yet seen any report
 
 ---
 
@@ -20,7 +28,7 @@ The orchestrator calls this protocol when `--iterate` is detected. It runs **bef
      - Read current `evidence-registry.md` for evidence count
      - Read current report key judgments for confidence levels
      - Populate the iteration-meta-template with baseline values
-     - Set Trigger Type to `BASELINE` and Detail to `"Retroactive snapshot of original analysis"`
+     - Set Trigger Type to `BASELINE` and Detail to `"Retroactive snapshot of original analysis"` (or `"Retroactive snapshot before auto-remediation"` if trigger is auto-remediation)
    - Set `{{CURRENT_ITER}}` = 2
 3. If **present**: count existing `iteration-*-meta.md` files → set `{{CURRENT_ITER}}` = count + 1
 
@@ -71,7 +79,8 @@ If the Evidence Inventory table does not already have an `Iter` column:
    - Each new item gets `Iter` = `{{CURRENT_ITER}}`
 2. If scoped iteration with targeted collection focus:
    - Pass the collection focus from the iteration trigger to the evidence collector
-   - Example: "Collect evidence specifically addressing pessimistic bias — seek optimistic/neutral sources on US cyber defense capability improvements"
+   - Example (user-invoked): "Collect evidence specifically addressing pessimistic bias — seek optimistic/neutral sources on US cyber defense capability improvements"
+   - Example (auto-remediation): "Collect evidence addressing Layer 2 flags — seek sources for the underrepresented hypothesis side; collect evidence on the counter-argument scenario identified in self-critique"
 3. Append new items to the existing registry (never replace existing items)
 
 ### 3d — Update Collection Summary
@@ -111,6 +120,7 @@ After all re-run techniques complete:
 
 3. For **full iterations**: regenerate the report with a "Revision History" section
 4. For **scoped iterations**: write a findings summary in the iteration metadata (do NOT regenerate the full report unless explicitly requested)
+5. For **auto-remediation**: always regenerate the full report (the user has not seen any report yet), with a "Revision History" section noting the auto-remediation. Dispatch the Phase A subagent per `protocols/report-generator.md` using the orchestrator's Iterate Mode Step 7 prompt template (with the `## Iteration Context` block populated from `iteration-context.md`).
 
 ---
 
@@ -157,7 +167,7 @@ This file is consumed by the report synthesis subagent (Phase A) to populate the
 
 Create `iterations/iteration-{{CURRENT_ITER}}-meta.md` using `templates/iteration-meta-template.md`:
 
-1. Record the trigger (monitoring indicator, critique follow-up, new evidence, human request)
+1. Record the trigger (monitoring indicator, critique follow-up, new evidence, human request, auto-remediation)
 2. Record scope (full or scoped, which techniques)
 3. Record evidence delta (new item count, ID range, sources)
 4. Record judgment revisions from cross-iteration synthesis
