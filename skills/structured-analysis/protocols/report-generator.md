@@ -33,7 +33,7 @@ You are a structured analysis report synthesizer. Your task:
 5. Read and fill {{SKILL_DIR}}/templates/report-template.md (disposition first, detail last)
 6. Read {{SKILL_DIR}}/templates/monitoring-plan-template.md and generate the monitoring plan
 7. Read {{SKILL_DIR}}/templates/review-summary-template.md and fill it with summary data
-7a. Read {{SKILL_DIR}}/templates/next-steps-template.md — populate it using the flags collected in Step 7a-7b. Set all items to Status: OPEN. Write to analyses/{{ANALYSIS_ID}}/next-steps.md
+7a. Read {{SKILL_DIR}}/templates/next-steps-template.md — populate it using the Layer 2 flags (Steps 3a-3h) and sufficiency gate flags collected during self-critique. Set all items to Status: OPEN. Write to analyses/{{ANALYSIS_ID}}/next-steps.md
 8. Write four files:
    - analyses/{{ANALYSIS_ID}}/report.md
    - analyses/{{ANALYSIS_ID}}/monitoring-plan.md

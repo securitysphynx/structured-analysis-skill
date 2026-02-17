@@ -432,11 +432,11 @@ After Phase A returns and before Phase B (human review), the orchestrator checks
 
 ### Gate Logic
 
-1. **Parse Phase A return string**: Extract the HIGH flag count from `"Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."` **Fallback**: If the HIGH flag count cannot be parsed from the return string (malformed output, missing field), read `analyses/{{ANALYSIS_ID}}/working/review-summary.md` directly and count entries under the "HIGH Severity (Auto-Remediation Candidates)" section.
+1. **Parse Phase A return string**: Extract the HIGH flag count from `"Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."` **Fallback**: If the HIGH flag count cannot be parsed from the return string (malformed output, missing field), read `analyses/{{ANALYSIS_ID}}/next-steps.md` directly and count entries with Status `OPEN` and Severity `HIGH` in the Iteration Items table.
 2. **Fast path**: If `N = 0`, skip this gate entirely and proceed to Phase B. Zero overhead.
 3. **If `N > 0`**:
-   a. Read `analyses/{{ANALYSIS_ID}}/working/review-summary.md` (if not already read during fallback parsing)
-   b. Parse the "HIGH Severity (Auto-Remediation Candidates)" section
+   a. Read `analyses/{{ANALYSIS_ID}}/next-steps.md` (if not already read during fallback parsing)
+   b. Parse the Iteration Items table for entries with Severity `HIGH` and Status `OPEN`
    c. Collect the flagged techniques and evidence focus descriptions
    d. Notify the user: `"Layer 2 identified {{N}} HIGH-severity flag(s). Auto-remediating before presenting report (~5-15 minutes depending on technique count and evidence collection)..."`
    e. Invoke the iteration handler (`protocols/iteration-handler.md`) with:
@@ -454,7 +454,7 @@ After Phase A returns and before Phase B (human review), the orchestrator checks
       - Updates meta.md with iteration history (Step 7)
    g. **Update next-steps.md**: Read `analyses/{{ANALYSIS_ID}}/next-steps.md`. For each HIGH flag that was remediated in step 3e-3f:
       - Update the Status column from `OPEN` to `REMEDIATED` in the Iteration Items table
-      - Update the detail section: change `[OPEN]` to `[REMEDIATED]` and append a remediation note: `"Auto-remediated in cycle 1. See working/{{TECHNIQUE}}.remediation-prior.md"`
+      - Update the detail section: change `[OPEN]` to `[REMEDIATED]` and append a remediation note: `"Auto-remediated in cycle 1. Prior artifact archived at working/{{ARTIFACT_NAME}}.v{{PRIOR_VERSION}}.md"`
       - Update the Summary line counts (increment REMEDIATED, decrement OPEN)
       - Update the Suggested Command to exclude remediated techniques
    h. Phase B now presents the iteration-2 report (post-remediation)

@@ -21,7 +21,7 @@ Generated: {{DATE}} | Iteration: {{N}} | Quality Score: {{SCORE}}/5.0
 - **Technique**: {{TECHNIQUES}}
 - **Evidence focus**: {{EVIDENCE_FOCUS}}
 {{#IF REMEDIATED}}
-- **Remediation note**: Auto-remediated in cycle {{CYCLE}}. See working/{{TECHNIQUE}}.remediation-prior.md
+- **Remediation note**: Auto-remediated in cycle {{CYCLE}}. Prior artifact archived at working/{{ARTIFACT_NAME}}.v{{PRIOR_VERSION}}.md
 {{/IF}}
 {{#IF RESOLVED}}
 - **Resolved**: Iteration {{ITER_N}} ({{DATE}}). {{NEW_EVIDENCE_COUNT}} new evidence items ({{ID_RANGE}}). {{RESOLUTION_SUMMARY}}.
