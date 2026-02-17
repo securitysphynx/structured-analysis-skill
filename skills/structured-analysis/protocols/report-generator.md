@@ -11,7 +11,7 @@ The report generator runs in two phases to keep full artifact content out of the
 **Phase A — Synthesis Subagent** (foreground Task subagent):
 - Executes Steps 1–3 and Step 5 (gather inputs, synthesize, self-critique, write artifacts)
 - Reads all working artifacts from disk (fresh context window — no main context pollution)
-- Writes: `report.md`, `monitoring-plan.md`, `working/review-summary.md`
+- Writes: `report.md`, `monitoring-plan.md`, `working/review-summary.md`, `next-steps.md`
 - Returns ONLY: "Report written. Quality score: X/5.0 (STATUS). HIGH flags: N."
 
 **Phase B — Human Review & Finalization** (main context):
@@ -33,10 +33,12 @@ You are a structured analysis report synthesizer. Your task:
 5. Read and fill {{SKILL_DIR}}/templates/report-template.md (disposition first, detail last)
 6. Read {{SKILL_DIR}}/templates/monitoring-plan-template.md and generate the monitoring plan
 7. Read {{SKILL_DIR}}/templates/review-summary-template.md and fill it with summary data
-8. Write three files:
+7a. Read {{SKILL_DIR}}/templates/next-steps-template.md — populate it using the flags collected in Step 7a-7b. Set all items to Status: OPEN. Write to analyses/{{ANALYSIS_ID}}/next-steps.md
+8. Write four files:
    - analyses/{{ANALYSIS_ID}}/report.md
    - analyses/{{ANALYSIS_ID}}/monitoring-plan.md
    - analyses/{{ANALYSIS_ID}}/working/review-summary.md
+   - analyses/{{ANALYSIS_ID}}/next-steps.md
 9. Update analyses/{{ANALYSIS_ID}}/meta.md with completion status and quality score
 10. Count the number of HIGH-severity flags identified in Step 7b's mapping table. Include this count as the HIGH flags value in the return string.
 
@@ -294,6 +296,7 @@ No actionable iteration suggestions. All self-critique checks passed or produced
 {{/IF}}
 ```
 
+- After presenting iteration suggestions in conversation, add: `"Full iteration ledger with status tracking: analyses/{{ANALYSIS_ID}}/next-steps.md"`
 - `{{HIGH_COUNT}}` = count of HIGH-severity flags that were auto-remediated
 - `{{REMAINING_COUNT}}` = count of MEDIUM/LOW actionable flags (excluding 3c bipolar bias and 3f in-report fixes)
 - `{{INDEX}}` = sequential numbering within each section (1, 2, 3...)

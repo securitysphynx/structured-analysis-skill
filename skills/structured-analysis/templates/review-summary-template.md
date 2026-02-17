@@ -24,28 +24,4 @@
 {{/EACH}}
 
 ## Iteration Suggestions
-{{#IF HAS_HIGH_FLAGS}}
-### HIGH Severity (Auto-Remediation Candidates)
-{{HIGH_FLAG_COUNT}} flags eligible for auto-remediation:
-
-{{#EACH HIGH_SUGGESTION}}
-{{N}}. **{{FLAG_TYPE}}** [HIGH]: {{FLAG_DESCRIPTION}}
-   → Re-run: {{TECHNIQUES}} | Evidence focus: {{FOCUS}}
-{{/EACH}}
-{{/IF}}
-
-{{#IF HAS_REMAINING_FLAGS}}
-### MEDIUM/LOW Severity (Manual Iteration)
-{{REMAINING_FLAG_COUNT}} additional items:
-
-{{#EACH REMAINING_SUGGESTION}}
-{{N}}. **{{FLAG_TYPE}}** [{{SEVERITY}}]: {{FLAG_DESCRIPTION}}
-   → Re-run: {{TECHNIQUES}} | Evidence focus: {{FOCUS}}
-{{/EACH}}
-
-Suggested command: `/analyze --iterate {{ANALYSIS_ID}} {{TECHNIQUE_LIST}}`
-{{/IF}}
-
-{{#IF NO_ACTIONABLE_FLAGS}}
-No actionable iteration suggestions. All self-critique checks passed or produced only in-report adjustments.
-{{/IF}}
+See [next-steps.md](../next-steps.md) for the full iteration suggestions ledger with status tracking.
