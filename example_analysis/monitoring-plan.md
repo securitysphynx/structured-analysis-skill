@@ -1,21 +1,20 @@
-# Monitoring Plan: US Removal of Chinese Hackers from Networks
+# Monitoring Plan: Impact of Mobile Gaming on Gaming Marketplace Growth
 
-> **Analysis ID**: 2026-02-15-us-chinese-hackers-network-removal
-> **Created**: 2026-02-15
-> **Review Cadence**: Monthly (escalate to weekly if Taiwan Strait indicators activate)
+> **Analysis ID**: 2026-03-26-mobile-gaming-marketplace-growth-impact
+> **Created**: 2026-03-26
+> **Updated**: 2026-03-26 (Iteration 3)
+> **Review Cadence**: Quarterly
 > **Parent Analysis**: [Full Report](report.md)
 
 ---
 
 ## Key Judgments Under Watch
 
-| # | Judgment | Current Confidence |
-|---|---------|-------------------|
-| J1 | Complete removal not achievable within 2-3 years under current conditions | HIGH |
-| J2 | Managed persistence is the most plausible outcome | MODERATE |
-| J3 | 12-18 month window of peak vulnerability (mid-2026 to 2027) | MODERATE-HIGH |
-| J4 | Political will is the highest-leverage variable, currently at weakest state | HIGH |
-| J5 | Publicly known campaigns may not represent full extent of Chinese access | LOW-MODERATE |
+- **J1**: Mobile gaming expanded the total market complementarily (Moderate confidence)
+- **J2**: Current trajectory is structural decline, not normal maturation (Moderate-Low confidence)
+- **J4**: Global picture is bifurcated -- mature markets contracting, emerging markets growing (Moderate confidence)
+- **J7**: Compound ATT + DMA + whale erosion system is already operating (Moderate-Low confidence)
+- **J8**: Forward trajectory bifurcates between collapse and creative destruction (Low confidence)
 
 ---
 
@@ -25,13 +24,13 @@ _Signals that the analysis is holding._
 
 | # | Indicator | What to Look For | Source to Check | Status |
 |---|-----------|------------------|-----------------|--------|
-| C1 | Exposed device count remains high | Censys/Shodan scans continue showing >150,000 exposed network devices with Typhoon-associated vulnerabilities | Censys research reports, security researcher publications | ⬜ Not yet observed |
-| C2 | CISA vacancy rates persist | CISA workforce reporting shows >25% vacancy rates through FY2026 | Congressional testimony, CISA workforce reports, Cybersecurity Dive coverage | ⬜ Not yet observed |
-| C3 | Voluntary compliance framework continues | No binding federal cybersecurity mandates enacted for telecom carriers; FCC maintains voluntary approach | Federal Register, Congressional legislation tracker, FCC announcements | ⬜ Not yet observed |
-| C4 | New Chinese campaigns discovered | Additional Typhoon-family or Brickstorm-class campaigns disclosed in US critical infrastructure | CISA advisories, vendor threat reports (CrowdStrike, Mandiant), Reuters/CyberScoop | ⬜ Not yet observed |
-| C5 | Telecom eviction claims remain unverified | No independent audit confirms Salt Typhoon removal from tier-1 carriers; government advisories continue citing persistent access | Joint government advisories, Senate Commerce Committee hearings | ⬜ Not yet observed |
-| C6 | Government rhetoric shifts to "resilience" | Official language moves from "removal" to "management," "containment," or "resilience" framing | White House statements, CISA guidance, Congressional hearing transcripts | ⬜ Not yet observed |
-| C7 | OPM pattern repeats | If any diplomatic/punitive response occurs, Chinese operations temporarily pause then resume within 12-24 months | Threat intelligence reports, CISA advisories | ⬜ Not yet observed |
+| C1 | Revenue concentration intensifies | Top 50 games capture >85% of mobile revenue growth (up from 80% [E57]) | Sensor Tower / Deconstructor of Fun quarterly reports | Not yet observed |
+| C2 | Retention continues declining | D1 retention falls below 25% industry-wide; D7 below 3% [E56] | GameAnalytics annual benchmarks | Not yet observed |
+| C3 | Non-game app spending gap widens | Non-game apps maintain or extend lead over games (>$85B vs <$82B [E59]) | Sensor Tower annual reports | Not yet observed |
+| C4 | Developer contraction accelerates | Quarterly layoff/closure rate exceeds 2025 baseline; additional major studio closures | GamesIndustry.biz, Wikipedia layoff tracker | Not yet observed |
+| C5 | iOS CPI escalation | Average iOS CPI exceeds $5 across genres (currently $2.5-$3.5; strategy already $5.5-$6 [E52]) | AppsFlyer, Mapendo, Business of Apps | Not yet observed |
+| C6 | Emerging market growth decouples | MENA/LATAM mobile revenue >15% YoY while mature markets decline or stagnate | Sensor Tower regional reports, Newzoo | Not yet observed |
+| C7 | Premium outperformance continues | Premium games continue to outperform F2P on new player acquisition [E62] | Sensor Tower, Deconstructor of Fun | Not yet observed |
 
 ---
 
@@ -41,55 +40,26 @@ _Signals that the analysis may need revision._
 
 | # | Indicator | What to Look For | Source to Check | Status |
 |---|-----------|------------------|-----------------|--------|
-| D1 | Binding federal cybersecurity mandates enacted | Congress passes legislation imposing mandatory patch timelines, credential rotation, or network segmentation requirements on telecom carriers with enforcement penalties | Congressional Record, Federal Register, White House signing statements | ⬜ Not yet observed |
-| D2 | Rapid exposed device reduction | Censys/Shodan exposed device count drops below 100,000 within 6 months of measurement baseline | Censys research reports, security researcher publications | ⬜ Not yet observed |
-| D3 | CISA workforce restored | CISA achieves <15% vacancy rate across key mission areas by end of FY2026 | CISA workforce reports, Congressional testimony | ⬜ Not yet observed |
-| D4 | Verified independent eviction audit | A credible third-party (not carrier self-reporting) confirms Salt Typhoon removal from at least two tier-1 carriers | Government audit reports, independent security firm assessments | ⬜ Not yet observed |
-| D5 | Insurance market imposes cybersecurity requirements | Major cyber insurers condition policy renewal for telecom carriers on specific security benchmarks | Insurance industry publications, carrier SEC filings, industry press | ⬜ Not yet observed |
-| D6 | Chinese contractor ecosystem disrupted | Evidence of material disruption to i-SOON, Sichuan Juxinhe, or other Salt Typhoon contractor entities through sanctions, offensive operations, or internal failures | Treasury OFAC announcements, Five Eyes joint advisories, security researcher publications | ⬜ Not yet observed |
-| D7 | AI-assisted remediation deployed at scale | DARPA or commercial tools enabling automated vulnerability scanning and patching deployed across telecom networks, significantly accelerating remediation pace | DoD program announcements, vendor press releases, Congressional testimony | ⬜ Not yet observed |
-| D8 | Allied coordination produces measurable results | Five Eyes or broader allied coordination demonstrably degrades Chinese operations across multiple countries simultaneously | Joint government advisories, allied government announcements | ⬜ Not yet observed |
-| D9 | No new Chinese campaigns for 12+ months | Absence of newly discovered Chinese APT campaigns in US critical infrastructure for a sustained period | CISA advisories, threat intelligence reports | ⬜ Not yet observed |
-| D10 | Political activation event occurs | A galvanizing crisis (classified briefing leak, visible infrastructure disruption, Taiwan Strait escalation) triggers emergency political mobilization for cybersecurity | Major news coverage, Congressional emergency sessions, executive orders | ⬜ Not yet observed |
+| D1 | Mobile revenue rebounds | Mobile gaming revenue grows >5% YoY, indicating structural stress thesis was overstated | Sensor Tower / Newzoo quarterly reports | Not yet observed |
+| D2 | Retention stabilizes or recovers | D1/D7/D28 retention metrics plateau or improve vs. 2025 baseline [E56] | GameAnalytics annual benchmarks | Not yet observed |
+| D3 | Revenue growth outside top 50 resumes | Games ranked 51-200 show positive revenue growth, contradicting concentration thesis [E57] | Sensor Tower, Deconstructor of Fun | Not yet observed |
+| D4 | AI app spending plateaus | AI app revenue growth decelerates sharply, suggesting [E59] milestone was cyclical not structural | Sensor Tower annual reports | Not yet observed |
+| D5 | UA efficiency recovers | New contextual targeting or privacy-preserving methods demonstrably reduce CPI, weakening ATT compound thesis [E58] | AppsFlyer, ad network reports, industry case studies | Not yet observed |
+| D6 | DMA improves developer economics | Alternative app marketplaces achieve >5% market share AND measurably reduce developer costs [E53] | Market tracking services, developer surveys | Not yet observed |
+| D7 | Developer hiring resumes | Net positive gaming employment growth for 2+ consecutive quarters, indicating ecosystem stabilization | TIGA annual surveys, LinkedIn workforce data | Not yet observed |
+| D8 | Complementarity reverses under contraction | Console/PC revenue declines proportionally when mobile contracts, confirming bidirectional dependency | Newzoo, Sensor Tower platform-specific reports | Not yet observed |
 
 ---
 
 ## Trigger Thresholds
 
-### Reassessment Triggers
+**Re-analyze when any of the following occur:**
+- 2 or more disconfirming indicators (D1-D8) observed within the same quarter
+- D1 alone (mobile revenue >5% growth) would directly contradict J2 and warrant immediate reassessment
+- D2 + D3 together (retention recovering AND growth outside top 50) would undermine the structural fragility thesis and support creative destruction interpretation
+- Any confirming indicator reaching extreme levels (e.g., C4: major publisher bankruptcy, not just studio closures) would warrant escalation
 
-| Condition | Action |
-|-----------|--------|
-| **2+ disconfirming indicators observed** | Initiate partial reassessment — re-evaluate affected key judgments |
-| **D1 (binding mandates) observed** | Immediate full reassessment — this is the highest-impact single indicator, invalidating the political trajectory assumption |
-| **D10 (political activation) observed** | Immediate full reassessment — construct "activated political will" branch scenario per Premortem mitigation #1 |
-| **D2 + D3 observed together** | Full reassessment — simultaneous rapid remediation and institutional rebuilding would challenge the core assessment |
-| **3+ confirming indicators observed** | Increase confidence in current assessment; extend review cadence to quarterly |
-| **Taiwan Strait activity reaches crisis threshold** | Shift review cadence to weekly; activate What If? scenario monitoring at full indicator set |
-
-### Judgment-Specific Triggers
-
-| Judgment | Trigger for Revision |
-|----------|---------------------|
-| J1 (removal not achievable) | D1 + D2 + D3 observed — mandatory regulation, rapid device reduction, and CISA restoration together could make significant removal plausible |
-| J2 (managed persistence) | D4 observed — verified eviction would challenge the persistence assessment |
-| J3 (vulnerability window) | D3 observed before mid-2026 — early CISA restoration would narrow the window |
-| J4 (political will) | D1 or D10 observed — binding mandates or political activation event would transform this variable |
-| J5 (deeper access) | Discovery of campaigns with >24-month dwell in previously "cleared" networks — would elevate this from LOW-MODERATE to MODERATE-HIGH |
-
----
-
-## Evidence Collection Priorities
-
-_Targeted collection to fill gaps identified in the analysis._
-
-| Priority | Gap | Collection Target | Timeline |
-|----------|-----|-------------------|----------|
-| 1 | Telecom industry remediation progress | Carrier quarterly security reports, SEC filings on cybersecurity investment, industry press | Q2 2026 |
-| 2 | Cyber insurance market dynamics | Insurance industry publications, broker reports on telecom sector risk pricing | Q2 2026 |
-| 3 | DARPA/DoD automation programs | Program announcements, Congressional testimony, defense industry press | Q2 2026 |
-| 4 | Allied coordination effectiveness | Five Eyes joint advisory outcomes, allied government cybersecurity assessments | Q2-Q3 2026 |
-| 5 | Chinese contractor ecosystem vulnerabilities | i-SOON leak analysis updates, OFAC sanctions tracking, OPSEC failure reporting | Ongoing |
+**Cadence note**: The compound system (J7) operates on quarterly timescales. Monthly monitoring is not recommended as short-term fluctuations in CPI and retention are noisy. Semi-annual review of the collapse vs. creative destruction bifurcation (J8) is appropriate given the multi-year timeframe.
 
 ---
 
@@ -97,8 +67,8 @@ _Targeted collection to fill gaps identified in the analysis._
 
 | Date | Reviewer | Indicators Updated | Action Taken |
 |------|----------|-------------------|--------------|
-| 2026-02-15 | Structured Analysis Skill | Initial creation | Monitoring plan established with 7 confirming and 10 disconfirming indicators |
+| 2026-03-26 | Analysis system | Initial monitoring plan created (v3) | Baseline established; 7 confirming and 8 disconfirming indicators defined |
 
 ---
 
-*Generated by Structured Analysis Skill | 2026-02-15*
+*Generated by Structured Analysis Skill | 2026-03-26 | Iteration 3*

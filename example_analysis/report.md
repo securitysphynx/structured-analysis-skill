@@ -1,225 +1,21 @@
-# Structured Analysis Report: US Removal of Chinese Hackers from Networks
+# Structured Analysis Report: Impact of Mobile Gaming on Gaming Marketplace Growth
 
-> **Analysis ID**: 2026-02-15-us-chinese-hackers-network-removal
-> **Date**: 2026-02-15
-> **Techniques Applied**: Key Assumptions Check, Analysis of Competing Hypotheses, Cross-Impact Matrix, What If? Analysis, Contrasting Narratives, Premortem + Self-Critique
+> **Analysis ID**: 2026-03-26-mobile-gaming-marketplace-growth-impact
+> **Date**: 2026-03-26
+> **Techniques Applied**: Key Assumptions Check (v3), Analysis of Competing Hypotheses (v3), What-If Analysis (v3), Contrasting Narratives, Counterfactual Reasoning, Premortem (v3)
 > **Mode**: Adaptive
-> **Evidence Base**: 20 items
+> **Evidence Base**: 62 items
+> **Iteration**: 3
 
 ---
 
 ## Executive Summary
 
-The United States will not achieve durable, comprehensive removal of Chinese state-sponsored cyber actors (Salt Typhoon, Volt Typhoon, and related groups) from telecommunications and critical infrastructure networks within the next 2-3 years under current conditions. The most plausible outcome is **managed persistence** — incremental hardening of the most critical network segments while accepting that persistent Chinese access will continue across broad portions of US telecom infrastructure. This assessment carries **MODERATE** confidence, reflecting strong evidentiary support tempered by significant volatility in the political and institutional variables that could alter the trajectory.
+Mobile gaming historically expanded the global gaming marketplace complementarily, growing the total addressable market to approximately $189 billion by attracting new demographics and geographies rather than cannibalizing existing console and PC segments [E02, E36, E37, E39]. This historical finding remains stable across all three iterations of this analysis and is the one conclusion that carries genuine confidence. However, the forward-looking assessment has undergone a fundamental revision: when engagement evidence is weighted equally with revenue evidence, the "complementary expansion with normal maturation" hypothesis (H1) drops from the most plausible explanation to the least plausible, accumulating 9 inconsistencies in the combined ACH assessment versus 3 for the leading hypothesis [ach-matrix.md]. No single hypothesis now captures the situation. The evidence requires a composite explanation.
 
-Six structured analytic techniques converged on this finding but exposed a critical fragility: the assessment is conditioned on the current political trajectory (regulatory rollback, depleted CISA, voluntary compliance). Political will is simultaneously the **highest-leverage intervention point** and the **most volatile variable** in the system. A galvanizing crisis — such as a publicly disclosed compromise of senior military communications or a Taiwan Strait escalation — could trigger rapid political mobilization that would fundamentally alter the trajectory. The Premortem analysis estimates this "political activation" scenario at 30-40% probability within 18 months.
+Confidence in the overall assessment has been downgraded to **Low** -- reflecting not weak evidence but genuinely contradictory evidence. Revenue metrics show a stable $82B market [E16]; engagement metrics show a market in active contraction with retention declining year-over-year across all time horizons [E56], revenue concentrating in the top 50 games while the rest of the market declines [E57], and mobile gaming losing its position as the dominant mobile consumer spending category for the first time [E59]. These two evidence domains cannot be reconciled under a single narrative. The revenue picture is maintained by increasingly efficient extraction from a shrinking base -- "optimization and extraction, not growth" [E57].
 
-The analysis identifies a **12-18 month window of peak vulnerability** (mid-2026 to 2027) during which CISA is rebuilding, mandatory regulations are absent, Chinese offensive capabilities continue to advance, and the anticipated geopolitical crisis timeline approaches. Policy decisions made during this window will disproportionately determine outcomes.
-
----
-
-## Problem Framing
-
-**Original Statement**: "Will the US be able to successfully remove Chinese hackers from their networks?"
-
-**Reframed Statement**: To what extent can the United States achieve durable removal of Chinese state-sponsored cyber actors (Salt Typhoon, Volt Typhoon, and related groups) from telecommunications and critical infrastructure networks, given current institutional, technical, and political constraints?
-
-The reframing shifts from binary (yes/no) to a spectrum of outcomes, acknowledges the multi-group nature of the threat, specifies the target networks, and names the constraining variables. The evidence registry flagged the original binary framing as an analytical risk [E20].
-
----
-
-## Evidence Base
-
-**Collection scope**: 24 search results screened, 8 full articles scraped, yielding 20 catalogued evidence items.
-
-| Source Tier | Count | Quality |
-|-------------|-------|---------|
-| Tier 1 (Conversation) | 1 | N/A |
-| Tier 2 (Local Files) | 0 | N/A |
-| Tier 3 (OSINT) | 19 | 15 High reliability, 4 Medium |
-
-**Sources**: War on the Rocks, CyberScoop/Censys, Lawfare, Cybersecurity Dive, SC World, Reuters, DomainTools, FDD.
-
-**Quality Assessment**: Evidence is weighted ~4:1 toward pessimism about removal success. This imbalance is partially justified by source quality but also reflects collection limitations: no telecom industry internal reporting, no cyber insurance market analysis, no classified assessments, and no Chinese strategic analysis beyond diplomatic denial. The evidence registry explicitly acknowledges these gaps.
-
-> Full evidence details: [Evidence Registry](evidence-registry.md)
-
----
-
-## Analysis
-
-### 1. Key Assumptions Check (KAC)
-
-**Purpose**: Identify and stress-test the foundational assumptions underlying the analytic line.
-**Process**: Catalogued 10 assumptions (7 stated, 3 unstated), evaluated each against the evidence base, classified into Supported/Correct-with-Caveats/Unsupported bins, and identified 4 linchpin assumptions.
-
-#### Findings
-
-Ten assumptions were evaluated: **6 Supported**, **3 Correct with Caveats**, **1 Unsupported**.
-
-Four linchpin assumptions identified:
-1. **Infrastructure too large/complex** (Supported) — Most robustly evidenced: 200,000+ exposed devices with only 25% reduction in six months [E05], "Frankenstein's monster" architectures [E04], 100+ exploitable LTE/5G vulnerabilities with maintainers lacking capacity to patch [E07].
-2. **Institutional/political obstacles will persist** (Supported but **most volatile**) — FCC rescinded binding orders [E02], CISA at ~40% vacancy [E12]. This is the **#1 fault line**: a galvanizing crisis could invalidate this assumption rapidly, cascading through the entire assessment.
-3. **China's offensive capabilities will continue at scale** (Supported) — Contractor-enabled model with 600+ organizations breached [E17, E18], new malware families continuing to deploy [E16]. No challenging evidence found, though this may reflect a collection gap.
-4. **Telecoms lack incentive to self-remediate** (Supported) — Seven-year-old unpatched vulnerabilities [E01, E03], Senate concluded carriers have not demonstrated eviction [E01].
-
-The **unsupported** assumption (#10: allied coordination will not produce a step-change) represents a significant evidence gap — the analytic line implicitly treats the problem as purely domestic.
-
-**Confidence**: MODERATE — Linchpin 2 (political will) is highly volatile and could invalidate the assessment rapidly.
-
-> Full working artifact: [Key Assumptions Check](working/assumptions.md)
-
----
-
-### 2. Analysis of Competing Hypotheses (ACH)
-
-**Purpose**: Systematically evaluate which outcome scenario is most consistent with the evidence and identify the least plausible.
-**Process**: Defined 5 hypotheses, evaluated all 20 evidence items against each for consistency/inconsistency/neutrality, tallied inconsistencies, conducted sensitivity analysis.
-
-#### Findings
-
-| Hypothesis | Inconsistencies | Rank |
-|------------|----------------|------|
-| H1: Complete removal within 2-3 years | 17 | 5th (least plausible) |
-| H2: Incremental improvement / managed persistence | 0 | 1st (most plausible) |
-| H3: Stall / regress | 2 | 3rd |
-| H4: Status quo (null) | 1 | 2nd |
-| H5: Deeper access / deception | 0 | 1st (tied) |
-
-H1 (Complete Removal) is **strongly rejected** — 17 of 20 evidence items are inconsistent. H2 (Managed Persistence) is most plausible with zero inconsistencies. H5 (Deeper Access) also has zero inconsistencies but is inherently unfalsifiable from OSINT; the Brickstorm 17-month dwell [E16] and modular deniability architecture [E18] provide circumstantial support.
-
-The sensitivity analysis confirms robustness: even removing the 3-4 most impactful evidence items, H1 retains 13+ inconsistencies.
-
-**Critical gap identified by Premortem**: No intermediate hypothesis for "strategically meaningful partial removal" — the jump from H1 to H2 creates a false binary that biases toward the pessimistic pole.
-
-**Confidence**: MODERATE-HIGH for H2; LOW for H1.
-
-> Full working artifact: [ACH Matrix](working/ach-matrix.md)
-
----
-
-### 3. Cross-Impact Matrix
-
-**Purpose**: Map how key variables interact, identify reinforcing and balancing feedback loops, and determine the highest-leverage intervention points.
-**Process**: Defined 6 variables, populated a 6x6 interaction matrix with direction and magnitude ratings, identified 3 reinforcing loops and 3 balancing loops, analyzed second-order effects.
-
-#### Findings
-
-**Active reinforcing loops (driving degradation)**:
-- **R1 — Regulatory Hollowing** (HIGH risk): Weak political will → reduced compliance → persistent complexity → expanded Chinese access → should increase political will but instead produces deregulation [E02]. This is **pathological** — the expected democratic response cycle is inverted.
-- **R2 — Capacity Erosion** (MED-HIGH): CISA gutted → reduced industry support → industry resists mandates → political will erodes further.
-- **R3 — Adversary Adaptation** (HIGH): Chinese operations steal network diagrams [E09] → increased attack surface → further operations → self-accelerating cycle.
-
-**Dormant/weak balancing loops**:
-- **B1 — Threat-Response** (HIGH potential, DORMANT): Expected democratic response broken at V4→V1 link — FCC deregulated after Salt Typhoon [E02].
-- **B2 — International Pressure** (MEDIUM, weakly active): Joint advisories issued but effectiveness unclear.
-- **B3 — Reputational Pressure** (LOW): Carriers chose PR over remediation [E08].
-
-**Highest-leverage variable**: V1 (Political Will) — drives 4 of 5 other variables but is currently at its weakest state.
-
-**Critical finding**: A **12-18 month vulnerability window** (mid-2026 to 2027) exists where US defensive capacity is at its lowest relative to accelerating threats [E13].
-
-**Confidence**: MODERATE — Systems dynamics well-supported but balancing loop activation probability is uncertain.
-
-> Full working artifact: [Cross-Impact Matrix](working/cross-impact.md)
-
----
-
-### 4. What If? Analysis
-
-**Purpose**: Challenge the conventional analytic line by imagining a specific disruptive event and tracing backward to assess plausibility.
-**Process**: Postulated China activating pre-positioned access during a February 2027 Taiwan Strait crisis, then traced a 5-step backward chain from the event to present conditions.
-
-#### Findings
-
-**Overall plausibility: HIGH.** The backward chain reveals that **every precondition for the scenario is already observable in the evidence base**:
-
-- Step 1 (Present): All conditions set — Salt Typhoon not evicted [E01], CISA depleted [E12], regulations rescinded [E02], adversary operating at scale [E17].
-- Step 2: Regulatory rollback removes forcing function for industry remediation [E02, E07].
-- Step 3: Structural barriers stall remediation — 200K+ exposed devices, only 25% reduction [E05].
-- Step 4: Telecoms declare victory without verification — IOC gap prevents confirmation [E06, E08].
-- Step 5: Geopolitical trigger — the **only genuinely uncertain variable** is the Taiwan crisis itself.
-
-The scenario is consistent with historical precedent (Russia's Viasat attack at onset of Ukraine invasion) and China's documented strategic framing of US telecom networks as a "center of gravity in conflict" [E19].
-
-**Confidence**: HIGH for Steps 1-4 (conditions already exist); MEDIUM for Step 5 (geopolitical trigger uncertain).
-
-> Full working artifact: [What If? Analysis](working/what-if.md)
-
----
-
-### 5. Contrasting Narratives
-
-**Purpose**: Map competing narratives structurally, stress-test each against the evidence base, and identify narrative vulnerabilities.
-**Process**: Decomposed 4 narratives into protagonist/antagonist/crisis/resolution elements, evaluated 10 key claims against evidence, rated resilience.
-
-#### Findings
-
-| Narrative | Resilience | Key Assessment |
-|-----------|-----------|----------------|
-| **Government/Industry: "Making Progress"** | LOW | Carrier eviction claims contradicted by joint advisory [E08]; FCC regulatory rollback undercuts enforcement narrative [E02] |
-| **Critics: "Removal Is Impossible"** | HIGH | Broadest and deepest evidentiary support across multiple independent sources [E01, E03-E07, E14] |
-| **China: "Politically Motivated"** | LOW | Zero factual support; standard diplomatic response with no analytical weight |
-| **Hawks: "Hack Back"** | LOW-MED | Correctly identifies defensive limitations [E10] but core prescription assessed as counterproductive by senior officials [E11] |
-
-**Central finding**: The narrative with the **highest evidential resilience** (critics) has the **least political appeal**, while the narrative with the **most political appeal** (government/industry progress) has the **lowest factual resilience**. This evidence-vs-appeal gap is the central vulnerability in US response.
-
-**Confidence**: HIGH for resilience ratings; assessments well-grounded in evidence stress-testing.
-
-> Full working artifact: [Contrasting Narratives](working/contrasting-narratives.md)
-
----
-
-### 6. Premortem + Structured Self-Critique
-
-**Purpose**: Imagine catastrophic failure of the assessment and work backward to identify weaknesses, then conduct structured self-critique.
-**Process**: Assumed the analysis was proven catastrophically wrong by August 2027, constructed a detailed failure narrative, inventoried 7 weaknesses, performed 5-question self-critique.
-
-#### Findings
-
-**7 weaknesses identified** (3 CRITICAL/HIGH, 4 HIGH/MEDIUM):
-
-| Priority | Weakness | Severity |
-|----------|----------|----------|
-| 1 | False stability assumption on political will — treated current regulatory rollback as durable | CRITICAL |
-| 2 | Linear extrapolation of remediation pace from worst-case 6-month baseline | HIGH |
-| 3 | Missing intermediate hypothesis ("strategic denial") in ACH — created false binary | HIGH |
-| 4 | Underweighted emerging forcing functions (insurance market, automation, allied enforcement) | HIGH |
-| 5 | Treated Chinese offensive resilience as near-absolute — collection gap mistaken for confirmation | MED |
-| 6 | Anchored on OPM precedent without testing applicability under changed conditions | MED |
-| 7 | Temporally and perspectively skewed evidence base (single-day OSINT, pessimistic sources) | MED |
-
-**Most devastating critique**: "This analysis committed the classic intelligence failure of straight-lining current conditions into the future while cataloguing the reasons it might be wrong but not adjusting the conclusion."
-
-**Strongest counter-argument**: The current regulatory trough is self-correcting — any crisis could trigger emergency mobilization (PATRIOT Act precedent); remediation may be more tractable via risk-prioritization of critical chokepoints (Pareto principle); Chinese contractor ecosystem has demonstrated OPSEC vulnerabilities (i-SOON leak).
-
-**Confidence**: HIGH that the weaknesses identified are genuine; MODERATE that they would produce catastrophic failure.
-
-> Full working artifact: [Premortem + Self-Critique](working/premortem.md)
-
----
-
-## Synthesis
-
-### Cross-Technique Agreement
-
-All six techniques agree on the core finding: **complete removal of Chinese state-sponsored access from US networks is not achievable within 2-3 years under current conditions.** The evidence is overwhelming (17/20 ACH inconsistencies for H1), structurally reinforced (3 active escalation loops in Cross-Impact), and narratively dominant (critics' assessment rated HIGH resilience). The What If? analysis demonstrates that all preconditions for a worst-case activation scenario already exist.
-
-### Cross-Technique Tension
-
-The Premortem stands in productive tension with the other five techniques. While it does not dispute the assessment under current conditions, it argues the assessment **underweights the probability and impact of condition change** — specifically:
-
-1. **Political will is modeled as static when it behaves as a step-function** capable of rapid phase transitions (KAC and Cross-Impact both identified this but did not propagate it into the headline finding)
-2. **The ACH lacks a middle-ground hypothesis** between "complete removal" and "managed persistence," forcing the analysis into a pessimistic binary that the evidence registry itself flagged [E20]
-3. **Remediation pace is extrapolated from worst-case conditions**, potentially representing a floor rather than a ceiling
-
-### Integrated Assessment
-
-**Primary judgment (MODERATE confidence)**: Under the current political and institutional trajectory, the US will achieve only incremental progress in reducing Chinese state-sponsored access. The most plausible outcome is managed persistence — learning to detect, contain, and segment rather than fully remove.
-
-**Conditional judgment (MODERATE confidence)**: If a galvanizing crisis triggers political mobilization (estimated 30-40% probability within 18 months), the trajectory could shift significantly. Risk-prioritized remediation of critical chokepoints, combined with mandatory regulation and allied coordination, could achieve "strategic denial" — reducing Chinese access below wartime-useful thresholds without full removal. This intermediate outcome was not formally evaluated in the ACH and represents a gap in the analysis.
-
-**Overall confidence: MODERATE** — adjusted downward from MODERATE-HIGH by the Premortem's valid identification of status quo bias, linear extrapolation risk, and evidence base limitations.
+The forward-looking trajectory bifurcates between two interpretations of structural fragility. The first is **structural collapse**: the compound system of ATT privacy disruption + DMA marketplace fragmentation + whale cohort erosion is already operating (three of four elements active [E58, E53, E60]) and could produce a 25-35% mobile revenue contraction by 2028. The second is **creative destruction**: the same structural forces eliminate the exploitative long tail, producing a smaller ($65-75B) but healthier mobile gaming market with better engagement, broader monetization models, and more sustainable developer economics. The evidence does not clearly favor one interpretation over the other, and this irreducible uncertainty is the central finding of the analysis.
 
 ---
 
@@ -227,11 +23,72 @@ The Premortem stands in productive tension with the other five techniques. While
 
 | # | Judgment | Confidence | Supporting Techniques | Critical Assumptions | Indicators to Watch |
 |---|---------|------------|----------------------|---------------------|-------------------|
-| J1 | Complete removal of Chinese state-sponsored access is not achievable within 2-3 years under current conditions | HIGH | ACH (17/20 inconsistencies), KAC (4 linchpins), Contrasting Narratives (critics HIGH resilience) | Infrastructure complexity persists; political will remains dormant; Chinese capability continues at scale | Verified independent audit confirming eviction; binding federal mandates enacted; exposed devices drop below 50,000 |
-| J2 | Managed persistence is the most plausible outcome — incremental hardening with continued Chinese presence | MODERATE | ACH (H2 = 0 inconsistencies), Cross-Impact (reinforcing loops dominate), KAC (6 supported assumptions) | Current political trajectory continues; telecoms maintain voluntary compliance posture; CISA rebuilds slowly | Rhetorical shift from "removal" to "resilience"; permanent public-private threat sharing created; gradual device reduction |
-| J3 | A 12-18 month window of peak vulnerability exists (mid-2026 to 2027) | MODERATE-HIGH | Cross-Impact (SO5), What If? (HIGH plausibility), KAC (Linchpin 2 volatility) | CISA rebuilding proceeds slowly; no mandatory regulation enacted; Chinese operations continue advancing | CISA vacancy rate trajectory; new Chinese campaigns discovered; Taiwan Strait activity levels |
-| J4 | Political will is the highest-leverage variable but currently at its weakest state | HIGH | Cross-Impact (V1 drives 4/5 variables), KAC (Linchpin 2 = #1 fault line), Premortem (Weakness #1) | Current deregulatory posture is not permanent | FCC regulatory reversal; Congressional cybersecurity legislation; emergency executive action |
-| J5 | The publicly known campaigns may not represent the full extent of Chinese access (H5 unfalsifiable) | LOW-MODERATE | ACH (H5 = 0 inconsistencies), What If? (Step 4 false confidence), Premortem (Weakness #5) | OSINT captures majority of threat landscape | Discovery of campaigns with >24-month dwell; novel implants in previously "cleared" networks; IC assessment of access scope |
+| J1 | Mobile gaming expanded the total gaming market complementarily, adding approximately $80-100B in market size without causing proportional declines in console/PC revenue. **Stable across v1-v3** [E36, E37, E39]. | Moderate | ACH (H1 historical component), KAC (Linchpin 1: Supported), Counterfactual, Contrasting Narratives | Complementarity holds during contraction (untested) [PRIOR-v1: kac] | Console/PC revenue trend if mobile contracts |
+| J2 | Mobile's current trajectory is structural decline, not normal maturation. Revenue stability masks engagement contraction: retention declining YoY [E56], market declining outside top 50 [E57], mobile overtaken by non-game apps in spending [E59]. **Upgraded from v2** [PRIOR-v1: kac] [PRIOR-v2: kac, what-if, premortem] | Moderate-Low | KAC v3 (Linchpin 3: upgraded to S), ACH v3 (H1 least plausible under equal weighting), What-If v3 (Medium-High plausibility), Premortem v3 | Revenue is a valid proxy (Unsupported); engagement metrics not compositionally biased | Revenue growth outside top 50; D1/D7 retention trends; non-game vs game spending gap |
+| J3 | The free-to-play model was a genuine amplifier of mobile's market expansion but created structural trade-offs now materializing as the mechanism of market concentration. **Refined from v2** [PRIOR-v1: counterfactual] | High | Counterfactual ($82B actual vs $40-55B counterfactual), KAC (Linchpin 2), ACH v3 (premium outperforming F2P [E62]) | F2P effects disentanglable from hardware ubiquity | App store fee reductions; premium model viability; developer survival rates |
+| J4 | Mobile gaming's geographic and demographic impact is real but overstated by headline figures. The global picture is bifurcated: mature markets in contraction, emerging markets still growing. **Upgraded from v2** -- bifurcation now most plausible single hypothesis (H4 ranked 1st in combined ACH). | Moderate | ACH v3 (H4 ranked 1st), Contrasting Narratives, KAC (emerging market evidence [E30, E32]) | Emerging markets follow APAC trajectory (Unsupported); engagement evidence has geographic bias | MENA/LATAM mobile revenue growth; emerging market ARPU trends |
+| J5 | Platform convergence will eventually erode mobile's standalone market identity, but remains a 2028-2030+ phenomenon. **Unchanged across v1-v3.** | Low | ACH (H3), What-If, Contrasting Narratives (LOW resilience) | Cloud gaming achieves mainstream viability | Cloud gaming market share; cross-platform player percentage |
+| J6 | The mobile gaming developer ecosystem is in structural contraction. 45K jobs lost, 26% of EU devs laid off, 30+ studios closed, salaries fell ~50% [E60]. **Strengthened from v2** [PRIOR-v2: kac, premortem] | Moderate | KAC v3 (Linchpin 6: Unsupported, strengthened), What-If v3 (content drought catalyst rated HIGH), Premortem v3 | Developer stress separable from cyclical correction; creative destruction alternative not fully tested | Studio closure rate; indie developer growth; content pipeline metrics |
+| J7 | The compound system of ATT + DMA + whale erosion is already operating and self-reinforcing. Three of four elements are active. This is the current state, not a future risk. **New in v3.** | Moderate-Low | What-If v3, KAC v3 (Linchpin 7: Unsupported), Premortem v3 | ATT effects permanent [E58]; dampening forces insufficient | CPI trends; DMA marketplace adoption; whale spending trajectory |
+| J8 | The forward trajectory bifurcates between structural collapse and creative destruction. The evidence does not clearly favor one over the other. **New in v3.** | Low | Premortem v3 (both interpretations viable), What-If v3 (collapse Medium-High), ACH v3 (composite required) | Creative destruction requires surviving firms to improve, not just extract | Top-50 turnover rate; new game breakout frequency; player satisfaction metrics |
+
+### Confidence Level Definitions
+
+| Level | Meaning | Criteria |
+|-------|---------|----------|
+| **High** | Well-corroborated by multiple independent sources; key assumptions well-supported | 3+ independent sources; linchpin assumptions rated Supported |
+| **Moderate** | Plausibly supported but with notable gaps; some assumptions unverified | 1-2 sources with partial corroboration; some assumptions rated Correct-with-Caveats |
+| **Moderate-Low** | Evidence supports but with significant qualifications; key assumptions under stress | Multiple sources but material caveats; at least one linchpin Unsupported |
+| **Low** | Fragmented evidence; significant assumptions unsupported; alternative explanations viable | Single source or uncorroborated; linchpin assumptions rated Unsupported |
+
+> Per ICD 203 Standard 2: Analysts must express and explain uncertainties associated with major analytic judgments.
+
+---
+
+## Analytical Framework
+
+How each technique contributed to the assessment. Weights reflect relative influence on the key judgments -- not precision scores.
+
+| Technique | Role | Weight | Direction | Key Contribution |
+|-----------|------|--------|-----------|-----------------|
+| Key Assumptions Check (v3) | Diagnostic | Primary | Challenging | Operationalized revenue-as-proxy diagnosis with parallel non-revenue assessment; upgraded stagnation from C to S based on five independent non-revenue indicators |
+| Analysis of Competing Hypotheses (v3) | Diagnostic | Primary | Challenging | Demonstrated H1 drops from most plausible to least plausible when engagement evidence weighted equally -- the single most consequential finding of iteration 3 |
+| What-If Analysis (v3) | Challenge | Primary | Challenging | Modeled ATT + DMA + whale erosion as a single reinforcing system; found three of four elements already in effect |
+| Counterfactual Reasoning | Foresight | Supporting | Confirming | Confirmed F2P roughly doubled mobile's market contribution ($82B vs $40-55B counterfactual); established inherent scale-sustainability trade-off |
+| Contrasting Narratives | Challenge | Supporting | Mixed | Validated primary expansion narrative historically (HIGH resilience) while exposing high-risk vulnerabilities in "3 billion gamers" inflation and whale exploitation extrapolation |
+| Premortem (v3) | Challenge | Qualifying | Mixed | Upgraded structural fragility from counter-argument to viable alternative thesis with two branches (collapse vs creative destruction); identified confirmation bias in evidence collection |
+
+**Note**: Three techniques are Challenging (KAC v3, ACH v3, What-If v3). The preponderance of Challenging findings reflects the iteration's targeted scope (structural fragility flags) and is consistent with the overall confidence downgrade to Low.
+
+---
+
+## Synthesis
+
+### Cross-Technique Agreement
+
+All six techniques converge on the core *historical* finding: mobile gaming expanded the total gaming market rather than cannibalizing existing segments. This has been stable across all three iterations. The KAC found complementarity "Supported" [E36, E37, E39]. The ACH ranked it first under revenue-only evidence. The Counterfactual confirmed additive market effects. This convergence provides the analysis's highest-confidence conclusion (J1: Moderate).
+
+All v3 techniques also converge on the diagnosis that revenue-only assessment systematically overstates mobile gaming's current health. The KAC v3 operationalized this with a parallel non-revenue assessment. The ACH v3 demonstrated the diagnostic consequences (H1 inversion). The What-If v3 showed the compound system is already operating. The Premortem v3 validated the structural fragility thesis. This convergence supports the confidence downgrade to Low for forward-looking assessments.
+
+### Cross-Technique Disagreement
+
+1. **Collapse vs. creative destruction** [NEW in v3]: The What-If v3 models compound system leading to 25-35% revenue contraction (collapse, Medium-High plausibility). The Premortem v3 identifies an equally plausible alternative: the same forces produce a smaller but healthier market (creative destruction). The Counterfactual supports the creative destruction reading. Resolution: Both interpretations presented as the primary forward-looking uncertainty (J8). The evidence does not provide a basis for choosing between them.
+
+2. **Geographic scope of engagement evidence** [NEW in v3]: The KAC v3 and ACH v3 relied on engagement metrics [E56, E57, E60] that are disproportionately Western/mature-market. The Premortem v3 flagged this: structural fragility may be geographically bounded. Regional data [E61] shows the Middle East leads in retention. Resolution: J4 now acknowledges bifurcation explicitly and flags geographic bias.
+
+3. **Compositional effects in engagement metrics** [NEW in v3]: The Premortem v3 identified that declining aggregate retention [E56] may partly reflect market cleaning rather than genuine engagement erosion. The KAC v3 accepted decline at face value. Resolution: Flagged as interpretive uncertainty in J2; the scale (11,600 games, 1.48B MAU) limits the compositional explanation.
+
+### Integrated Assessment
+
+Mobile gaming's historical contribution to gaming marketplace growth is well-established and not in dispute. The critical question is what is happening now and what comes next.
+
+The v3 analysis produced a fundamental revision: the "complementary expansion with normal maturation" thesis (H1) is now the least plausible explanation when engagement evidence is weighted equally with revenue evidence. This is not because H1 was wrong about the past but because it is wrong about the present. "Normal maturation" predicts revenue plateau with stable engagement; what the evidence shows is revenue plateau with declining engagement.
+
+No single hypothesis replaces H1. The evidence points to a composite: mobile gaming historically expanded the market (H1 correct about past) through a structurally fragile model (H2 correct about current dynamics) that is now bifurcating by geography (H4) while the platform category begins to dissolve (H3).
+
+The forward trajectory depends on whether the compound system (ATT + DMA + whale erosion, three of four elements active) produces collapse or creative destruction. Both are more plausible than the "normal maturation" framing.
+
+**Overall confidence**: Low (downgraded from Moderate-Low in v2, Moderate in v1).
 
 ---
 
@@ -239,62 +96,239 @@ The Premortem stands in productive tension with the other five techniques. While
 
 ### Assumption Audit
 
-The analysis rests on several unstated premises identified through the Premortem:
-- **Current political trajectory is durable** — treated as stable when KAC and Cross-Impact both flagged it as the most volatile variable
-- **Remediation pace is linear** — extrapolated from a single 6-month data point measured under worst-case institutional conditions [E05]
-- **Chinese offensive capability is effectively invulnerable** — no challenging evidence found, but this may reflect collection bias rather than confirmed resilience
-- **OPM precedent is applicable** — cited across all techniques without testing whether changed conditions (mandatory regulation + allied coordination + offensive pressure) would produce different outcomes
+1. **Engagement metrics accurately represent market health** (KAC v3, ACH v3) -- The analysis pivoted on non-revenue metrics in v3, but declining aggregate retention [E56] may partly reflect compositional effects. [Severity: HIGH -- affects J2, J7, J8]
 
-> **Optional follow-up**: Re-run the analysis with an explicit "political activation" branch scenario. Construct two conditional assessments — one under continued current trajectory, one under emergency mobilization — and assign probabilities to each branch. This would transform the single-point estimate into a probability-weighted range that better captures political volatility.
+2. **Revenue validly proxies market health** (all techniques) -- Formally Unsupported since v2. Now operationalized: every non-revenue metric contradicts revenue stability [E57]. [Severity: HIGH -- affects all judgments] [PRIOR-v1: kac] [PRIOR-v2: kac]
+
+3. **The compound system is self-reinforcing without sufficient dampening** (What-If v3) -- Three dampening forces underweighted: AI-assisted UA, DMA fee reductions, web stores. [Severity: HIGH -- affects J7, J8]
+
+4. **Complementarity is bidirectional under stress** (ACH, What-If) -- Academic evidence [E36, E37] demonstrated complementarity during growth. Untested under contraction. [Severity: MEDIUM -- affects J1] [PRIOR-v1: kac]
+
+5. **Emerging market developer economics mirror mature market patterns** (KAC v3) -- No evidence on developer economics in growth regions. Ecosystem may be relocating, not contracting. [Severity: MEDIUM -- affects J4, J6]
 
 ### Evidence Balance
 
-Evidence skews ~4:1 pessimistic (16 items supporting difficulty/impossibility vs. 3-4 noting emerging positive signals). This imbalance is **partially justified** by source quality (pessimistic items are better-evidenced) but **also reflects collection bias**: single-day OSINT from Western sources with structural pessimistic framing. The evidence registry acknowledged this but downstream techniques did not adequately adjust.
-
-> **Optional follow-up**: Conduct a targeted "red collection" round specifically seeking evidence that challenges the pessimistic consensus — carrier remediation progress reports, cybersecurity investment disclosures, insurance market shifts, DARPA automation program updates, and allied coordination outcomes. If 5+ items with Medium or High reliability are found supporting accelerated remediation, re-evaluate J1 and J2 confidence levels.
+Evidence supporting expansion: ~15 items. Evidence supporting structural fragility: ~20 items after v3 additions. Ratio shifted from ~2:1 favoring expansion (v1) to ~1:1.3 favoring structural concerns. All 7 new v3 items confirmed fragility -- potential confirmation bias explicitly acknowledged [premortem.md]. The bias reflects the targeted search scope (three HIGH structural flags), not necessarily analytical error, but limits confidence in the v3 downgrade.
 
 ### Confidence Calibration
 
-Initial MODERATE-HIGH confidence was **adjusted to MODERATE** after the Premortem identified status quo anchoring as a systematic bias. The analysis catalogued reasons the assessment might be wrong (KAC failure conditions, Cross-Impact balancing loops, Contrasting Narratives' institutional momentum) without propagating those into the headline finding — a form of "acknowledging uncertainty without acting on it."
-
-> **Optional follow-up**: Re-run the ACH matrix adding hypothesis H1.5 ("Strategic denial — Chinese persistent access reduced below wartime-useful threshold without full removal"). Evaluate all 20 evidence items against H1.5. If H1.5 collects fewer inconsistencies than H2, the headline assessment should be revised upward and the confidence recalibrated accordingly.
+Confidence spans High (J3), Moderate (J1, J4), Moderate-Low (J2, J6, J7), and Low (J5, J8). Overall: Low. The v3 downgrade is driven by a structural finding (H1 inversion under equal weighting), not incremental evidence accumulation. Risk of overcorrection exists (creative destruction alternative, if correct, would warrant Moderate-Low). The inability to discriminate between collapse and creative destruction justifies Low.
 
 ### Strongest Counter-Argument
 
-The current regulatory trough and institutional degradation represent a political nadir, not a steady state. US cybersecurity policy operates in crisis-driven cycles. Any galvanizing event — a leaked classified briefing, visible infrastructure disruption, Taiwan escalation — could produce emergency legislation within weeks (PATRIOT Act precedent). Simultaneously, risk-prioritized remediation focusing on critical chokepoints (perhaps 15-20% of infrastructure carrying 80% of strategic risk) could achieve strategically meaningful denial faster than the "patch everything" frame implies. The Premortem estimates 30-40% probability of political activation within 18 months.
+The mobile gaming market is undergoing creative destruction, not structural collapse, and the engagement metrics prove it. The top 50 games captured 80% of revenue growth [E57] because they are genuinely better products. The 24% turnover in the top 50 shows the market rewards innovation [E57]. The 45K jobs lost [E60] represent elimination of the exploitative long tail. Premium games outperforming F2P on acquisition [E62] shows evolution toward healthier models. DMA fee reductions will improve margins. The analysis confuses the death of the old model with the death of mobile gaming.
 
-> **Optional follow-up**: Research historical remediation acceleration under crisis conditions — compare PCI-DSS implementation timelines post-TJX breach, NERC CIP enforcement effects on power grid security, and SOX compliance velocity post-Enron. If historical precedents show >3x acceleration under mandatory regimes, model a non-linear remediation scenario and assess whether "strategic denial" becomes plausible within 18-24 months.
+This counter-argument was upgraded from v2's "strongest counter-argument" to a "viable alternative thesis" in v3 [premortem.md].
 
 ### Missing Perspectives
 
-The following domains represent blind spots where no evidence was collected. Each gap has a potential impact on the assessment and a recommended collection action.
+1. **Emerging market developers**: No evidence on developer economics in India, MENA, LATAM, or Southeast Asia.
+2. **Advertising ecosystem intermediaries**: No ad network operator perspectives on post-ATT adaptation.
+3. **Regulatory enforcement**: No government regulator perspectives on loot box legislation timing.
+4. **Platform holder financials**: No Apple or Google gaming-specific revenue disclosures.
+5. **Adaptation and innovation evidence**: No systematic search for mobile gaming innovation or successful new launches.
 
-| Gap | Impact on Assessment | Recommended Collection Action |
-|-----|---------------------|-------------------------------|
-| **Telecom industry internal remediation** — no carrier statements on progress or investment | May understate actual remediation progress; carrier actions are invisible to external observers | Search carrier SEC filings (10-K cybersecurity risk disclosures), earnings call transcripts, and industry group publications (USTelecom, CTIA) for investment signals |
-| **Cyber insurance market** — potentially powerful forcing function not in evidence base | Insurance-driven compliance pressure could accelerate remediation independent of government regulation (Premortem identified this as a key missed variable) | Search for Marsh McLennan, Aon, and Swiss Re cyber insurance market reports; check for telecom-specific underwriting changes post-Salt Typhoon |
-| **Defense industrial base** — CrowdStrike/Mandiant remediation outcomes unknown | Incident response firms have direct visibility into actual remediation progress across carrier networks | Review CrowdStrike annual threat reports, Mandiant M-Trends, and Palo Alto Unit 42 publications for Salt Typhoon-specific remediation data |
-| **Chinese strategic calculus** — beyond diplomatic denial, no analysis of conditions under which China might reduce operations | Assessment may overstate adversary persistence by ignoring potential Chinese restraint under specific conditions | Search Chinese strategic studies journals, PLA-affiliated publications, and academic analyses of Chinese cyber doctrine for signaling about operational ceilings |
-| **Allied coordination effectiveness** — Five Eyes outcomes not documented | May understate the impact of multilateral pressure; allied enforcement (EU CRA) could create compliance cascading effects | Review Five Eyes joint advisories, NATO CCDCOE publications, and EU Agency for Cybersecurity (ENISA) reports for coordination effectiveness data |
-| **Classified intelligence** — OSINT-only analysis cannot assess full scope of compromise or remediation | Likely understates both the threat (deeper access unknown) and the response (classified defensive programs invisible) | This gap cannot be closed from OSINT; flag for analysts with appropriate clearances to cross-reference |
-| **DARPA/defense automation** — AI-assisted vulnerability scanning and patching programs not evaluated | May understate the pace of future remediation if automated tools reduce the human labor bottleneck | Search DARPA program announcements (Cyber Grand Challenge follow-ons), DoD CDAO publications, and defense contractor press releases |
+### Internal Consistency
 
-> **Recommended next iteration**: Prioritize collection on the top 3 gaps (telecom industry, cyber insurance, defense industrial base) within 90 days. These are the most likely to contain evidence that would challenge the pessimistic baseline and are accessible via OSINT. Schedule a reassessment after collection is complete.
+- ACH v3 rankings (H4 first, H1 last under combined weighting) consistently reflected across synthesis, executive summary, and judgments table.
+- KAC v3 revenue-as-proxy diagnosis operationalized across techniques (resolved from v2).
+- All referenced evidence IDs exist in the evidence registry.
+- Confidence levels consistent across technique findings and integrated assessment.
+- Remaining tension: Premortem v3's creative destruction alternative presented alongside What-If v3's collapse scenario without resolution. Characterized as irreducible uncertainty.
+
+### Analytical Bias Check
+
+1. **Confirmation bias in v3 evidence collection** [HIGH -- NEW]: All 7 new items confirmed structural fragility. Search queries targeted structural problems. The Premortem v3 flagged this explicitly.
+
+2. **Anchoring** [MEDIUM -- evolved]: Monotonically decreasing confidence trajectory (Moderate to Moderate-Low to Low) warrants scrutiny as potential overcorrection. [PRIOR-v1: bias check] [PRIOR-v2: bias check]
+
+3. **Authority bias on academic studies** [MEDIUM -- unchanged]: E36 and E37 retain significant weight but pre-date 2023-2025 stagnation. [PRIOR-v1: bias check] [PRIOR-v2: bias check]
+
+4. **Remediation-direction bias** [MEDIUM -- carries from v2]: 18 of 18 new evidence items across v2 and v3 challenged the conventional line. [PRIOR-v2: bias check]
+
+5. **Geographic bias** [MEDIUM -- NEW]: Engagement evidence disproportionately Western. Regional data [E61] shows different patterns.
 
 ---
 
 ## Monitoring Plan
 
-The analysis identifies **5 key judgments** requiring ongoing monitoring. The most time-sensitive is J3 (12-18 month vulnerability window), which creates urgency for near-term indicator tracking. The highest-leverage monitoring target is J4 (political will), where a single event could cascade through the entire assessment.
+Top indicators to track:
 
-**Top indicators to watch**:
-1. **Censys exposed device count** — benchmark: 200,000+; trigger: drop below 100,000 in 6 months
-2. **CISA vacancy rate** — benchmark: ~40%; trigger: restoration below 15% or failure to improve by FY2026 end
-3. **Congressional/FCC regulatory action** — benchmark: voluntary framework; trigger: binding mandates enacted
-4. **New Chinese campaigns discovered** — benchmark: Brickstorm (Dec 2025); trigger: novel implant families in "cleared" networks
-5. **Taiwan Strait activity** — benchmark: elevated; trigger: military exercises or diplomatic crisis escalation
+1. **Revenue growth outside top 50 mobile games**: Currently declining [E57]. Source: Sensor Tower / Deconstructor of Fun.
+2. **D1/D7/D28 retention trends**: Currently declining [E56]. Source: GameAnalytics.
+3. **Non-game vs game mobile spending gap**: Games overtaken ($81.8B vs $85B) [E59]. Source: Sensor Tower.
+4. **Developer layoff/closure rate**: 45K lost through mid-2025 [E60]. Source: GamesIndustry.biz.
+5. **iOS CPI trends by genre**: Strategy/RPG at $5.5-$6 [E52]. Source: AppsFlyer, Mapendo.
 
 > Full monitoring plan: [Monitoring Plan](monitoring-plan.md)
+
+---
+
+## Problem Framing
+
+**Original Statement**: Analyze the impact of mobile gaming on the growth of the gaming marketplace.
+
+**Reframed Statement**: What role has mobile gaming played in shaping the size, composition, demographics, and competitive dynamics of the global gaming marketplace -- and what are the competing interpretations of that impact?
+
+The reframing proved essential across three iterations: the original question's growth assumption was correct historically but increasingly misleading for the current trajectory. The v3 conclusion that a composite explanation is required depends on the reframing's broader scope.
+
+---
+
+## Evidence Base
+
+The analysis drew on 62 evidence items across three iterations: 1 from conversation context, 43 from OSINT (iteration 1), 11 from OSINT (iteration 2, remediation), and 7 from OSINT (iteration 3, user-requested).
+
+**Source breakdown:**
+- **High reliability** (36 items): Newzoo, BCG, Sensor Tower, GamesIndustry.biz, academic journals, WEF, Apple, Business of Apps, GameAnalytics, Deconstructor of Fun, Mobile Dev Memo, TechCrunch, Wikipedia
+- **Medium reliability** (17 items): MAF, Global Games Forum, SQ Magazine, TekRevol, Naavik, AInvest/Bain, Mapendo, Cometly, MDPI
+- **Low reliability** (3 items): Wayline.io, Medium (Steve Owens), AppVertices
+- **Analytical** (6 items): Cross-references to working artifacts
+
+**Deception indicators**: Three sources flagged in v1 (E27, E11, E34) remain flagged. No new deception indicators.
+
+**Key gaps**: Emerging market developer economics, advertising intermediary adaptation, regulatory enforcement intent, platform holder financials, adaptation/innovation evidence.
+
+> Full evidence details: [Evidence Registry](evidence-registry.md)
+
+---
+
+## Revision History
+
+### Judgment Revisions
+
+| Judgment | v1 | v2 | v3 (Current) | Driver of Change |
+|----------|----|----|--------------|------------------|
+| J1 (Complementary expansion) | Moderate | Moderate | Moderate | Historical evidence unchallenged [E36, E37, E39] |
+| J2 (Maturation vs structural) | Moderate; ambiguous | Moderate-Low; shifted structural | Moderate-Low; structural confirmed (5 non-revenue indicators) | v3: E56, E57, E59, E60, E58 |
+| J3 (F2P as amplifier) | High; trade-offs noted | High; materializing | High; mechanism of concentration | v3: E57 (top-50 concentration), E62 (premium outperforming F2P) |
+| J4 (Geographic/demographic) | Moderate | Moderate | Moderate; bifurcation most plausible single hypothesis | v3: ACH combined ranking; E61 regional divergence |
+| J5 (Platform convergence) | Low | Low | Low | No new evidence across iterations |
+| J6 (Developer ecosystem) | Not assessed | Moderate-Low (new) | Moderate (strengthened) | v3: E60 (45K jobs, 29% higher); studios closing pre-release |
+| J7 (Compound system) | Not assessed | Not assessed | Moderate-Low (new) | v3: E58, E53, E60 -- three of four elements active |
+| J8 (Collapse vs creative destruction) | Not assessed | Not assessed | Low (new) | v3: Premortem upgraded creative destruction to viable alternative |
+| ACH H1 ranking | Rank 1 | Rank 1 (not re-run) | Rank 5 (least plausible under equal weighting) | v3: 8 engagement inconsistencies |
+| Overall confidence | Moderate | Moderate-Low | Low | H1 inversion; composite required; collapse vs creative destruction undetermined |
+
+### Evidence Delta
+
+| Iteration | New Items | ID Range | Collection Focus |
+|-----------|-----------|----------|-----------------|
+| 1 | 43 | E02-E43 | Broad: market sizing, academic research, industry reporting, demographics, emerging markets |
+| 2 | 11 | E45-E55 | Remediation: retention, player welfare, developer ecosystem, UA/advertising, regulatory |
+| 3 | 7 | E56-E62 | User-requested: engagement benchmarks, market concentration, ATT compound effects, spending displacement, developer contraction, premium vs F2P |
+
+### Findings Comparison
+
+**What strengthened**: Structural fragility progressively validated (v1: possibility; v2: supporting evidence; v3: operationalized with H1 inversion). Compound system modeled as already operating.
+
+**What weakened**: "Normal maturation" thesis (H1) progressively undermined -- least plausible under equal weighting in v3. BCG "recovery from slump" framing [E14] increasingly contradicted by non-revenue evidence.
+
+**What is new in v3**: H1 inversion. Compound system model. Mobile gaming losing dominant mobile spending category [E59]. Creative destruction as viable alternative thesis. Composite explanation requirement. 45K jobs with comprehensive data [E60].
+
+**What is unchanged**: Historical complementarity (J1). Platform convergence timeline (J5). F2P as genuine amplifier (J3). Academic evidence [E36, E37].
+
+> Prior iteration reports: [report.v1.md](report.v1.md) | [report.v2.md](report.v2.md)
+
+---
+
+## Technique Detail
+
+### Key Assumptions Check (v3)
+
+**Purpose**: Operationalize revenue-as-proxy diagnosis, assess engagement evidence, evaluate ATT as compound system element.
+**Process**: Re-evaluated 14 assumptions against 7 new evidence items. Constructed parallel non-revenue assessment. Added Linchpin 7. Upgraded Linchpin 3 from C to S.
+
+#### Findings
+
+Seven linchpin assumptions (up from six in v2):
+1. **Complementarity** (Supported) -- unchanged [E36, E37, E39]
+2. **F2P essential** (C) -- essential historically, now mechanism of concentration [E57, E62]
+3. **Stagnation structural** (UPGRADED to S) -- five independent non-revenue confirmations
+4. **Platform convergence** (Unsupported) -- unchanged
+5. **Revenue as proxy** (Unsupported, operationalized) -- every non-revenue lens contradicts stability
+6. **Developer ecosystem** (Unsupported, strengthened) -- 45K jobs, 26% EU devs [E60]
+7. **UA infrastructure** (NEW -- Unsupported, linchpin) -- ATT broke feedback loop permanently [E58]
+
+**Confidence**: Moderate-Low
+
+> Full working artifact: [Key Assumptions Check v3](working/assumptions.md)
+
+---
+
+### Analysis of Competing Hypotheses (v3)
+
+**Purpose**: Re-run ACH with engagement evidence to operationalize revenue-as-proxy diagnosis.
+**Process**: Dual diagnosticity matrices (revenue-weighted, engagement-weighted) and combined equal-weight assessment.
+
+#### Findings
+
+Revenue-only: H1 ranked 1st (1 inconsistency). Engagement-only: H1 ranked last (8 inconsistencies). Combined: **H4 ranked 1st** (3 inconsistencies), H1 ranked last (9 inconsistencies). No single hypothesis suffices; composite explanation required.
+
+**Confidence**: Low -- conclusions highly sensitive to metric choice.
+
+> Full working artifact: [Analysis of Competing Hypotheses v3](working/ach-matrix.md)
+
+---
+
+### What-If Analysis (v3)
+
+**Purpose**: Model ATT + DMA + whale erosion as a single reinforcing system.
+**Process**: System architecture with causal links. Two new catalysts. Compound probability assessment.
+
+#### Findings
+
+Plausibility UPGRADED to Medium-High (from Medium in v2). Three of four elements already active [E58, E53, E60]. Scenario no longer requires future catalysts -- existing loop continues. Weakest link: mobile contraction propagating to console/PC.
+
+**Confidence**: Medium-High plausibility for full scenario.
+
+> Full working artifact: [What-If Analysis v3](working/what-if.md)
+
+---
+
+### Contrasting Narratives
+
+**Purpose**: Test dominant expansion narrative against three competing frameworks.
+**Process**: Four narrative frameworks stress-tested. Run in v1 only.
+
+#### Findings
+
+Primary narrative HIGH historical resilience. Extractive narrative MEDIUM (strengthened by v2/v3 evidence). Convergence LOW. Bifurcation MEDIUM (upgraded by ACH v3). Four convergence points identified.
+
+**Confidence**: Moderate.
+
+> Full working artifact: [Contrasting Narratives](working/narratives.md)
+
+---
+
+### Counterfactual Reasoning
+
+**Purpose**: Test whether F2P was essential to mobile's market expansion.
+**Process**: Minimal counterfactual (Apple maintains pre-2009 paid-app IAP policy). Run in v1 only.
+
+#### Findings
+
+Counterfactual mobile: ~$40-55B (vs $82B actual). Counterfactual total market: ~$140-160B (vs $189B). F2P roughly doubled contribution. Counterfactual market healthier but smaller. Console/PC causally independent. V3 evidence strengthens insight: trade-off now materializing [E57, E60].
+
+**Confidence**: Moderate (quantitative); High (structural insight).
+
+> Full working artifact: [Counterfactual Reasoning](working/counterfactual.md)
+
+---
+
+### Premortem (v3)
+
+**Purpose**: Assume v3 assessment catastrophically wrong by September 2027.
+**Process**: Failure narrative, five weaknesses, structured self-critique, structural fragility upgrade.
+
+#### Findings
+
+Five weaknesses (3 High, 2 Medium): compositional effects in engagement metrics, dampening forces underweighted, geographic bias, AI app spending cyclicality, creative destruction undertested. Structural fragility upgraded from counter-argument to viable alternative thesis with two branches.
+
+Strongest self-critique: "You searched for problems. Not one of your seven new items supported the conventional line."
+
+**Confidence**: High for weakness identification.
+
+> Full working artifact: [Premortem v3](working/premortem.md)
 
 ---
 
@@ -302,27 +336,59 @@ The analysis identifies **5 key judgments** requiring ongoing monitoring. The mo
 
 | Ref | Source | Retrieved | Reliability | Method |
 |-----|--------|-----------|-------------|--------|
-| [E01] | [Is America's Cyber Weakness Self-Inflicted? — War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E02] | [Is America's Cyber Weakness Self-Inflicted? — War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E03] | [Is America's Cyber Weakness Self-Inflicted? — War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E04] | [Why telecoms may never purge Salt Typhoon — CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E05] | [Why telecoms may never purge Salt Typhoon — CyberScoop/Censys](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E06] | [Why telecoms may never purge Salt Typhoon — CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | Medium | OSINT |
-| [E07] | [Why telecoms may never purge Salt Typhoon — CyberScoop/U. Florida](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E08] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon — Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E09] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon — Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E10] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon — Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E11] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon — Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E12] | [CISA plans hiring spree to rebuild depleted ranks — Cybersecurity Dive](https://www.cybersecuritydive.com/news/cisa-hiring-workforce-strategy/805733/) | 2026-02-15 | High | OSINT |
-| [E13] | [CISA plans hiring spree to rebuild depleted ranks — Cybersecurity Dive](https://www.cybersecuritydive.com/news/cisa-hiring-workforce-strategy/805733/) | 2026-02-15 | High | OSINT |
-| [E14] | [China's Typhoon hackers have changed the rules — SC World](https://www.scworld.com/perspective/chinas-typhoon-hackers-have-changed-the-rules-of-cybersecurity) | 2026-02-15 | Medium | OSINT |
-| [E15] | [China's Typhoon hackers have changed the rules — SC World](https://www.scworld.com/perspective/chinas-typhoon-hackers-have-changed-the-rules-of-cybersecurity) | 2026-02-15 | Medium | OSINT |
-| [E16] | [Chinese-linked hackers use Brickstorm backdoor — Reuters](https://www.reuters.com/world/china/chinese-linked-hackers-use-back-door-potential-sabotage-us-canada-say-2025-12-04/) | 2026-02-15 | High | OSINT |
-| [E17] | [Inside Salt Typhoon — DomainTools](https://dti.domaintools.com/research/inside-salt-typhoon-chinas-state-corporate-advanced-persistent-threat) | 2026-02-15 | High | OSINT |
-| [E18] | [Inside Salt Typhoon — DomainTools](https://dti.domaintools.com/research/inside-salt-typhoon-chinas-state-corporate-advanced-persistent-threat) | 2026-02-15 | High | OSINT |
-| [E19] | [Advancing IP Interconnection — FDD](https://www.fdd.org/analysis/2025/12/16/advancing-ip-interconnection/) | 2026-02-15 | High | OSINT |
-| [E20] | Analyst-provided framing note | 2026-02-15 | N/A | USER |
+| [E02] | [Newzoo: Global games market $188.8B](https://newzoo.com/resources/blog/global-games-market-to-hit-189-billion-in-2025) | 2026-03-26 | High | OSINT |
+| [E03] | [BCG: Video Gaming Report 2026](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E04] | [BCG: App store fee disruption](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E05] | [BCG: Cloud gaming projection](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E06] | [Newzoo: Console vs mobile CAGR](https://newzoo.com/resources/blog/global-games-market-to-hit-189-billion-in-2025) | 2026-03-26 | High | OSINT |
+| [E11] | [Wayline.io: Predatory monetization](https://www.wayline.io/blog/predatory-monetization-mobile-gaming) | 2026-03-26 | Low | OSINT |
+| [E12] | [Mother Jones: Whale economics](https://www.motherjones.com/media/2023/04/asphalt-video-games-microtransactions-loot-boxes-in-game-purchases-capitalism/) | 2026-03-26 | High | OSINT |
+| [E13] | [Medium (Owens): Platform fee coercion](https://medium.com/@steveo98501/fighting-back-against-mobile-gamings-microtransaction-trap-37fafbfb7597) | 2026-03-26 | Low | OSINT |
+| [E14] | [BCG: Industry recovery](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E15] | [Sensor Tower: Retention shift](https://sensortower.com/report/state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E16] | [GamesIndustry.biz: Mobile +1%](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E18] | [Sony shut Dark Outlaw Games](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E19] | [Epic 1,000+ layoffs](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E20] | [UK mobile employment -12.9%](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E25] | [TekRevol: Mobile revenue stats](https://www.tekrevol.com/blogs/mobile-game-revenue-statistics/) | 2026-03-26 | Medium | OSINT |
+| [E26] | [Sensor Tower: Mobile $82B](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E28] | [MAF: Gender parity](https://maf.ad/en/blog/mobile-gamers-demographics/) | 2026-03-26 | Medium | OSINT |
+| [E29] | [MAF: 50% spend nothing](https://maf.ad/en/blog/mobile-gamers-demographics/) | 2026-03-26 | Medium | OSINT |
+| [E30] | [Global Games Forum: Emerging markets](https://www.globalgamesforum.com/features/by-the-numbers-the-markets-driving-mobile-gamings-next-boom-in-2025) | 2026-03-26 | Medium | OSINT |
+| [E31] | [LATAM CPI](https://www.globalgamesforum.com/features/by-the-numbers-the-markets-driving-mobile-gamings-next-boom-in-2025) | 2026-03-26 | Medium | OSINT |
+| [E32] | [MENA 18% YoY](https://www.globalgamesforum.com/features/by-the-numbers-the-markets-driving-mobile-gamings-next-boom-in-2025) | 2026-03-26 | Medium | OSINT |
+| [E33] | [SQ Magazine: India +95M, 53% female](https://sqmagazine.co.uk/mobile-games-statistics/) | 2026-03-26 | Medium | OSINT |
+| [E35] | [SQ Magazine: Console-to-mobile India](https://sqmagazine.co.uk/mobile-games-statistics/) | 2026-03-26 | Medium | OSINT |
+| [E36] | [Entertainment Computing: Complementarity](https://www.sciencedirect.com/science/article/pii/S1875952121000422) | 2026-03-26 | High | OSINT |
+| [E37] | [JAMS: Multihoming strengthens console](https://link.springer.com/article/10.1007/s11747-022-00893-4) | 2026-03-26 | High | OSINT |
+| [E38] | [BCG: Platform convergence](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E39] | [WEF: 50-year platform history](https://www.weforum.org/stories/2020/11/gaming-games-consels-xbox-play-station-fun/) | 2026-03-26 | High | OSINT |
+| [E40] | [BCG: Four converging trends](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E41] | [Newzoo: PC/console growth](https://newzoo.com/resources/blog/post-pandemic-growth-returns-for-pc-and-console-driven-by-premium-spending-and-changing-price-dynamics) | 2026-03-26 | High | OSINT |
+| [E43] | [Naavik: 570% multi-platform playtime](https://naavik.co/digest/the-future-of-cross-platform-gaming/) | 2026-03-26 | Medium | OSINT |
+| [E45] | [Business of Apps: D30 retention](https://www.businessofapps.com/data/mobile-game-retention-rates/) | 2026-03-26 | High | OSINT |
+| [E46] | [Gibson et al.: Player guilt/regret](https://www.sciencedirect.com/science/article/pii/S0747563223001176) | 2026-03-26 | High | OSINT |
+| [E47] | [JMIR: Loot box-gambling mediation](https://games.jmir.org/2024/1/e57304/) | 2026-03-26 | High | OSINT |
+| [E48] | [MDPI: Gacha addiction](https://www.mdpi.com/2078-2489/14/7/399) | 2026-03-26 | High | OSINT |
+| [E49] | [AInvest/Bain: 97% failure, 35K jobs](https://www.ainvest.com/news/gaming-industry-survival-crisis-studios-struggling-break-2509/) | 2026-03-26 | Medium | OSINT |
+| [E50] | [Business of Apps: CPI, $50B ad spend](https://www.businessofapps.com/marketplace/mobile-game-marketing/research/mobile-game-marketing-costs/) | 2026-03-26 | High | OSINT |
+| [E51] | [Business of Apps: ATT CPI spike](https://www.businessofapps.com/marketplace/mobile-game-marketing/research/mobile-game-marketing-costs/) | 2026-03-26 | High | OSINT |
+| [E52] | [Mapendo: CPI by genre](https://mapendo.co/blog/mobile-games-cpi-2025) | 2026-03-26 | Medium | OSINT |
+| [E53] | [Apple: DMA impacts](https://www.apple.com/newsroom/2025/09/the-digital-markets-acts-impacts-on-eu-users/) | 2026-03-26 | High | OSINT |
+| [E54] | [ResearchGate: ATT impact](https://www.researchgate.net/publication/360275850) | 2026-03-26 | High | OSINT |
+| [E55] | [Cometly: ATT 15-25% opt-in](https://www.cometly.com/post/ios-app-tracking-transparency-impact) | 2026-03-26 | Medium | OSINT |
+| [E56] | [GameAnalytics: 2025 Benchmarks](https://investgame.net/wp-content/uploads/2025/02/2025-GameAnalytics-Mobile-Gaming-Benchmarks.pdf) | 2026-03-26 | High | OSINT |
+| [E57] | [DoF/Sensor Tower: Seven Things](https://www.deconstructoroffun.com/blog/seven-things-the-2025-state-of-gaming-report-actually-tells-us) | 2026-03-26 | High | OSINT |
+| [E58] | [Mobile Dev Memo: ATT Recession](https://mobiledevmemo.com/the-att-recession/) | 2026-03-26 | High | OSINT |
+| [E59] | [TechCrunch: Apps overtook games](https://techcrunch.com/2026/01/21/consumers-spent-more-on-mobile-apps-than-games-in-2025-driven-by-ai-app-adoption/) | 2026-03-26 | High | OSINT |
+| [E60] | [Wikipedia: 2022-2026 layoffs](https://en.wikipedia.org/wiki/2022%E2%80%932026_video_game_industry_layoffs) | 2026-03-26 | High | OSINT |
+| [E61] | [GameAnalytics: Regional divergence](https://investgame.net/wp-content/uploads/2025/02/2025-GameAnalytics-Mobile-Gaming-Benchmarks.pdf) | 2026-03-26 | High | OSINT |
+| [E62] | [DoF/Sensor Tower: Premium vs F2P](https://www.deconstructoroffun.com/blog/seven-things-the-2025-state-of-gaming-report-actually-tells-us) | 2026-03-26 | High | OSINT |
+
+**Citation Methods:**
+- **OSINT**: Retrieved via Firecrawl MCP or WebSearch/WebFetch fallback
+- **ANALYSIS**: Analytical judgment produced via named technique protocol
 
 ---
 
-*Generated by Structured Analysis Skill | 2026-02-15 | Analysis ID: 2026-02-15-us-chinese-hackers-network-removal*
+*Generated by Structured Analysis Skill | 2026-03-26 | Analysis ID: 2026-03-26-mobile-gaming-marketplace-growth-impact | Iteration 3*

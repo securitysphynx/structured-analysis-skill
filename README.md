@@ -1,4 +1,4 @@
-# Structured Analysis Skill for Claude Code
+# Structured Analysis Skill for Claude Code  [![version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/blevene/structured-analysis-skill)
 
 AI-augmented [Structured Analytic Techniques](https://www.cia.gov/resources/csi/static/Tradecraft-Primer-apr09.pdf) (SATs) from US Intelligence Community doctrine — implemented as an interactive Claude Code skill.
 
@@ -98,7 +98,7 @@ The skill will:
 5. Auto-remediate any HIGH-severity analytical weaknesses (if found)
 6. Present findings with a human review gate before finalization
 
-Output is a structured report with cited key judgments, confidence levels, a monitoring plan, and full evidence registry. See [`example_analysis/`](example_analysis/) for a complete sample output.
+Output is a structured report with cited key judgments, confidence levels, a monitoring plan, and full evidence registry. See [`example_analysis/`](example_analysis/) for a complete sample — a 3-iteration analysis of mobile gaming's impact on the gaming marketplace, demonstrating adaptive technique selection, auto-remediation, and confidence evolution across iterations.
 
 ### Context-Aware Invocation
 
@@ -424,6 +424,13 @@ structured-analysis-skill/
 │   ├── library/                     # Reference knowledge base (10 files)
 │   ├── background/                  # Source materials (CIA Primer + analyses)
 │   └── plans/                       # Design and implementation documents
+├── example_analysis/                 # Complete sample analysis output
+│   ├── report.md                    # Final report (3 iterations)
+│   ├── evidence-registry.md         # 62 cited evidence items
+│   ├── monitoring-plan.md           # Indicators and signposts
+│   ├── meta.md                      # Execution metadata
+│   ├── next-steps.md                # Iteration suggestions ledger
+│   └── working/                     # Technique artifacts
 ├── helper_scripts/
 │   └── extract_docx_text.py         # DOCX text extraction utility
 └── LICENSE                          # Apache 2.0

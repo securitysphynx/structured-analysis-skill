@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "structured-analysis",
-      "description": "14 CIA/IC analytic techniques with OSINT evidence gathering, three-layer self-correction, and mandatory citation enforcement. Run /analyze to start.",
+      "description": "18 CIA/IC analytic techniques with OSINT evidence gathering, three-layer self-correction, and mandatory citation enforcement. Run /analyze to start.",
       "path": "."
     }
   ]

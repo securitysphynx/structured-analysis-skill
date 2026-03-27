@@ -1,13 +1,17 @@
-# Key Assumptions Check: US Removal of Chinese Hackers from Networks
+# Key Assumptions Check: Impact of Mobile Gaming on Gaming Marketplace Growth
 
-> **Analysis ID**: 2026-02-15-us-chinese-hackers-network-removal | **Date**: 2026-02-15 | **Phase**: Diagnostic
-> **Evidence base**: 20 items | [Full registry](../evidence-registry.md)
+> **Analysis ID**: 2026-03-26-mobile-gaming-marketplace-growth-impact | **Date**: 2026-03-26 | **Phase**: Diagnostic
+> **Evidence base**: 62 items | [Full registry](../evidence-registry.md)
+> **Iteration**: 3 | Prior version: [working/assumptions.v2.md](assumptions.v2.md)
+> **Trigger**: User-requested iteration addressing revenue-as-proxy operationalization, compound interaction modeling, and structural fragility direct testing. New evidence E56-E62. Triggered by: 3 HIGH-severity flags from iteration 2.
 
 ---
 
 ## Current Analytic Line
 
-The US will make incremental progress in hardening networks and detecting intrusions, but will not achieve complete removal of Chinese state-sponsored hackers from telecommunications and critical infrastructure networks within the next 2-3 years, due to the scale and complexity of US telecom infrastructure, persistent institutional and political obstacles, and the adversary's industrial-scale offensive capabilities.
+Mobile gaming has been the primary engine of global gaming marketplace expansion over the past decade, growing the total addressable market by attracting new demographics (women, older adults, casual players) and new geographies (Asia-Pacific, LATAM, MENA) rather than cannibalizing existing console/PC segments. However, mobile gaming is now entering a maturation phase characterized by revenue stagnation, monetization backlash, and increasing competitive pressure from platform convergence and console resurgence -- raising questions about whether mobile's historical growth model remains sustainable.
+
+**v3 qualification**: The analytic line is now assessed through dual lenses: revenue-based (where the above holds) and engagement-based (where the picture is materially worse). Non-revenue metrics show industry-wide retention decline [E56], market thinning beyond the top 50 [E57], and mobile gaming's loss of its position as the dominant mobile consumer spending category [E59]. The engagement lens reveals a market in active contraction masked by stable aggregate revenue.
 
 ---
 
@@ -15,142 +19,102 @@ The US will make incremental progress in hardening networks and detecting intrus
 
 | # | Assumption | Stated / Unstated | Category | Bin (S/C/U) | Linchpin? |
 |---|-----------|-------------------|----------|-------------|-----------|
-| 1 | US telecom infrastructure is too large and complex for comprehensive remediation within 2-3 years | Stated | Technical | S | Y |
-| 2 | Institutional and political obstacles will persist and impede a coordinated national response | Stated | Political/Institutional | S | Y |
-| 3 | China's offensive cyber capabilities operate at industrial scale and will continue to do so | Stated | Adversary | S | Y |
-| 4 | The US will make at least incremental progress (i.e., the situation will not get dramatically worse) | Stated | Defensive | C | N |
-| 5 | "Complete removal" is the correct benchmark for evaluating success | Unstated | Framing | C | N |
-| 6 | Current detection and attribution capabilities are insufficient to identify all Chinese footholds | Unstated | Technical | S | N |
-| 7 | Telecom companies lack sufficient incentive and capacity to self-remediate without regulatory compulsion | Unstated | Economic/Regulatory | S | Y |
-| 8 | Offensive cyber operations ("hack back") cannot substitute for defensive remediation | Unstated | Strategic | S | N |
-| 9 | The adversary will not voluntarily withdraw or reduce operations due to diplomatic or deterrent pressure | Unstated | Adversary Intent | C | Y |
-| 10 | Allied and international coordination will not produce a step-change in defensive effectiveness | Unstated | International | U | N |
+| 1 | Mobile gaming expanded the total market rather than cannibalizing console/PC segments | Stated | Market dynamics | S | Y |
+| 2 | Mobile gaming's growth was driven primarily by new demographics (women, casual players, older adults) | Stated | Demographics | C | N |
+| 3 | Mobile gaming's geographic expansion (APAC, LATAM, MENA) represents genuinely new market creation | Stated | Geography | C | N |
+| 4 | The free-to-play model was essential to mobile's market expansion | Unstated | Business model | C | Y |
+| 5 | Mobile revenue stagnation signals a structural maturation rather than a cyclical downturn | Unstated | Market dynamics | S | Y |
+| 6 | Platform convergence (cloud gaming, cross-play) will erode mobile's standalone market position | Unstated | Technology | U | Y |
+| 7 | The 30% platform fee structure is a stable, defining feature of mobile economics | Stated | Business model | U | N |
+| 8 | Predatory monetization is a systemic feature of mobile gaming, not an aberration | Unstated | Business model | S | N |
+| 9 | Mobile gaming demographics (near gender parity, broad age range) are durable, not a pandemic artifact | Unstated | Demographics | C | N |
+| 10 | Revenue is a valid proxy for market impact and health | Unstated | Methodology | U | Y |
+| 11 | Emerging market growth (LATAM, MENA) will follow the same trajectory as APAC mobile expansion | Unstated | Geography | U | N |
+| 12 | Console and PC growth resurgence represents a competitive threat to mobile rather than complementary expansion | Unstated | Market dynamics | C | N |
+| 13 | The mobile gaming developer ecosystem is structurally healthy enough to sustain innovation | Unstated | Ecosystem health | U | Y |
+| 14 | Performance marketing and UA infrastructure are stable enablers of mobile gaming growth | Unstated | Advertising/UA | U | Y |
 
 **Bin Key:** S = Supported | C = Correct with Caveats | U = Unsupported
 
----
-
-## Detailed Assumption Evaluation
-
-### Assumption 1: US telecom infrastructure is too large and complex for comprehensive remediation within 2-3 years
-
-- **Why assumed true**: US telecommunications networks are the product of decades of industry consolidation, creating what experts call "Frankenstein's monster of different equipment, technologies and architecture" [E04]. Censys identified 200,000+ publicly exposed network devices with Salt Typhoon-exploitable vulnerabilities, and exposure declined only 25% over six months despite heightened awareness [E05]. Legacy TDM infrastructure persists in critical systems such as FAA radar and railroad networks [E19].
-- **Does it hold under all conditions?** Yes, under current conditions. No credible scenario exists for wholesale infrastructure replacement in 2-3 years. Even targeted remediation faces the problem that University of Florida researchers found 100+ distinct exploitable vulnerabilities in LTE/5G implementations, and maintainers "simply lacked the personnel or expertise to address the flaws" [E07].
-- **Was it true in the past but less so now?** No -- the problem has worsened over time as networks grew more complex and legacy systems accumulated. The Salt Typhoon breach exploited seven-year-old unpatched Cisco vulnerabilities [E03], indicating the remediation backlog is growing, not shrinking.
-- **Evidence supporting**: E03, E04, E05, E07, E19
-- **Evidence challenging**: E15 (emerging regulatory responses including EU Cyber Resilience Act and US DoD SWFT Initiative suggest a policy shift toward mandatory security standards, which could accelerate remediation if implemented)
-- **Bin**: **S (Supported)** -- Multiple independent sources confirm the scale problem with quantitative evidence.
-
-### Assumption 2: Institutional and political obstacles will persist and impede a coordinated national response
-
-- **Why assumed true**: The FCC rescinded binding cybersecurity orders for telecom carriers in late 2025, replacing them with a voluntary framework [E02]. CISA lost more than one-third of its workforce, with approximately 40% vacancy rates across key mission areas [E12]. These are not hypothetical risks but documented current conditions.
-- **Does it hold under all conditions?** It could change if a major crisis (e.g., a Chinese cyberattack during a Taiwan contingency) created political will for emergency action. However, the OPM breach precedent shows that even major incidents produce only temporary policy responses before operations resume [E10].
-- **Was it true in the past but less so now?** It has arguably worsened. The regulatory rollback is a reversal from the direction of travel in 2024, and workforce losses at CISA are recent developments [E02, E12].
-- **Evidence supporting**: E02, E10, E12, E13, E19
-- **Evidence challenging**: E13 (CISA is planning a hiring spree to rebuild by end of FY2026), E15 (the DoD SWFT Initiative and allied regulatory efforts suggest some institutional momentum toward stronger security requirements)
-- **Bin**: **S (Supported)** -- Current policy direction and institutional degradation are well-documented, though rebuilding efforts introduce some uncertainty.
-
-### Assumption 3: China's offensive cyber capabilities operate at industrial scale and will continue to do so
-
-- **Why assumed true**: Salt Typhoon operates through a "contractor-enabled, industrial-scale" model using MSS-aligned front companies (i-SOON, Sichuan Juxinhe, Beijing Huanyu Tianqiong) with modular tooling and built-in deniability [E17, E18]. The operation breached 600+ organizations worldwide, 200+ in the US, across 80+ countries, and has been active since 2019 [E17]. New malware families like "Brickstorm" continue to emerge, maintaining long-term access for 17+ months in documented cases [E16].
-- **Does it hold under all conditions?** It could be disrupted by internal Chinese political upheaval, a severe economic crisis reducing funding, or successful US offensive operations dismantling contractor infrastructure. None of these are likely in the 2-3 year timeframe.
-- **Was it true in the past but less so now?** No -- the trend is toward increasing capability. After the OPM breach in 2015, operations "temporarily subsided" but surged by 2017, indicating resilience and growth [E10].
-- **Evidence supporting**: E10, E16, E17, E18
-- **Evidence challenging**: None in the evidence registry directly challenges this assumption.
-- **Bin**: **S (Supported)** -- The industrial-scale model is well-documented and shows a trajectory of increasing capability.
-
-### Assumption 4: The US will make at least incremental progress
-
-- **Why assumed true**: The analytic line asserts "incremental progress" as a floor. Some evidence supports this: emerging regulatory frameworks [E15], CISA's planned hiring spree [E13], and heightened awareness across the sector.
-- **Does it hold under all conditions?** Not necessarily. If CISA's rebuilding fails, if regulatory rollbacks continue, and if the adversary adapts faster than defenders, the net security posture could deteriorate. The 25% reduction in exposed devices over six months [E05] is progress, but it may be outpaced by new vulnerability discovery [E07] and new malware deployment [E16].
-- **Was it true in the past but less so now?** The incremental progress assumption is questionable given that the FCC moved backward by rescinding binding requirements [E02] and CISA's workforce has been gutted [E12].
-- **Evidence supporting**: E05 (25% reduction in exposures), E13 (CISA hiring plans), E15 (regulatory momentum)
-- **Evidence challenging**: E02 (regulatory rollback), E12 (CISA workforce losses), E16 (continued adversary innovation)
-- **Bin**: **C (Correct with Caveats)** -- Progress is possible but not guaranteed; current institutional degradation could stall or reverse gains.
-
-### Assumption 5: "Complete removal" is the correct benchmark for evaluating success
-
-- **Why assumed true**: The original question frames the problem as binary ("will the US be able to successfully remove...") [E20]. The analytic line implicitly treats complete removal as the standard against which the US will fall short.
-- **Does it hold under all conditions?** This framing may obscure meaningful partial outcomes. A more useful benchmark might be whether the US can reduce Chinese access to a level that denies strategic intelligence collection and pre-positioned sabotage capabilities.
-- **Evidence supporting**: E20 (analyst notes the binary framing problem)
-- **Evidence challenging**: E20 itself challenges this framing by noting it "may obscure partial or incremental outcomes."
-- **Bin**: **C (Correct with Caveats)** -- Complete removal is a valid upper bound for analysis, but the analytic line should be evaluated against more granular success criteria.
-
-### Assumption 6: Current detection and attribution capabilities are insufficient to identify all Chinese footholds
-
-- **Why assumed true**: Researchers report a lack of confirmed, granular indicators of compromise (IOCs) for Salt Typhoon [E06]. The FBI contacted 600+ impacted companies [E08], suggesting the scope of compromise may still be expanding. Telecom company claims of eviction are "difficult to reconcile" with the joint advisory stating Salt Typhoon maintains "persistent, long-term access" [E08].
-- **Does it hold under all conditions?** A breakthrough in threat intelligence sharing or a major defection/leak of Chinese operational details could rapidly improve detection. This is low-probability but not impossible.
-- **Evidence supporting**: E06, E08
-- **Evidence challenging**: None in evidence registry.
-- **Bin**: **S (Supported)** -- The IOC gap is specifically documented and constrains remediation.
-
-### Assumption 7: Telecom companies lack sufficient incentive and capacity to self-remediate without regulatory compulsion
-
-- **Why assumed true**: The Salt Typhoon breach exploited "basic maintenance failures" including weak passwords and seven-year-old unpatched vulnerabilities [E01, E03]. The Senate Commerce Committee concluded telecoms "still have not convincingly shown they have evicted the intruders" [E01]. When binding cybersecurity requirements were rescinded, they were replaced with voluntary collaboration [E02]. University of Florida researchers found that vulnerability maintainers "simply lacked the personnel or expertise to address the flaws" [E07].
-- **Does it hold under all conditions?** Major liability lawsuits or customer defections could create market-based incentives. However, telecom is an oligopoly with limited competitive pressure on security.
-- **Evidence supporting**: E01, E02, E03, E07
-- **Evidence challenging**: E15 (DoD SWFT Initiative and international regulatory trends could eventually create compliance pressure, but these are nascent)
-- **Bin**: **S (Supported)** -- The combination of regulatory rollback and demonstrated industry inaction is well-documented.
-
-### Assumption 8: Offensive cyber operations ("hack back") cannot substitute for defensive remediation
-
-- **Why assumed true**: Hack-back operations "do not remove vulnerabilities" and risk escalation [E11]. Anne Neuberger stated that US presidents "lack enough confidence that U.S. defenses could withstand a potentially escalatory tit-for-tat battle in cyberspace" [E11]. Historical precedent from the OPM breach shows that even when the US chose not to retaliate, Chinese operations only "temporarily subsided" before surging again [E10].
-- **Does it hold under all conditions?** A sufficiently devastating offensive operation against Chinese cyber contractor infrastructure could theoretically set back capabilities for years. However, this carries significant escalation risk and does not address underlying US vulnerabilities.
-- **Evidence supporting**: E10, E11
-- **Evidence challenging**: None directly.
-- **Bin**: **S (Supported)** -- Both logical reasoning and historical precedent confirm this.
-
-### Assumption 9: The adversary will not voluntarily withdraw or reduce operations due to diplomatic or deterrent pressure
-
-- **Why assumed true**: After the OPM breach, diplomatic pressure produced only a temporary pause before operations surged [E10]. China "perceives U.S. telecommunications networks as a key center of gravity in a possible conflict" [E19], giving it strong strategic motivation to maintain access. The MSS contractor model provides deniability that insulates the political leadership from diplomatic consequences [E18].
-- **Does it hold under all conditions?** A fundamental shift in US-China relations (e.g., a comprehensive cyber arms control agreement or a broader detente) could alter the calculus. A credible demonstration of US offensive capability might also create temporary restraint, as seen post-OPM. However, the "temporary" nature of past pauses is the key caveat.
-- **Evidence supporting**: E10, E17, E18, E19
-- **Evidence challenging**: E10 (the temporary pause itself shows diplomatic pressure has some effect, even if not durable)
-- **Bin**: **C (Correct with Caveats)** -- Diplomatic pressure can produce temporary reductions but has not produced lasting withdrawal. A major geopolitical shift could change this, but nothing in the current environment suggests one is imminent.
-
-### Assumption 10: Allied and international coordination will not produce a step-change in defensive effectiveness
-
-- **Why assumed true**: This is an unstated assumption in the analytic line, which focuses exclusively on US domestic factors. The evidence registry notes "minimal evidence on Five Eyes coordination effectiveness" as a gap [Evidence Registry, Quality Assessment].
-- **Does it hold under all conditions?** Allied coordination on cybersecurity is increasing (EU Cyber Resilience Act [E15]), but no evidence in the registry demonstrates that international cooperation has materially improved the US defensive posture against Salt Typhoon specifically.
-- **Evidence supporting**: No direct evidence -- this is an identified gap.
-- **Evidence challenging**: E15 (emerging allied regulatory frameworks suggest growing international coordination, but effectiveness is unproven)
-- **Bin**: **U (Unsupported)** -- Insufficient evidence to assess. This is a gap the analytic line should acknowledge.
+**v3 changes**: Assumption #5 UPGRADED from C to S -- new evidence [E57, E59, E60] provides overwhelming structural indicators (market thinning beyond top 50, mobile gaming overtaken by non-game apps, 45K jobs lost). Assumption #12 upgraded from U to C -- premium games now outperform F2P on new player acquisition [E62]. Assumption #14 UPGRADED to linchpin status -- ATT's compound effects are permanent and structural [E58].
 
 ---
 
 ## Linchpin Analysis
 
-### Linchpin 1: US telecom infrastructure is too large and complex for comprehensive remediation within 2-3 years
+### Linchpin 1: Mobile gaming expanded the total market rather than cannibalizing console/PC segments
 
-- **Justification**: The analytic line's core prediction -- that complete removal will not occur -- rests fundamentally on the proposition that the attack surface is too vast to secure in the timeframe. If infrastructure were simpler or smaller, the problem would be tractable even with current institutional limitations.
-- **Failure conditions**: (a) A "Manhattan Project"-scale federal investment in telecom infrastructure modernization; (b) emergence of automated vulnerability detection and patching tools that dramatically reduce the human labor required; (c) a decision to segment and abandon the most compromised legacy networks rather than remediate them.
-- **Supporting evidence**: 200,000+ exposed devices with only 25% reduction over six months [E05]; 100+ distinct exploitable vulnerabilities in LTE/5G implementations [E07]; decades of consolidation creating architectural complexity [E04]; legacy TDM infrastructure in critical systems [E19]; seven-year-old unpatched vulnerabilities [E03].
-- **Challenging evidence**: Emerging regulatory frameworks could accelerate remediation timelines [E15], though none are yet operational at scale.
-- **Impact if wrong**: If the infrastructure problem is more tractable than assessed -- e.g., because 80% of the risk is concentrated in a small number of critical chokepoints that can be hardened quickly -- then "substantial removal" (not complete, but strategically meaningful) could be achievable within 2-3 years. The analytic line would need to shift from "incremental progress" to "significant but incomplete hardening."
+- **Justification**: The historical pattern across gaming platforms shows each new platform expanded the total market [E39]. Academic research confirms complementary rather than substitutive relationship [E36, E37].
+- **Failure conditions**: Evidence that console/PC revenues declined in proportion to mobile growth; significant player migration from console/PC to mobile-only.
+- **Supporting evidence**: WEF 50-year platform history [E39]. Academic complementarity [E36, E37]. Multi-platform 570% playtime [E43].
+- **Challenging evidence**: Console-to-mobile shift in India [E35]. **NEW**: Premium games now outperform F2P on acquisition (9 premium vs 4 F2P breakouts clearing 10M downloads [E62]), suggesting the competitive dynamic may be reversing.
+- **Impact if wrong**: The "rising tide" narrative collapses; mobile's net contribution would be redistributive.
+- **v3 assessment**: Unchanged from v2. Supporting evidence remains strong for the historical claim. New evidence [E62] does not challenge the historical expansion but suggests the forward-looking dynamic may differ.
 
-### Linchpin 2: Institutional and political obstacles will persist
+### Linchpin 2: The free-to-play model was essential to mobile's market expansion
 
-- **Justification**: Without sustained political will and institutional capacity, even technically feasible remediation will not be executed. The analytic line depends on the continued absence of a coordinated, well-resourced national effort.
-- **Failure conditions**: (a) A galvanizing crisis event (e.g., Chinese cyber sabotage during a Taiwan scenario) that creates bipartisan political will for emergency cybersecurity legislation; (b) a new administration or Congressional majority that reverses the FCC's regulatory rollback and funds CISA at wartime levels; (c) successful rebuilding of CISA by end of FY2026 as planned [E13].
-- **Supporting evidence**: FCC rescinded binding cybersecurity requirements [E02]; CISA lost one-third of its workforce [E12]; OPM breach precedent shows post-crisis reforms fade [E10].
-- **Challenging evidence**: CISA hiring spree planned [E13]; DoD SWFT Initiative launched [E15]; experts warn of potential 2027 US-China crisis, creating timeline pressure that could generate political urgency [E13].
-- **Impact if wrong**: If a crisis or political shift produces a mandatory, well-funded national cybersecurity effort, the analytic line's prediction of "incremental" progress would significantly understate likely outcomes. The assessment would need to shift toward a more optimistic trajectory, though complete removal would still face the technical constraints of Linchpin 1.
+- **Justification**: F2P eliminated the price barrier to entry, enabling mass adoption [E27, E29].
+- **Failure conditions**: Evidence that premium-priced mobile games achieved comparable scale.
+- **Supporting evidence**: 50% of mobile gamers spend nothing [E29]. Low CPI in emerging markets depends on F2P [E31].
+- **Challenging evidence**: All v2 evidence plus **NEW**: F2P incumbents have entrenched advantages making entry harder [E62]. The top 50 games capture 80% of growth [E57], rest declined. Premium is now "the less saturated path to player attention" [E62].
+- **Impact if wrong**: Mobile's expansion was driven by hardware ubiquity; monetization model could be reformed.
+- **v3 assessment**: Bin remains C with critical temporal distinction. F2P was essential to historical expansion but is now the mechanism of market concentration preventing future expansion.
 
-### Linchpin 3: China's offensive cyber capabilities will continue at industrial scale
+### Linchpin 3: Mobile revenue stagnation signals structural maturation rather than cyclical downturn
 
-- **Justification**: The analytic line assumes an adversary that continuously re-compromises networks even as defenders patch and harden. If Chinese capabilities were static or declining, the defense-offense balance could shift in the US's favor.
-- **Failure conditions**: (a) Internal Chinese political upheaval that disrupts the MSS contractor model; (b) successful US/allied offensive operations that dismantle key contractor infrastructure (i-SOON, Sichuan Juxinhe, etc.); (c) a severe Chinese economic crisis that reduces funding for cyber operations; (d) a credible cyber arms control agreement with verification mechanisms.
-- **Supporting evidence**: Contractor-enabled industrial-scale model with modular tooling and built-in deniability [E17, E18]; continued deployment of new malware (Brickstorm) maintaining 17-month persistence [E16]; operations surged after temporary post-OPM pause [E10]; 600+ organizations breached globally [E17].
-- **Challenging evidence**: None in the evidence registry.
-- **Impact if wrong**: If Chinese offensive capacity were significantly degraded -- e.g., through internal disruption or successful offensive operations -- the remediation challenge would become primarily a domestic technical and institutional problem. The analytic line would need revision to assess whether US domestic capacity alone is sufficient for meaningful progress, absent continuous adversary re-compromise.
+- **Justification**: Strengthened significantly by v3 evidence.
+- **Failure conditions**: Mobile revenue rebounds sharply in 2026-2027.
+- **Supporting evidence**: All v2 evidence plus **NEW**: Top 50 captured 80% of growth; rest declined [E57]. $100M+ game count dropped YoY [E57]. Non-game apps overtook games for first time ($85B vs $81.8B) [E59]. 45,000 jobs lost 2022-Jul 2025 [E60]. 26% of EU devs laid off [E60]. D1 retention declining industry-wide [E56]. D7 retention declining [E56].
+- **Challenging evidence**: BCG recovery framing [E14]. Emerging market growth [E32]. DMA marketplaces [E53]. 24% top-50 turnover shows some fluidity [E57].
+- **Impact if wrong**: Predictions of mobile's declining share are premature.
+- **v3 assessment**: UPGRADED from C to S. Five independent indicators confirm structural decline: revenue concentration with rest declining [E57]; retention declining across all horizons [E56]; mobile gaming overtaken as dominant mobile category [E59]; 45K jobs lost with no recovery [E60]; ATT permanently broke the growth feedback loop [E58].
 
-### Linchpin 4: Telecom companies lack sufficient incentive and capacity to self-remediate without regulatory compulsion
+### Linchpin 4: Platform convergence will erode mobile's standalone market position
 
-- **Justification**: Even if political will existed at the federal level, remediation must be executed by private telecom operators. The analytic line depends on these companies remaining unable or unwilling to undertake comprehensive remediation on their own.
-- **Failure conditions**: (a) Major liability lawsuits or class action settlements that create financial incentives for security investment; (b) a competitive dynamic where one carrier's demonstrated security posture attracts enterprise and government customers away from competitors; (c) insurance market pressure that makes premiums prohibitive without specific security benchmarks.
-- **Supporting evidence**: Basic maintenance failures (weak passwords, seven-year-old unpatched vulnerabilities) persisted pre-breach [E01, E03]; Senate concluded carriers have not convincingly shown eviction [E01]; vulnerability maintainers lacked personnel or expertise [E07]; binding requirements replaced with voluntary framework [E02].
-- **Challenging evidence**: E15 (emerging regulatory trends could eventually create compliance pressure).
-- **Impact if wrong**: If telecoms were to undertake large-scale self-remediation -- driven by liability, market pressure, or leadership change -- the pace of hardening could accelerate significantly beyond what the analytic line predicts, even without federal regulatory compulsion. The analytic line would need to reassess the "incremental" qualifier upward.
+- **Justification**: Cloud gaming projected $1.4B to $18.3B by 2030 [E05]. BCG convergence analysis [E38, E40].
+- **Failure conditions**: Cloud gaming fails mainstream adoption; players prefer native mobile.
+- **Supporting evidence**: Cloud gaming +33% in emerging markets [E34]. BCG convergence trends [E40]. Multi-platform engagement [E43].
+- **Challenging evidence**: Cloud gaming <1% of market [E05]. No observed displacement [NE3].
+- **Impact if wrong**: Mobile retains standalone dominance by default.
+- **v3 assessment**: Unchanged. Remains U. No new evidence addresses this linchpin.
+
+### Linchpin 5: Revenue is a valid proxy for market impact and health
+
+- **Justification**: Industry consistently uses revenue as primary metric [E02, E03, E15, E16].
+- **Failure conditions**: Revenue fails to capture engagement quality, player welfare, or market breadth.
+- **Supporting evidence**: Revenue data is consistently available and comparable.
+- **Challenging evidence**: All v2 evidence plus **PARALLEL NON-REVENUE ASSESSMENT**:
+
+  **Revenue lens**: Mobile gaming $81.8B in 2025, roughly flat [E16, E59]. Market appears stable.
+
+  **Engagement lens**: D1 retention declined YoY (26-28% from 28-29%) [E56]. D7 retention declined (3.42-3.94% from 4-5%) [E56]. 75% of games below 3% D28 [E56]. Median playtime only 22min/day [E56]. Downloads falling, time flat [E57]. Fewer new players entering [E57].
+
+  **Market position lens**: Non-game apps overtook games in spending for first time [E59]. Mobile gaming lost dominant mobile consumer category status. AI apps tripled to $5B [E59].
+
+  **Ecosystem lens**: Top 50 capture 80% of growth; rest declined [E57]. 45,000 jobs lost [E60]. 26% of EU devs laid off [E60]. Premium outperforming F2P on acquisition [E62].
+
+  **Verdict**: All four non-revenue lenses show a market in worse condition than revenue suggests. Revenue stability results from top-50 extraction efficiency, not market health.
+
+- **Impact if wrong**: Entire analytic line overstates mobile's current health; forward-looking assessment fundamentally different under engagement lens.
+- **v3 assessment**: Remains U. Now operationalized: every non-revenue metric contradicts the stability implied by flat revenue.
+
+### Linchpin 6: Developer ecosystem is structurally healthy enough to sustain innovation
+
+- **Justification**: Implicitly required for mobile gaming's sustainability.
+- **Failure conditions**: Developer ecosystem contracting; failure rates unsustainably high; economics favor exploitation over innovation.
+- **Supporting evidence**: Indie devs growing 22% annually [E49]. DMA marketplaces [E53]. 24% top-50 turnover [E57].
+- **Challenging evidence**: All v2 evidence plus **NEW**: 45,000 jobs lost -- 29% higher than E49's 35K [E60]. 26% of EU devs laid off at least once [E60]. Unity salaries fell ~50% [E60]. 30+ studios shut down entirely [E60]. Studios closing pre-release [E60]. 68% of producers say pipelines cannot support live service [E60]. Market declining outside top 50 [E57].
+- **Impact if wrong**: Content pipeline degrades; vicious cycle of declining engagement and revenue.
+- **v3 assessment**: Remains U, significantly strengthened. The ecosystem is in structural contraction, not cyclical correction. Studios closing before first release [E60] indicates the ecosystem cannot support new entrants.
+
+### Linchpin 7 (NEW): Performance marketing/UA infrastructure is a stable enabler
+
+- **Justification**: Mobile growth historically depended on cheap, targeted UA via performance marketing.
+- **Failure conditions**: Performance marketing system structurally broken, not merely disrupted.
+- **Supporting evidence**: Ad spend grew to $50B [E50], showing continued investment.
+- **Challenging evidence**: **NEW**: ATT created permanent "recession" in social media advertising [E58]. The "hub-and-spoke" behavioral profile feedback loop was fundamentally broken [E58]. Disruptions compound over time [E58]. ATT opt-in 15-25% [E55]. iOS installs -5% [E51]. CPI spiked [E51]. Academic evidence of financial losses [E54].
+- **Impact if wrong**: Mobile gaming growth model cannot recover even if other factors improve. Compound with DMA creates mutually reinforcing degradation.
+- **v3 assessment**: Binned as U. ATT permanently broke the feedback loop; DMA fragments the marketplace; together they create compound degradation that cannot be resolved independently.
 
 ---
 
@@ -158,11 +122,11 @@ The US will make incremental progress in hardening networks and detecting intrus
 
 | Priority | Assumption | Risk | Recommended Action |
 |----------|-----------|------|--------------------|
-| 1 | Institutional and political obstacles will persist (#2) | Most volatile assumption -- a single crisis event or political shift could invalidate it rapidly, changing the trajectory from "incremental" to "accelerated" progress | Monitor for: reversal of FCC regulatory rollback; CISA workforce recovery metrics; Congressional cybersecurity legislation; any Chinese cyber operation that causes visible public harm |
-| 2 | Telecom companies lack incentive to self-remediate (#7) | Market or legal forces could create incentives independent of government action; liability landscape is evolving | Monitor for: major lawsuits against breached carriers; insurance market shifts; enterprise customer demands for security attestation |
-| 3 | The adversary will not voluntarily reduce operations (#9) | Diplomatic channels or deterrence could produce temporary pauses (as post-OPM), and even temporary pauses create windows for remediation | Monitor for: US-China diplomatic engagements on cyber norms; credible US offensive cyber demonstrations; shifts in Chinese strategic priorities |
-| 4 | Allied coordination will not produce a step-change (#10) | Unsupported assumption that may understate international contributions; evidence gap means the analytic line may be missing a significant factor | Collect: Five Eyes cyber coordination outcomes; NATO cyber defense posture assessments; allied threat intelligence sharing effectiveness against Typhoon campaigns |
-| 5 | Infrastructure is too large and complex (#1) | Most strongly supported assumption, but could be partially mitigated by risk-prioritized approaches that focus on the most strategically significant network segments rather than comprehensive remediation | Monitor for: risk-tiered remediation strategies; automated patching capabilities; decisions to decommission rather than remediate legacy systems |
+| 1 | Revenue is a valid proxy (A10) | **U -- OPERATIONALIZED**: All non-revenue metrics contradict revenue stability [E56, E57, E59] | Dual assessment required; engagement lens primary for forward-looking analysis |
+| 2 | UA infrastructure stable (A14, NEW LINCHPIN) | **U -- COMPOUND**: ATT broke feedback loop [E58]; DMA compounds; mechanism for developer ecosystem stress propagation | Model as integrated system; flag as unresolvable by single intervention |
+| 3 | Developer ecosystem health (A13) | **U -- STRENGTHENED**: 45K jobs (29% higher than prior), 26% EU devs laid off, studios closing pre-release [E60] | Flag as structural contraction; ecosystem already in predicted vicious cycle |
+| 4 | Stagnation is structural (A5) | **UPGRADED to S**: Five independent non-revenue confirmations [E56, E57, E59, E60, E62] | Upgrade confidence; remove cyclical hedging |
+| 5 | Platform convergence (A6) | U -- No new evidence | Define observable indicators |
 
 ---
 
@@ -170,31 +134,46 @@ The US will make incremental progress in hardening networks and detecting intrus
 
 | Ref | Source | Retrieved | Reliability | Method |
 |-----|--------|-----------|-------------|--------|
-| [E01] | [Is America's Cyber Weakness Self-Inflicted? -- War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E02] | [Is America's Cyber Weakness Self-Inflicted? -- War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E03] | [Is America's Cyber Weakness Self-Inflicted? -- War on the Rocks](https://warontherocks.com/2026/01/is-americas-cyber-weakness-self-inflicted/) | 2026-02-15 | High | OSINT |
-| [E04] | [Why telecoms may never purge Salt Typhoon -- CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E05] | [Why telecoms may never purge Salt Typhoon -- CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E06] | [Why telecoms may never purge Salt Typhoon -- CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | Medium | OSINT |
-| [E07] | [Why telecoms may never purge Salt Typhoon -- CyberScoop](https://cyberscoop.com/salt-typhoon-chinese-hackers-us-telecom-breach/) | 2026-02-15 | High | OSINT |
-| [E08] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon -- Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E09] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon -- Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E10] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon -- Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E11] | [Reconfiguring U.S. Cyber Strategy in the Wake of Salt Typhoon -- Lawfare](https://www.lawfaremedia.org/article/reconfiguring-u.s.-cyber-strategy-in-the-wake-of-salt-typhoon) | 2026-02-15 | High | OSINT |
-| [E12] | [CISA plans hiring spree to rebuild depleted ranks -- Cybersecurity Dive](https://www.cybersecuritydive.com/news/cisa-hiring-workforce-strategy/805733/) | 2026-02-15 | High | OSINT |
-| [E13] | [CISA plans hiring spree to rebuild depleted ranks -- Cybersecurity Dive](https://www.cybersecuritydive.com/news/cisa-hiring-workforce-strategy/805733/) | 2026-02-15 | High | OSINT |
-| [E14] | [China's Typhoon hackers have changed the rules -- SC World](https://www.scworld.com/perspective/chinas-typhoon-hackers-have-changed-the-rules-of-cybersecurity) | 2026-02-15 | Medium | OSINT |
-| [E15] | [China's Typhoon hackers have changed the rules -- SC World](https://www.scworld.com/perspective/chinas-typhoon-hackers-have-changed-the-rules-of-cybersecurity) | 2026-02-15 | Medium | OSINT |
-| [E16] | [Chinese-linked hackers use Brickstorm backdoor -- Reuters](https://www.reuters.com/world/china/chinese-linked-hackers-use-back-door-potential-sabotage-us-canada-say-2025-12-04/) | 2026-02-15 | High | OSINT |
-| [E17] | [Inside Salt Typhoon -- DomainTools](https://dti.domaintools.com/research/inside-salt-typhoon-chinas-state-corporate-advanced-persistent-threat) | 2026-02-15 | High | OSINT |
-| [E18] | [Inside Salt Typhoon -- DomainTools](https://dti.domaintools.com/research/inside-salt-typhoon-chinas-state-corporate-advanced-persistent-threat) | 2026-02-15 | High | OSINT |
-| [E19] | [Advancing IP Interconnection -- FDD](https://www.fdd.org/analysis/2025/12/16/advancing-ip-interconnection/) | 2026-02-15 | High | OSINT |
-| [E20] | User-provided, session context | 2026-02-15 | N/A | USER |
+| [E02] | [Newzoo: Global games market $188.8B](https://newzoo.com/resources/blog/global-games-market-to-hit-189-billion-in-2025) | 2026-03-26 | High | OSINT |
+| [E05] | [BCG: Cloud gaming projection](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E14] | [BCG: Industry recovery](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E16] | [GamesIndustry.biz: Mobile +1%](https://www.gamesindustry.biz/mobile-revenue-remained-flat-across-2025-but-pc-gaming-sees-another-record-year-sensor-tower-state-of-gaming-2026) | 2026-03-26 | High | OSINT |
+| [E27] | [AppVertices: 3.3B gamers](https://appvertices.io/mobile-gaming-trends-and-forecasts-2025/) | 2026-03-26 | Low | OSINT |
+| [E29] | [MAF: 50% spend nothing](https://maf.ad/en/blog/mobile-gamers-demographics/) | 2026-03-26 | Medium | OSINT |
+| [E31] | [Global Games Forum: LATAM CPI](https://www.globalgamesforum.com/features/by-the-numbers-the-markets-driving-mobile-gamings-next-boom-in-2025) | 2026-03-26 | Medium | OSINT |
+| [E32] | [Global Games Forum: MENA 18% YoY](https://www.globalgamesforum.com/features/by-the-numbers-the-markets-driving-mobile-gamings-next-boom-in-2025) | 2026-03-26 | Medium | OSINT |
+| [E34] | [SQ Magazine: Cloud gaming +33%](https://sqmagazine.co.uk/mobile-games-statistics/) | 2026-03-26 | Medium | OSINT |
+| [E35] | [SQ Magazine: Console-to-mobile India](https://sqmagazine.co.uk/mobile-games-statistics/) | 2026-03-26 | Medium | OSINT |
+| [E36] | [Entertainment Computing: Complementarity](https://www.sciencedirect.com/science/article/pii/S1875952121000422) | 2026-03-26 | High | OSINT |
+| [E37] | [JAMS: Multihoming strengthens console](https://link.springer.com/article/10.1007/s11747-022-00893-4) | 2026-03-26 | High | OSINT |
+| [E38] | [BCG: Platform convergence](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E39] | [WEF: 50-year platform history](https://www.weforum.org/stories/2020/11/gaming-games-consels-xbox-play-station-fun/) | 2026-03-26 | High | OSINT |
+| [E40] | [BCG: Four converging trends](https://www.bcg.com/publications/2025/video-gaming-report-2026-next-era-of-growth) | 2026-03-26 | High | OSINT |
+| [E43] | [Naavik: Multi-platform 570% playtime](https://naavik.co/digest/the-future-of-cross-platform-gaming/) | 2026-03-26 | Medium | OSINT |
+| [E45] | [Business of Apps: Retention rates](https://www.businessofapps.com/data/mobile-game-retention-rates/) | 2026-03-26 | High | OSINT |
+| [E46] | [Gibson et al.: Micro-transaction experiences](https://www.sciencedirect.com/science/article/pii/S0747563223001176) | 2026-03-26 | High | OSINT |
+| [E47] | [JMIR: Loot box-gambling mediation](https://games.jmir.org/2024/1/e57304/) | 2026-03-26 | High | OSINT |
+| [E49] | [AInvest/Bain: 97% failure rate](https://www.ainvest.com/news/gaming-industry-survival-crisis-studios-struggling-break-2509/) | 2026-03-26 | Medium | OSINT |
+| [E50] | [Business of Apps: CPI and ad spend](https://www.businessofapps.com/marketplace/mobile-game-marketing/research/mobile-game-marketing-costs/) | 2026-03-26 | High | OSINT |
+| [E51] | [Business of Apps: ATT CPI impact](https://www.businessofapps.com/marketplace/mobile-game-marketing/research/mobile-game-marketing-costs/) | 2026-03-26 | High | OSINT |
+| [E53] | [Apple: DMA impacts](https://www.apple.com/newsroom/2025/09/the-digital-markets-acts-impacts-on-eu-users/) | 2026-03-26 | High | OSINT |
+| [E54] | [ResearchGate: ATT monetization impact](https://www.researchgate.net/publication/360275850) | 2026-03-26 | High | OSINT |
+| [E55] | [Cometly: ATT 15-25% opt-in](https://www.cometly.com/post/ios-app-tracking-transparency-impact) | 2026-03-26 | Medium | OSINT |
+| [E56] | [GameAnalytics: 2025 Benchmarks](https://investgame.net/wp-content/uploads/2025/02/2025-GameAnalytics-Mobile-Gaming-Benchmarks.pdf) | 2026-03-26 | High | OSINT |
+| [E57] | [DoF/Sensor Tower: Seven Things](https://www.deconstructoroffun.com/blog/seven-things-the-2025-state-of-gaming-report-actually-tells-us) | 2026-03-26 | High | OSINT |
+| [E58] | [Mobile Dev Memo: ATT Recession](https://mobiledevmemo.com/the-att-recession/) | 2026-03-26 | High | OSINT |
+| [E59] | [TechCrunch: Apps overtook games](https://techcrunch.com/2026/01/21/consumers-spent-more-on-mobile-apps-than-games-in-2025-driven-by-ai-app-adoption/) | 2026-03-26 | High | OSINT |
+| [E60] | [Wikipedia: 2022-2026 layoffs](https://en.wikipedia.org/wiki/2022%E2%80%932026_video_game_industry_layoffs) | 2026-03-26 | High | OSINT |
+| [E61] | [GameAnalytics: Regional divergence](https://investgame.net/wp-content/uploads/2025/02/2025-GameAnalytics-Mobile-Gaming-Benchmarks.pdf) | 2026-03-26 | High | OSINT |
+| [E62] | [DoF/Sensor Tower: Premium vs F2P](https://www.deconstructoroffun.com/blog/seven-things-the-2025-state-of-gaming-report-actually-tells-us) | 2026-03-26 | High | OSINT |
+| [assumptions.v2.md] | [Prior iteration KAC](assumptions.v2.md) | 2026-03-26 | High | ANALYSIS |
 
 **Citation Methods:**
 - **OSINT**: Retrieved via Firecrawl MCP or WebSearch/WebFetch fallback
-- **FILE**: Read from local file system
-- **USER**: Provided by analyst in conversation
 - **ANALYSIS**: Analytical judgment produced via named technique protocol
 
 > Every claim must be cited. Uncited claims are not permitted.
+
+---
+
+*Generated by Structured Analysis Skill | Key Assumptions Check Protocol | Iteration 3 | 2026-03-26*
