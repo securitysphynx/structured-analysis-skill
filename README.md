@@ -294,11 +294,16 @@ First-run analyses are unaffected. Iteration tracking activates only on `--itera
 | Issue Redefinition | Anchoring | Minutes |
 | Problem Restatement | Anchoring (rapid reframing) | 5 min |
 
-**Diagnostic** — Test assumptions and evaluate hypotheses.
+**Exploration** — Generate alternatives and perspectives.
 
 | Technique | Bias Mitigated | Effort |
 |-----------|---------------|--------|
 | Structured Brainstorming | Premature closure, groupthink | 60-90 min |
+
+**Diagnostic** — Test assumptions and evaluate hypotheses.
+
+| Technique | Bias Mitigated | Effort |
+|-----------|---------------|--------|
 | Key Assumptions Check | Status quo bias, institutional inertia | 15 min-2 hr |
 | ACH | Confirmation bias, anchoring | Hours-days |
 | Inconsistencies Finder | Confirmation bias (lean ACH) | 15-30 min |
